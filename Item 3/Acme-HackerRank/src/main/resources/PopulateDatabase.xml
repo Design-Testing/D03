@@ -268,5 +268,109 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- =================================================================== 
+					======= Position ========= 
+		=================================================================== -->
+	
+	<bean id="position1" class="domain.Position">
+		<property name="title" value="Position 1" />
+		<property name="description" value="Description position 1" />
+		<property name="deadline" value="2020/04/24 00:00" />
+		<property name="ticker" value="XXXX-1234" />
+		<property name="profile" value="Profile for position 1" />
+		<property name="salary" value="1500.0" />
+		<property name="mode" value="FINAL" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 1</value>
+				<value>Skill2 for position 1</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 1</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
+		<property name="problems">
+			<list>
+				<ref bean="problem1" />
+				<ref bean="problem2" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="position2" class="domain.Position">
+		<property name="title" value="Position 2" />
+		<property name="description" value="Description position 2" />
+		<property name="deadline" value="2019/05/24 00:00" />
+		<property name="ticker" value="XXXX-1235" />
+		<property name="profile" value="Profile for position 2" />
+		<property name="salary" value="1700.0" />
+		<property name="mode" value="DRAFT" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 2</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 1</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company2" />
+		<property name="problems">
+			<list>
+				<ref bean="problem3" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- =================================================================== 
+					======= Problem ========= 
+		=================================================================== -->
+		
+	<bean id="problem1" class="domain.Problem">
+		<property name="title" value="Problem 1"/>
+		<property name="statement" value="Statement of problem 1"/>
+		<property name="hint" value="Hint of problem 1"/>
+		<property name="attachments">
+			<list>
+				<value>Attachment1 of problem 1</value>
+				<value>Attachment2 of problem 1</value>
+			</list>
+		</property>
+		<property name="mode" value="DRAFT" />
+		<property name="company" ref="company1" />
+	</bean>
+	
+	<bean id="problem2" class="domain.Problem">
+		<property name="title" value="Problem 2"/>
+		<property name="statement" value="Statement of problem 2"/>
+		<property name="hint" value="Hint of problem 2"/>
+		<property name="attachments">
+			<list>
+				<value>Attachment1 of problem 2</value>
+			</list>
+		</property>
+		<property name="mode" value="FINAL" />
+		<property name="company" ref="company1" />
+	</bean>
+	
+	<bean id="problem3" class="domain.Problem">
+		<property name="title" value="Problem 3"/>
+		<property name="statement" value="Statement of problem 3"/>
+		<property name="hint" value="Hint of problem 3"/>
+		<property name="attachments">
+			<list>
+			
+			</list>
+		</property>
+		<property name="mode" value="DRAFT" />
+		<property name="company" ref="company2" />
+	</bean>
 
 </beans>
