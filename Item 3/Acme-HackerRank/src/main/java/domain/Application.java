@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
@@ -21,6 +23,7 @@ public class Application extends DomainEntity {
 	private Answer		answer;
 	private Position	position;
 	private Hacker		hacker;
+	private Problem		problem;
 
 
 	@Pattern(regexp = "^(ACCEPTED(SUBMITTED(PENDING|REJECTED)$")
@@ -50,7 +53,8 @@ public class Application extends DomainEntity {
 		this.submitMoment = submitMoment;
 	}
 
-	@NotNull
+	@Valid
+	@OneToOne
 	public Answer getAnswer() {
 		return this.answer;
 	}
@@ -59,7 +63,8 @@ public class Application extends DomainEntity {
 		this.answer = answer;
 	}
 
-	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
 	public Position getPosition() {
 		return this.position;
 	}
@@ -68,13 +73,24 @@ public class Application extends DomainEntity {
 		this.position = position;
 	}
 
-	@NotNull
+	@Valid
+	@ManyToOne(optional = false)
 	public Hacker getHacker() {
 		return this.hacker;
 	}
 
 	public void setHacker(final Hacker hacker) {
 		this.hacker = hacker;
+	}
+
+	@Valid
+	@OneToOne
+	public Problem getProblem() {
+		return this.problem;
+	}
+
+	public void setProblem(final Problem problem) {
+		this.problem = problem;
 	}
 
 }

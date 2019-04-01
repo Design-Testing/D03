@@ -132,7 +132,6 @@
 		<property value="0.21" name="vat" />
 		<property ref="creditCard4" name="creditCard" />
 		<property name="userAccount" ref="userAccountHacker1"></property>
-		<property name="finder" ref="finder1"></property>
 		
 	</bean>
 	
@@ -147,7 +146,6 @@
 		<property value="0.21" name="vat" />
 		<property ref="creditCard5" name="creditCard" />
 		<property name="userAccount" ref="userAccountHacker2"></property>
-		<property name="finder" ref="finder2"></property>
 	</bean>
 
 

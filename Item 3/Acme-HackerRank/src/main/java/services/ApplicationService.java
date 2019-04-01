@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +14,11 @@ import org.springframework.util.Assert;
 import repositories.ApplicationRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Answer;
+import domain.Application;
 import domain.Company;
+import domain.Position;
+import domain.Problem;
 
 @Service
 @Transactional
@@ -27,6 +32,12 @@ public class ApplicationService {
 
 	@Autowired
 	private CompanyService			companyService;
+
+	@Autowired
+	private AnswerService			answerService;
+
+	@Autowired
+	private PositionService			positionService;
 
 
 	public Application create() {
@@ -56,9 +67,11 @@ public class ApplicationService {
 		return res;
 	}
 
-	public Application save(final Application application) {
+	public Application save(final Application application, final int positionId) {
 		Assert.notNull(application);
+		Assert.isTrue(positionId != 0);
 		final Actor principal = this.actorService.findByPrincipal();
+		final Position position = this.positionService.findOne(positionId);
 		final Application result;
 		final Boolean isCompany = this.actorService.checkAuthority(principal, Authority.COMPANY);
 		final Boolean isHacker = this.actorService.checkAuthority(principal, Authority.HACKER);
@@ -66,23 +79,29 @@ public class ApplicationService {
 		if (isHacker) {
 			if (application.getId() == 0) {
 				Assert.isTrue(isHacker);
-				//TODO: Asignar un problema aleatorio
+				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
+				List<Problem> problems = new ArrayList<>();
+				problems = (List<Problem>) position.getProblems();
+				final Integer numRandom = (int) (Math.random() * (problems.size() - 1));
+				final Problem assigned = problems.get(numRandom);
+
+				application.setProblem(assigned);
 				application.setStatus("PENDING");
+				final Answer answer = this.answerService.create();
+				this.answerService.save(answer, application.getId());
 
 			} else {
 				Assert.isTrue(application.getStatus() == "PENDING");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
 				application.setStatus("SUBMITTED");
-				//TODO: Falta meterle el answer de la application
 			}
 		} else { //COMPANY
-			Assert.isTrue(application.getPosition().getCompany() == principal, "No puede actualizar una solicitud que no le pertenece.");
+			Assert.isTrue(application.getPosition().getCompany() == this.companyService.findByPrincipal(), "No puede actualizar una solicitud que no le pertenece.");
 			Assert.isTrue(application.getStatus() == "SUBMITTED");
 		}
 		result = this.applicationRepository.save(application);
 		return result;
 	}
-
 	public void delete(final Application application) {
 		Assert.notNull(application);
 		Assert.isTrue(application.getId() != 0);
@@ -98,7 +117,6 @@ public class ApplicationService {
 		final Company company = this.companyService.findByPrincipal();
 
 		Assert.isTrue(application.getPosition().getCompany() == company, "No puede actualizar una solicitud que no le pertenece.");
-		Assert.isTrue(application.getMode().equals("FINAL"), "La solicitud que desea aceptar no ha sido guardada en modo final.");
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"), "No puede aceptar una solicitud que su estado sea distinto a Submitted");
 		application.setStatus("ACCEPTED");
 		result = this.applicationRepository.save(application);
@@ -111,7 +129,6 @@ public class ApplicationService {
 		final Company company = this.companyService.findByPrincipal();
 
 		Assert.isTrue(application.getPosition().getCompany() == company, "No puede actualizar una solicitud que no le pertenece.");
-		Assert.isTrue(application.getMode().equals("FINAL"), "La solicitud que desea aceptar no ha sido guardada en modo final.");
 		Assert.isTrue(application.getStatus().equals("SUBMITTED"), "No puede aceptar una solicitud que su estado sea distinto a Submitted");
 		application.setStatus("REJECTED");
 		result = this.applicationRepository.save(application);

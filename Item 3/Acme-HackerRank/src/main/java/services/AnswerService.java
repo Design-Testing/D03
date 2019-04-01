@@ -13,6 +13,9 @@ import org.springframework.util.Assert;
 import repositories.AnswerRepository;
 import security.Authority;
 import domain.Actor;
+import domain.Answer;
+import domain.Application;
+import domain.Hacker;
 
 @Service
 @Transactional
@@ -20,6 +23,12 @@ public class AnswerService {
 
 	@Autowired
 	private AnswerRepository	answerRepository;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private ApplicationService	applicationService;
 
 
 	public Answer create() {
@@ -48,4 +57,29 @@ public class AnswerService {
 		Assert.notNull(res);
 		return res;
 	}
+
+	public Answer save(final Answer answer, final int applicationId) {
+		Assert.notNull(answer);
+		Assert.isTrue(applicationId != 0);
+		Answer result;
+		final Hacker hacker = this.hackerService.findByPrincipal();
+		final Application application = this.applicationService.findOne(applicationId);
+
+		if (answer.getId() == 0)
+			application.setAnswer(answer);
+		else
+			Assert.isTrue(application.getHacker().equals(hacker));
+		//		Assert.isTrue(answer.getExplanation() == null, "Debe explicar la solución que ofrece.");
+		result = this.answerRepository.save(answer);
+		return result;
+	}
+	public void delete(final Answer answer) {
+		Assert.notNull(answer);
+		Assert.isTrue(answer.getId() != 0);
+		Assert.isTrue(this.answerRepository.exists(answer.getId()));
+		this.answerRepository.delete(answer);
+	}
+
+	/* ========================= OTHER METHODS =========================== */
+
 }
