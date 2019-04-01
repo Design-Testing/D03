@@ -33,10 +33,8 @@ public class PositionService {
 	public Position create() {
 		final Position position = new Position();
 		position.setProblems(new ArrayList<Problem>());
-		position.setMode("DRAFT");
 		final Company company = this.companyService.findByPrincipal();
 		position.setCompany(company);
-		position.setTicker(this.generateTicker(company.getCommercialName()));
 		return position;
 	}
 
@@ -70,14 +68,19 @@ public class PositionService {
 		final Company principal = this.companyService.findByPrincipal();
 		Assert.isTrue(position.getCompany().equals(principal));
 		final Position result;
-		final Position last = this.findOne(position.getId());
 		final ArrayList<Problem> problems = new ArrayList<Problem>(position.getProblems());
-		Assert.isTrue(!last.getMode().equals("CANCELLED"), "This position can't be modified");
-		if (position.getMode().equals("DRAFT"))
-			Assert.isTrue(!last.getMode().equals("FINAL"), "This position can't be modified");
-		if (position.getMode().equals("FINAL")) {
-			Assert.isTrue(last.getMode().equals("DRAFT"), "This position can't be modified");
-			Assert.isTrue(problems.size() >= 2, "Position must have 2 or more Problems associated.");
+		if (position.getId() != 0) {
+			final Position last = this.findOne(position.getId());
+			Assert.isTrue(position.getTicker().equals(last.getTicker()));
+			Assert.isTrue(!last.getMode().equals("CANCELLED"), "This position can't be modified");
+			if (position.getMode().equals("DRAFT"))
+				Assert.isTrue(!last.getMode().equals("FINAL"), "This position can't be modified");
+			if (position.getMode().equals("FINAL"))
+				Assert.isTrue(problems.size() >= 2, "Position must have 2 or more Problems associated.");
+		} else {
+			position.setMode("DRAFT");
+			final String ticker = this.generateTicker(position.getCompany().getCommercialName());
+			position.setTicker(ticker);
 		}
 		result = this.positionRepository.save(position);
 		return result;
@@ -117,7 +120,6 @@ public class PositionService {
 	}
 
 	private boolean hasDuplicate(final String ticker) {
-
 		boolean res = true;
 		try {
 			if (this.positionRepository.getPositionWithTicker(ticker).isEmpty())
@@ -125,7 +127,32 @@ public class PositionService {
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
-
 		return res;
+	}
+
+	public Collection<Position> findPositions(final String key) {
+		final Collection<Position> res = this.positionRepository.findPositions(key);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Position toFinalMode(final int id) {
+		final Position position = this.findOne(id);
+		final Position result;
+		position.setMode("FINAL");
+		result = this.save(position);
+		return result;
+	}
+
+	public Position toCancelMode(final int id) {
+		final Position position = this.findOne(id);
+		final Position result;
+		position.setMode("CANCELLED");
+		result = this.save(position);
+		return result;
+	}
+
+	public void flush() {
+		this.positionRepository.flush();
 	}
 }
