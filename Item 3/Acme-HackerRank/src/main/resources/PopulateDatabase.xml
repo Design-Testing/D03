@@ -361,7 +361,7 @@
 		<property name="title" value="Position 1" />
 		<property name="description" value="Description position 1" />
 		<property name="deadline" value="2020/04/24 00:00" />
-		<property name="ticker" value="XXXX-1234" />
+		<property name="ticker" value="COMM-1234" />
 		<property name="profile" value="Profile for position 1" />
 		<property name="salary" value="1500.0" />
 		<property name="mode" value="FINAL" />
@@ -390,7 +390,7 @@
 		<property name="title" value="Position 2" />
 		<property name="description" value="Description position 2" />
 		<property name="deadline" value="2019/05/24 00:00" />
-		<property name="ticker" value="XXXX-1235" />
+		<property name="ticker" value="COMM-1235" />
 		<property name="profile" value="Profile for position 2" />
 		<property name="salary" value="1700.0" />
 		<property name="mode" value="DRAFT" />
