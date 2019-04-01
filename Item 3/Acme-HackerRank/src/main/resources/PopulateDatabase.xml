@@ -372,5 +372,43 @@
 		<property name="mode" value="DRAFT" />
 		<property name="company" ref="company2" />
 	</bean>
+	
+	<!-- =================================================================== 
+					======= Application ========= 
+		=================================================================== -->
+	
+	<bean id="application1" class="domain.Application">
+		<property name="status" value="PENDING"/>
+		<property name="moment" value="2018/03/16 15:20"/>
+		<property name="submitMoment" value="2018/03/16 15:25"/>
+		<property name="answer" value="answer1"/>
+		<property name="position" value="position1"/>
+		<property name="hacker" ref="hacker1"/>
+	</bean>
+	
+	<bean id="application2" class="domain.Application">
+		<property name="status" value="PENDING"/>
+		<property name="moment" value="2018/03/15 15:20"/>
+		<property name="submitMoment" value="2018/03/15 15:25"/>
+		<property name="answer" value="answer2"/>
+		<property name="position" value="position2"/>
+		<property name="hacker" ref="hacker2"/>
+	</bean>
+	
+	<!-- =================================================================== 
+					======= Answer ========= 
+		=================================================================== -->
+		
+	<bean id="answer1" class="domain.Answer">
+		<property name="explanation" value="Explanation Answer 1"/>
+		<property name="link" value="http://www.linkAnswer1.com"/>
+	</bean>
+	
+	<bean id="answer2" class="domain.Answer">
+		<property name="explanation" value="Explanation Answer 2"/>
+		<property name="link" value="http://www.linkAnswer2.com"/>
+	</bean>
+	
 
 </beans>
+
