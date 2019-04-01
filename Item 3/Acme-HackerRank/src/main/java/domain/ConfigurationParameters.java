@@ -13,6 +13,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
 
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class ConfigurationParameters extends DomainEntity {

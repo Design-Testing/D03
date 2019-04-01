@@ -26,7 +26,7 @@ public class Application extends DomainEntity {
 	private Problem		problem;
 
 
-	@Pattern(regexp = "^(ACCEPTED(SUBMITTED(PENDING|REJECTED)$")
+	@Pattern(regexp = "^(ACCEPTED|SUBMITTED|PENDING|REJECTED)$")
 	public String getStatus() {
 		return this.status;
 	}
