@@ -61,6 +61,30 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="userAccountCompany1" class="security.UserAccount">
+		<property name="username" value="company1" />
+		<property name="password" value="df655f976f7c9d3263815bd981225cd9" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COMPANY" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccountCompany2" class="security.UserAccount">
+		<property name="username" value="company2" />
+		<property name="password" value="d196a28097115067fefd73d25b0c0be8" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COMPANY" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<!-- ========================= SYSTEM =========================== -->
 	<bean id="userAccountSystem" class="security.UserAccount">
@@ -148,6 +172,50 @@
 		<property name="userAccount" ref="userAccountHacker2"></property>
 	</bean>
 
+	<!-- =================================================================== 
+					======= COMPANY ========= 
+		=================================================================== -->
+		
+	<bean id="company1" class="domain.Company">
+		<!-- Actor -->
+		<property name="name" value="Company1"/>
+		<property name="surname" value="Company's"/>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="company1@gmail.es"/>
+		<property name="phone" value="+34647307480"/>
+		<property name="address" value="Reina Mercedes"/>
+		<property value="0.21" name="vat" />
+		<property ref="creditCard6" name="creditCard" />
+		<property name="userAccount" ref="userAccountCompany1"/>
+		<property name="commercialName" value="commercialName1"/>
+		<property name="title" value="title 1"/>
+		<property name="date" value="2018/03/15 15:25"/>
+		<property name="pictures">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="company2" class="domain.Company">
+		<!-- Actor -->
+		<property name="name" value="Company2"/>
+		<property name="surname" value="Company's"/>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="company2@gmail.es"/>
+		<property name="phone" value="+34647307484"/>
+		<property name="address" value="Reina Mercedes"/>
+		<property value="0.21" name="vat" />
+		<property ref="creditCard7" name="creditCard" />
+		<property name="userAccount" ref="userAccountCompany2"/>
+		<property name="commercialName" value="commercialName2"/>
+		<property name="title" value="title 2"/>
+		<property name="date" value="2018/03/15 15:25"/>
+		<property name="pictures">
+			<list>
+			</list>
+		</property>
+	</bean>
+
 
 	<!-- =================================================================== 
 		======= CreditCard ========= =================================================================== -->
@@ -195,6 +263,24 @@
 		<property name="expirationMonth" value="02" />
 		<property name="expirationYear" value="19" />
 		<property name="cvv" value="885" />
+	</bean>
+	
+	<bean id="creditCard6" class="domain.CreditCard">
+		<property name="holderName" value="Company 1" />
+		<property name="make" value="VISA" />
+		<property name="number" value="4117153889927504" />
+		<property name="expirationMonth" value="10" />
+		<property name="expirationYear" value="21" />
+		<property name="cvv" value="202" />
+	</bean>
+	
+	<bean id="creditCard7" class="domain.CreditCard">
+		<property name="holderName" value="Company 2" />
+		<property name="make" value="VISA" />
+		<property name="number" value="4807011673979989" />
+		<property name="expirationMonth" value="01" />
+		<property name="expirationYear" value="23" />
+		<property name="cvv" value="689" />
 	</bean>
 	
 	<!-- =================================================================== 
