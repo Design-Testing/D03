@@ -52,15 +52,14 @@ public class CompanyService {
 		Assert.notNull(company);
 		Company result;
 
-		if (company.getId() == 0) {
+		if (company.getId() == 0)
 			this.actorService.setAuthorityUserAccount(Authority.COMPANY, company);
-			result = this.companyRepository.save(company);
-		} else {
+		else {
 			final Actor principal = this.actorService.findByPrincipal();
 			Assert.isTrue(principal.getId() == company.getId(), "You only can edit your info");
-			result = (Company) this.actorService.save(company);
 		}
-		return company;
+		result = this.companyRepository.save(company);
+		return result;
 	}
 
 	public void delete(final Company company) {
