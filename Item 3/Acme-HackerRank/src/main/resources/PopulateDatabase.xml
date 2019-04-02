@@ -468,6 +468,7 @@
 		<property name="answer" ref="answer1"/>
 		<property name="position" ref="position1"/>
 		<property name="hacker" ref="hacker1"/>
+		<property name="problem" ref="problem1"/>
 	</bean>
 	
 	<bean id="application2" class="domain.Application">
@@ -477,6 +478,7 @@
 		<property name="answer" ref="answer2"/>
 		<property name="position" ref="position2"/>
 		<property name="hacker" ref="hacker2"/>
+		<property name="problem" ref="problem2"/>
 	</bean>
 	
 	<!-- =================================================================== 
