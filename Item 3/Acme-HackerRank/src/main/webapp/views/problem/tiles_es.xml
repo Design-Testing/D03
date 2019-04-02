@@ -16,14 +16,14 @@
       
 <tiles-definitions>
 
-	<definition name="parade/edit" extends="master.page">	
-		<put-attribute name="title" value="Editar desfile" />
-		<put-attribute name="body" value="/views/parade/edit.jsp" />
+	<definition name="problem/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar problema" />
+		<put-attribute name="body" value="/views/problem/edit.jsp" />
 	</definition>
 	
-	<definition name="parade/display" extends="master.page">	
-		<put-attribute name="title" value="Mostrar desfile" />
-		<put-attribute name="body" value="/views/parade/display.jsp" />
+	<definition name="problem/display" extends="master.page">	
+		<put-attribute name="title" value="Mostrar problema" />
+		<put-attribute name="body" value="/views/problem/display.jsp" />
 	</definition>
 	
 	<definition name="problem/list" extends="master.page">	
@@ -31,9 +31,5 @@
 		<put-attribute name="body" value="/views/problem/list.jsp" />
 	</definition>
 	
-	<definition name="parade/edit2" extends="master.page">	
-		<put-attribute name="title" value="Editar desfile" />
-		<put-attribute name="body" value="/views/parade/edit2.jsp" />
-	</definition>
 	
 </tiles-definitions>
