@@ -1,7 +1,7 @@
 <%--
  * textbox.tag
  *
- * Copyright (C) 2018 Universidad de Sevilla
+ * Copyright (C) 2019 Universidad de Sevilla
  * 
  * The use of this project is hereby constrained to the conditions of the 
  * TDG Licence, a copy of which you may download from 
@@ -26,9 +26,14 @@
 <%@ attribute name="code" required="true" %>
 
 <%@ attribute name="readonly" required="false" %>
+<%@ attribute name="placeholder" required="false" %>
 
 <jstl:if test="${readonly == null}">
 	<jstl:set var="readonly" value="false" />
+</jstl:if>
+
+<jstl:if test="${placeholder == null}">
+	<jstl:set var="placeholder" value="" />
 </jstl:if>
 
 <%-- Definition --%>
@@ -37,6 +42,6 @@
 	<form:label path="${path}">
 		<spring:message code="${code}" />
 	</form:label>	
-	<form:input path="${path}" readonly="${readonly}" />	
+	<form:input path="${path}" readonly="${readonly}" placeholder="${placeholder}" />	
 	<form:errors path="${path}" cssClass="error" />
 </div>	
