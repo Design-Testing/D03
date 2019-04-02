@@ -1,5 +1,5 @@
 
-package controllers.company;
+package controllers.application;
 
 import java.util.Collection;
 
@@ -19,7 +19,7 @@ import domain.Company;
 
 @Controller
 @RequestMapping("/application/company")
-public class ApplicationCompanyController extends AbstractController {
+public class ApplicationHackerController extends AbstractController {
 
 	@Autowired
 	private ApplicationService	applicationService;
@@ -204,67 +204,4 @@ public class ApplicationCompanyController extends AbstractController {
 		return result;
 	}
 
-	// This method is not used because it doesn't make sense to have a pruned object in parade
-	//	private ParadeForm constructPruned(final Parade parade) {
-	//		final ParadeForm pruned = new ParadeForm();
-	//		pruned.setId(parade.getId());
-	//		pruned.setVersion(parade.getVersion());
-	//		pruned.setTitle(parade.getTitle());
-	//		pruned.setDescription(parade.getDescription());
-	//		pruned.setMaxRows(parade.getMaxRows());
-	//		pruned.setMaxColumns(parade.getMaxColumns());
-	//		pruned.setMoment(parade.getMoment());
-	//		pruned.setFloats(parade.getFloats());
-	//		return pruned;
-	//	}
-
-	//	// EDIT --------------------------------------------------------
-	//
-	//	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	//	public ModelAndView edit(@RequestParam final int applicationId) {
-	//		ModelAndView result;
-	//		Application application;
-	//
-	//		application = this.applicationService.findOne(applicationId);
-	//
-	//		final Company company = this.companyService.findByPrincipal();
-	//
-	//		if ((application.getStatus().equals("SUBMITTED") && this.companyService.findCompanyByApplication(application) == company))
-	//			result = this.createEditModelAndView(application);
-	//		else
-	//			result = new ModelAndView("redirect:/misc/403.jsp");
-	//
-	//		return result;
-	//	}
-	//	
-	//	// SAVE --------------------------------------------------------
-	//
-	//		@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	//		public ModelAndView save(@Valid final Application application, final BindingResult binding) {
-	//			ModelAndView result;
-	//
-	//			// final Parade parade = this.paradeService.reconstruct(pform, binding);
-	//
-	//			if (binding.hasErrors())
-	//				result = this.createEditModelAndView(parade);
-	//			else
-	//				try {
-	//					this.paradeService.save(parade);
-	//					result = new ModelAndView("redirect:list.do");
-	//				} catch (final Throwable oops) {
-	//					final Date current = new Date(System.currentTimeMillis());
-	//					if (parade.getMoment().before(current))
-	//						result = this.createEditModelAndView(parade, "parade.date.error");
-	//					else if (parade.getBrotherhood().getArea() == null)
-	//						result = this.createEditModelAndView(parade, "parade.area.error");
-	//					else if (parade.getMode().equals("FINAL"))
-	//						result = this.createEditModelAndView(parade, "parade.mode.error");
-	//					else if (parade.getFloats().isEmpty())
-	//						result = this.createEditModelAndView(parade, "parade.float.error");
-	//					else
-	//						result = this.createEditModelAndView(parade, "parade.commit.error");
-	//				}
-	//
-	//			return result;
-	//		}
 }

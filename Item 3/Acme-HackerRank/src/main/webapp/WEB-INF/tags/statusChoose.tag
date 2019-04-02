@@ -29,7 +29,7 @@
 <%-- Definition --%>
 
 <jstl:choose>
-	<jstl:when test="${status eq 'APPROVED'}">
+	<jstl:when test="${status eq 'ACCEPTED'}">
 		<spring:message code="approved" />
 	</jstl:when>
 	<jstl:when test="${status eq 'REJECTED'}">

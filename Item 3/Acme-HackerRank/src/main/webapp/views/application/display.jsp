@@ -17,60 +17,38 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
-<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
-<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
-
-<script>
-function generatePDF(){
-	alert('<spring:message code="display.member.document.alert"/>')
-	var doc = new jsPDF()
-	doc.text('<spring:message code="display.document.title"/>', 20, 10)
-	doc.text('', 10, 20)
-	doc.text('<spring:message code="actor.name"/> : <jstl:out value="${member.name}"/>', 10, 30)
-	doc.text('<spring:message code="actor.middleName"/> : <jstl:out value="${member.middleName}"/>', 10, 40)
-	doc.text('<spring:message code="actor.surname"/> : <jstl:out value="${member.surname}"/>', 10, 50)
-	doc.text('<spring:message code="actor.photo"/> : <jstl:out value="${member.photo}"/>', 10, 60)
-	doc.text('<spring:message code="actor.phone"/> : <jstl:out value="${member.phone}"/>', 10, 70)
-	doc.text('<spring:message code="actor.email"/> : <jstl:out value="${member.email}"/>', 10, 80)
-	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${member.address}"/>', 10, 90)
-	doc.save('<spring:message code="display.document.fileName"/>.pdf')
-}
-function deletePersonalData(){
-	var r = confirm('<spring:message code="display.deletePersonalData"/>');
-	if (r == true) {
-		location.href = "member/deletePersonalData.do";
-	}
-}
-</script>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-<acme:display code="actor.name" value="${hacker.name}"/>
-<spring:message code="actor.photo"/>:<br>
-<img src="${hacker.photo}" alt="<spring:message code="hacker.alt.image"/>" width="20%" height="20%"/>
-<br>
-<acme:display code="actor.middleName" value="${hacker.middleName}"/>
-<acme:display code="actor.surname" value="${hacker.surname}"/>
-<acme:display code="actor.email" value="${hacker.email}"/>
-<acme:display code="actor.phone" value="${hacker.phone}"/>
-<acme:display code="actor.email" value="${hacker.email}"/>
-<acme:display code="actor.address" value="${hacker.address}"/>
-<acme:display code="actor.score" value="${hacker.score}"/>
+<acme:display code="application.status" value="${application.status}"/>
 
 <jstl:choose>
-	<jstl:when test="${hacker.spammer}">
-		<spring:message code="actor.spammer"/>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="application.moment" />: <fmt:formatDate
+			value="${application.moment}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="actor.spammer.no"/>
+		<spring:message code="application.moment" />: <fmt:formatDate
+			value="${application.moment}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
+<jstl:choose>
+	<jstl:when test="${lang eq 'en' }">
+		<spring:message code="application.submitMoment" />: <fmt:formatDate
+			value="${application.submitMoment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+	</jstl:when>
+	<jstl:otherwise>
+		<spring:message code="application.submitMoment" />: <fmt:formatDate
+			value="${application.submitMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+	</jstl:otherwise>
+</jstl:choose>
 
-<jstl:if test="${displayButtons}">
-<br>
-	<button onClick="generatePDF()"><spring:message code="display.getData"/></button>
-	<button onClick="deletePersonalData()"><spring:message code="display.button.deletePersonalData"/></button>
-	
-<br>
-</jstl:if>
+<acme:button url="answer/hacker/display.do?answerId=${answer.id}" name="seeAnswer" code="application.seeAnswer"/>
+
+<acme:display code="application.position" value="${application.position.title}"/>
+
+<acme:display code="application.hacker" value="${application.hacker.name}"/>
+
+<acme:display code="application.problem" value="${application.problem.title}"/>
+

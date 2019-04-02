@@ -10,20 +10,45 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<jstl:if test="${not empty rol}">
+	<jstl:set var="rolURL" value="/${rol}" />
+</jstl:if>
 
-<display:table name="hackers" id="row"
-	requestURI="hacker/list.do" pagesize="5"
-	class="displaytag">
+<jstl:set var="chooseList" value="/list" />
+	<jstl:if test="${not empty listParades}">
+		<jstl:set var="chooseList" value="${rolURL}/${listParades}" />
+	</jstl:if>
 
+<display:table name="applications" id="row"
+		requestURI="application${chooseList}.do" pagesize="5"
+		class="displaytag">
 
-	<display:column property="name" titleKey="actor.name" />
+	<display:column property="position" titleKey="application.position" />
+
+	<display:column property="hacker" titleKey="application.hacker" />
 		
-	<display:column property="email" titleKey="actor.email" />
+	<display:column property="status" titleKey="application.status" />
+	
+	<security:authorize access="hasRole('COMPANY')">
+	<display:column>
+				<jstl:if test="${row.status eq 'SUBMITTED'}">
+					<acme:button url="application/company/accept.do?applicationId=${row.id}"
+						name="accept" code="application.accept" />
+				</jstl:if>
+			</display:column>
+
+			<display:column>
+				<jstl:if test="${row.status eq 'SUBMITTED'}">
+					<acme:button url="application/company/reject.do?applicationId=${row.id}"
+						name="reject" code="application.reject" />
+				</jstl:if>
+			</display:column>
+	</security:authorize>
 
 	
 	<display:column>
-		<a href="hacker/display.do?hackerId=${row.id}"> <spring:message
-				code="hacker.display" />
+		<a href="application/company/display.do?applicationId=${row.id}"> <spring:message
+				code="application.display" />
 		</a>
 	</display:column>
 

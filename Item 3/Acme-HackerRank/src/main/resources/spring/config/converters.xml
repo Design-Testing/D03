@@ -18,9 +18,13 @@
 	">
 
 	<util:list id="converters">
-		<!-- HACKER -->
+	<!-- HACKER -->
 	<bean class="converters.HackerToStringConverter"/>
 	<bean class="converters.StringToHackerConverter"/>
+	
+	<!-- APPLICATION -->
+	<bean class="converters.ApplicationToStringConverter"/>
+	<bean class="converters.StringToApplicationConverter"/>
 		
 	</util:list>
 	
