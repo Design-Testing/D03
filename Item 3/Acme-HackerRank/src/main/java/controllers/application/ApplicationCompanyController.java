@@ -30,20 +30,6 @@ public class ApplicationCompanyController extends AbstractController {
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
-	// CREATE --------------------------------------------------------
-
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		Application application;
-
-		// String lang = LocaleContextHolder.getLocale().getLanguage();
-
-		application = this.applicationService.create();
-		result = this.createEditModelAndView(application);
-		return result;
-	}
-
 	// DISPLAY --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -58,6 +44,8 @@ public class ApplicationCompanyController extends AbstractController {
 		result = new ModelAndView("application/display");
 		result.addObject("company", company);
 		result.addObject("application", application);
+
+		return result;
 	}
 
 	// LIST SUBMITTED --------------------------------------------------------

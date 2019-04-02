@@ -13,19 +13,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
+import services.HackerService;
+import services.PositionService;
 import controllers.AbstractController;
 import domain.Application;
-import domain.Company;
+import domain.Hacker;
+import domain.Position;
 
 @Controller
-@RequestMapping("/application/company")
+@RequestMapping("/application/hacker")
 public class ApplicationHackerController extends AbstractController {
 
 	@Autowired
 	private ApplicationService	applicationService;
 
 	@Autowired
-	private CompanyService		companyService;
+	private HackerService		hackerService;
+
+	@Autowired
+	private PositionService		positionService;
 
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -33,31 +39,62 @@ public class ApplicationHackerController extends AbstractController {
 	// CREATE --------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		Application application;
+	public ModelAndView create(@RequestParam final int positionId) {
+		ModelAndView result = new ModelAndView();
+		final Hacker hacker = this.hackerService.findByPrincipal();
+		final Position position = this.positionService.findOne(positionId);
 
-		// String lang = LocaleContextHolder.getLocale().getLanguage();
+		final Application application = this.applicationService.apply(positionId);
+
+		result = this.
 
 		application = this.applicationService.create();
 		result = this.createEditModelAndView(application);
 		return result;
 	}
-
 	// DISPLAY --------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int applicationId) {
 		final ModelAndView result;
 		final Application application;
-		final Company company;
+		final Hacker hacker;
 
 		application = this.applicationService.findOne(applicationId);
-		company = this.companyService.findByPrincipal();
+		hacker = this.hackerService.findByPrincipal();
 
 		result = new ModelAndView("application/display");
-		result.addObject("company", company);
+		result.addObject("hacker", hacker);
 		result.addObject("application", application);
+
+		return result;
+	}
+
+	// LIST PENDING --------------------------------------------------------
+
+	@RequestMapping(value = "/listPending", method = RequestMethod.GET)
+	public ModelAndView listPending() {
+		final ModelAndView result;
+		final Collection<Application> applications;
+
+		applications = this.applicationService.findAllPendingByHacker();
+
+		String listApplications;
+		String rol;
+
+		listApplications = "listPending";
+		rol = "hacker";
+
+		result = new ModelAndView("application/list");
+		result.addObject("applications", applications);
+
+		result.addObject("lang", this.lang);
+		result.addObject("requetURI", "application/hacker/listPending.do");
+		result.addObject("listApplications", listApplications);
+		result.addObject("principalID", this.hackerService.findByPrincipal().getId());
+		result.addObject("rol", rol);
+
+		return result;
 	}
 
 	// LIST SUBMITTED --------------------------------------------------------
@@ -67,21 +104,21 @@ public class ApplicationHackerController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Application> applications;
 
-		applications = this.applicationService.findAllSubmittedByCompany();
+		applications = this.applicationService.findAllSubmittedByHacker();
 
 		String listApplications;
 		String rol;
 
 		listApplications = "listSubmitted";
-		rol = "company";
+		rol = "hacker";
 
 		result = new ModelAndView("application/list");
 		result.addObject("applications", applications);
 
 		result.addObject("lang", this.lang);
-		result.addObject("requetURI", "application/company/listSubmitted.do");
+		result.addObject("requetURI", "application/hacker/listSubmitted.do");
 		result.addObject("listApplications", listApplications);
-		result.addObject("principalID", this.companyService.findByPrincipal().getId());
+		result.addObject("principalID", this.hackerService.findByPrincipal().getId());
 		result.addObject("rol", rol);
 
 		return result;
@@ -94,21 +131,21 @@ public class ApplicationHackerController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Application> applications;
 
-		applications = this.applicationService.findAllRejectedByCompany();
+		applications = this.applicationService.findAllRejectedByHacker();
 
 		String listApplications;
 		String rol;
 
 		listApplications = "listRejected";
-		rol = "company";
+		rol = "hacker";
 
 		result = new ModelAndView("application/list");
 		result.addObject("applications", applications);
 
 		result.addObject("lang", this.lang);
-		result.addObject("requetURI", "application/company/listRejected.do");
+		result.addObject("requetURI", "application/hacker/listRejected.do");
 		result.addObject("listApplications", listApplications);
-		result.addObject("principalID", this.companyService.findByPrincipal().getId());
+		result.addObject("principalID", this.hackerService.findByPrincipal().getId());
 		result.addObject("rol", rol);
 
 		return result;
@@ -116,68 +153,27 @@ public class ApplicationHackerController extends AbstractController {
 
 	// LIST ACCEPTED --------------------------------------------------------
 
-	@RequestMapping(value = "/listRejected", method = RequestMethod.GET)
+	@RequestMapping(value = "/listAccepted", method = RequestMethod.GET)
 	public ModelAndView listAccepted() {
 		final ModelAndView result;
 		final Collection<Application> applications;
 
-		applications = this.applicationService.findAllAcceptedByCompany();
+		applications = this.applicationService.findAllAcceptedByHacker();
 
 		String listApplications;
 		String rol;
 
 		listApplications = "listAccepted";
-		rol = "company";
+		rol = "hacker";
 
 		result = new ModelAndView("application/list");
 		result.addObject("applications", applications);
 
 		result.addObject("lang", this.lang);
-		result.addObject("requetURI", "application/company/listAccepted.do");
+		result.addObject("requetURI", "application/hacker/listAccepted.do");
 		result.addObject("listApplications", listApplications);
-		result.addObject("principalID", this.companyService.findByPrincipal().getId());
+		result.addObject("principalID", this.hackerService.findByPrincipal().getId());
 		result.addObject("rol", rol);
-
-		return result;
-	}
-
-	// ACCEPT APPLICATION --------------------------------------------------------
-
-	@RequestMapping(value = "/accept", method = RequestMethod.GET)
-	public ModelAndView accept(@RequestParam final int applicationId) {
-		final ModelAndView result;
-		final Application application = this.applicationService.findOne(applicationId);
-
-		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.commit.error");
-			result.addObject("ok", false);
-		} else {
-			this.applicationService.acceptApplication(applicationId);
-			result = this.listAccepted();
-		}
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
-		return result;
-	}
-	// REJECT PARADE --------------------------------------------------------
-
-	@RequestMapping(value = "/reject", method = RequestMethod.GET)
-	public ModelAndView reject(@RequestParam final int applicationId) {
-		ModelAndView result;
-		final Application application = this.applicationService.findOne(applicationId);
-
-		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.commit.error");
-			result.addObject("ok", false);
-		} else {
-			this.applicationService.rejectApplication(applicationId);
-			result = this.listAccepted();
-		}
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
@@ -54,7 +55,7 @@ public class Application extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne
+	@OneToOne(optional = true)
 	public Answer getAnswer() {
 		return this.answer;
 	}
@@ -63,6 +64,7 @@ public class Application extends DomainEntity {
 		this.answer = answer;
 	}
 
+	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
 	public Position getPosition() {
@@ -73,6 +75,7 @@ public class Application extends DomainEntity {
 		this.position = position;
 	}
 
+	@NotNull
 	@Valid
 	@ManyToOne(optional = false)
 	public Hacker getHacker() {
@@ -83,8 +86,9 @@ public class Application extends DomainEntity {
 		this.hacker = hacker;
 	}
 
+	@NotNull
 	@Valid
-	@OneToOne
+	@OneToOne(optional = false)
 	public Problem getProblem() {
 		return this.problem;
 	}
