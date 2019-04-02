@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CompanyService;
 import services.PositionService;
 import controllers.AbstractController;
 import domain.Company;
 import domain.Position;
+import forms.PositionForm;
 
 @Controller
 @RequestMapping("/position/company")
@@ -100,8 +102,8 @@ public class PositionCompanyController extends AbstractController {
 			result = this.myPositions();
 		}
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
+		//		final String banner = this.configurationParametersService.findBanner();
+		//		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -120,8 +122,8 @@ public class PositionCompanyController extends AbstractController {
 			result = this.myPositions();
 		}
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
+		//		final String banner = this.configurationParametersService.findBanner();
+		//		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -198,11 +200,27 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("position/edit");
-		result.addObject("position", position); // this.constructPruned(parade));
+		result.addObject("position", this.constructPruned(position));
 
 		result.addObject("message", messageCode);
 
 		return result;
+	}
+
+	public PositionForm constructPruned(final Position position) {
+		final PositionForm pruned = new PositionForm();
+
+		pruned.setId(position.getId());
+		pruned.setVersion(position.getVersion());
+		pruned.setTitle(position.getTitle());
+		pruned.setDescription(position.getDescription());
+		pruned.setProfile(position.getProfile());
+		pruned.setDeadline(position.getDeadline());
+		pruned.setSkills(position.getSkills());
+		pruned.setTechnologies(position.getTechnologies());
+		pruned.setSalary(position.getSalary());
+
+		return pruned;
 	}
 
 }
