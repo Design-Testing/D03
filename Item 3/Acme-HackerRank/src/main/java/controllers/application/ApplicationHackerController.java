@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,11 +44,12 @@ public class ApplicationHackerController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 
 		final Application application = this.applicationService.apply(positionId);
+		result = this.listPending();
 
-		result = this.
+		result.addObject("application", application);
+		result.addObject("hacker", hacker);
+		result.addObject("position", position);
 
-		application = this.applicationService.create();
-		result = this.createEditModelAndView(application);
 		return result;
 	}
 	// DISPLAY --------------------------------------------------------
@@ -178,26 +178,56 @@ public class ApplicationHackerController extends AbstractController {
 		return result;
 	}
 
+	//	// EDIT --------------------------------------------------------
+	//
+	//	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	//	public ModelAndView edit(@RequestParam final int applicationId) {
+	//		ModelAndView result;
+	//		Application application;
+	//
+	//		application = this.applicationService.findOne(applicationId);
+	//
+	//		final Hacker hacker = this.hackerService.findByPrincipal();
+	//
+	//		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker))
+	//			result = this.createEditModelAndView(application);
+	//		else
+	//			result = new ModelAndView("redirect:/misc/403.jsp");
+	//
+	//		return result;
+	//	}
+	//
+	//	// SAVE --------------------------------------------------------
+	//
+	//	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	//	public ModelAndView save(@Valid final Application application, final BindingResult binding) {
+	//		ModelAndView result;
+	//
+	//		// final Parade parade = this.paradeService.reconstruct(pform, binding);
+	//
+	//		if (binding.hasErrors())
+	//			result = this.createEditModelAndView(application);
+	//		else
+	//			try {
+	//				this.paradeService.save(parade);
+	//				result = new ModelAndView("redirect:list.do");
+	//			} catch (final Throwable oops) {
+	//				final Date current = new Date(System.currentTimeMillis());
+	//				if (parade.getMoment().before(current))
+	//					result = this.createEditModelAndView(parade, "parade.date.error");
+	//				else if (parade.getBrotherhood().getArea() == null)
+	//					result = this.createEditModelAndView(parade, "parade.area.error");
+	//				else if (parade.getMode().equals("FINAL"))
+	//					result = this.createEditModelAndView(parade, "parade.mode.error");
+	//				else if (parade.getFloats().isEmpty())
+	//					result = this.createEditModelAndView(parade, "parade.float.error");
+	//				else
+	//					result = this.createEditModelAndView(parade, "parade.commit.error");
+	//			}
+	//
+	//		return result;
+	//	}
+
 	// ANCILLIARY METHODS --------------------------------------------------------
-
-	protected ModelAndView createEditModelAndView(final Application application) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(application, null);
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndView(final Application application, final String messageCode) {
-		Assert.notNull(application);
-		final ModelAndView result;
-
-		result = new ModelAndView("application/edit");
-		result.addObject("application", application); // this.constructPruned(parade));
-
-		result.addObject("message", messageCode);
-
-		return result;
-	}
 
 }
