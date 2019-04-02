@@ -96,7 +96,7 @@ public class ApplicationService {
 				application.setSubmitMoment(null);
 
 			} else {
-				Assert.isTrue(application.getStatus() == "PENDING");
+				Assert.isTrue(application.getStatus() == "PENDING", "No puede actualizar una solicitud que no esté en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
 				final Answer answer = this.answerService.create();
 				this.answerService.save(answer, application.getId());
