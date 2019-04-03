@@ -3,9 +3,13 @@ package controllers.application;
 
 import java.util.Collection;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -178,6 +182,65 @@ public class ApplicationHackerController extends AbstractController {
 		return result;
 	}
 
+	// EDIT --------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int applicationId) {
+		ModelAndView result;
+		Application application;
+
+		application = this.applicationService.findOne(applicationId);
+
+		final Hacker hacker = this.hackerService.findByPrincipal();
+
+		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker))
+			result = this.createEditModelAndView(application);
+		else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+	}
+
+	// SAVE --------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid final Application application, final BindingResult binding) {
+		ModelAndView result;
+
+		// final Parade parade = this.paradeService.reconstruct(pform, binding);
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(application);
+		else
+			try {
+				this.applicationService.save(application, application.getPosition().getId());
+				result = new ModelAndView("redirect:list.do");
+			} catch (final Throwable oops) {
+				result = new ModelAndView("redirect:application/error");
+			}
+
+		return result;
+	}
+
 	// ANCILLIARY METHODS --------------------------------------------------------
 
+	protected ModelAndView createEditModelAndView(final Application application) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(application, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Application application, final String messageCode) {
+		Assert.notNull(application);
+		final ModelAndView result;
+
+		result = new ModelAndView("application/edit");
+		result.addObject("application", application); // this.constructPruned(parade));
+
+		result.addObject("message", messageCode);
+
+		return result;
+	}
 }

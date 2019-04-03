@@ -19,10 +19,12 @@ public class ProblemService {
 
 	@Autowired
 	private ProblemRepository	problemRepository;
-	@Autowired
-	private ActorService		actorService;
+
 	@Autowired
 	private CompanyService		companyService;
+
+	@Autowired
+	private MessageService		messageService;
 
 
 	//Metodos CRUD
@@ -62,7 +64,7 @@ public class ProblemService {
 		res = this.problemRepository.save(problem);
 		return res;
 	}
-	
+
 	public void delete(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(problem.getId() != 0);
@@ -92,9 +94,9 @@ public class ProblemService {
 		return res;
 	}
 
-	public Collection<Problem> findProblemByPosition(final int positionId) {
+	public Collection<Problem> findProblemsByPosition(final int positionId) {
 		Collection<Problem> res = new ArrayList<>();
-		res = this.problemRepository.findProblemByPosition(positionId);
+		res = this.problemRepository.findProblemsByPosition(positionId);
 		Assert.notNull(res);
 		return res;
 	}

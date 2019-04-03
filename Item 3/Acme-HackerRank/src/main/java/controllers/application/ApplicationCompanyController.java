@@ -17,6 +17,7 @@ import services.CompanyService;
 import controllers.AbstractController;
 import domain.Application;
 import domain.Company;
+import forms.ApplicationForm;
 
 @Controller
 @RequestMapping("/application/company")
@@ -180,11 +181,20 @@ public class ApplicationCompanyController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("application/edit");
-		result.addObject("application", application); // this.constructPruned(parade));
-
+		result.addObject("application", this.constructPruned(application));
 		result.addObject("message", messageCode);
 
 		return result;
 	}
 
+	public ApplicationForm constructPruned(final Application application) {
+		final ApplicationForm pruned = new ApplicationForm();
+
+		pruned.setId(application.getId());
+		pruned.setVersion(application.getVersion());
+		pruned.setExplanation(application.getExplanation());
+		pruned.setLink(application.getLink());
+
+		return pruned;
+	}
 }
