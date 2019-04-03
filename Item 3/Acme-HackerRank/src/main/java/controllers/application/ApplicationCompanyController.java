@@ -138,7 +138,7 @@ public class ApplicationCompanyController extends AbstractController {
 		final Application application = this.applicationService.findOne(applicationId);
 
 		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.commit.error");
+			result = this.createEditModelAndView(application, "application.accept.error");
 			result.addObject("ok", false);
 		} else {
 			this.applicationService.acceptApplication(applicationId);
@@ -155,7 +155,7 @@ public class ApplicationCompanyController extends AbstractController {
 		final Application application = this.applicationService.findOne(applicationId);
 
 		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.commit.error");
+			result = this.createEditModelAndView(application, "application.reject.error");
 			result.addObject("ok", false);
 		} else {
 			this.applicationService.rejectApplication(applicationId);

@@ -16,14 +16,24 @@
       
 <tiles-definitions>
 
-	<definition name="application/display" extends="master.page">	
-		<put-attribute name="title" value="Application: Mostrar" />
-		<put-attribute name="body" value="/views/application/display.jsp" />
+	<definition name="position/display" extends="master.page">	
+		<put-attribute name="title" value="Posicion: Mostrar" />
+		<put-attribute name="body" value="/views/position/edit.jsp" />
 	</definition>
 	
-	<definition name="application/list" extends="master.page">	
-		<put-attribute name="title" value="Application: Listar" />
-		<put-attribute name="body" value="/views/application/list.jsp" />
+	<definition name="position/list" extends="master.page">	
+		<put-attribute name="title" value="Posicion: Listar" />
+		<put-attribute name="body" value="/views/position/edit.jsp" />
+	</definition>
+	
+	<definition name="position/edit" extends="master.page">	
+		<put-attribute name="title" value="Posicion: Editar" />
+		<put-attribute name="body" value="/views/position/edit.jsp" />
+	</definition>
+	
+	<definition name="position/error" extends="master.page">	
+		<put-attribute name="title" value="Posicion: Error" />
+		<put-attribute name="body" value="/views/position/error.jsp" />
 	</definition>
 	
 </tiles-definitions>
