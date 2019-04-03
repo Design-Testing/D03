@@ -10,46 +10,28 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<jstl:if test="${not empty rol}">
-	<jstl:set var="rolURL" value="/${rol}" />
-</jstl:if>
 
-<jstl:set var="chooseList" value="/list" />
-	<jstl:if test="${not empty listParades}">
-		<jstl:set var="chooseList" value="${rolURL}/${listParades}" />
-	</jstl:if>
-
-<display:table name="applications" id="row"
-		requestURI="application${chooseList}.do" pagesize="5"
+<display:table name="positions" id="row"
+		requestURI="position/company/myPositions.do" pagesize="5"
 		class="displaytag">
 
-	<display:column property="position" titleKey="application.position" />
+	<display:column property="ticker" titleKey="position.ticker" />
 
-	<display:column property="hacker" titleKey="application.hacker" />
+	<display:column property="title" titleKey="position.title" />
 		
-	<display:column property="status" titleKey="application.status" />
-	
+	<acme:dataTableColumn property="deadline" code="position.deadline"/>
+		
 	<security:authorize access="hasRole('COMPANY')">
 	<display:column>
-				<jstl:if test="${row.status eq 'SUBMITTED'}">
-					<acme:button url="application/company/accept.do?applicationId=${row.id}"
-						name="accept" code="application.accept" />
-				</jstl:if>
-			</display:column>
-
-			<display:column>
-				<jstl:if test="${row.status eq 'SUBMITTED'}">
-					<acme:button url="application/company/reject.do?applicationId=${row.id}"
-						name="reject" code="application.reject" />
-				</jstl:if>
-			</display:column>
+		<acme:button url="position/company/delete.do?positionId=${row.id}" name="delete" code="position.delete"/>
+	</display:column>
+	<display:column>
+		<acme:button url="position/company/edit.do?positionId=${row.id}" name="edit" code="position.edit"/>
+	</display:column>
 	</security:authorize>
 
-	
 	<display:column>
-		<a href="application/company/display.do?applicationId=${row.id}"> <spring:message
-				code="application.display" />
-		</a>
+		<acme:button url="position/company/display.do?positionId=${row.id}" name="display" code="position.display"/>
 	</display:column>
 
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
+import services.CompanyService;
+import services.ConfigurationParametersService;
 import controllers.AbstractController;
 import domain.Application;
 import domain.Company;
@@ -22,12 +24,15 @@ import domain.Company;
 public class ApplicationCompanyController extends AbstractController {
 
 	@Autowired
-	private ApplicationService	applicationService;
+	private ApplicationService				applicationService;
 
 	@Autowired
-	private CompanyService		companyService;
+	private CompanyService					companyService;
 
-	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
+
+	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	// DISPLAY --------------------------------------------------------

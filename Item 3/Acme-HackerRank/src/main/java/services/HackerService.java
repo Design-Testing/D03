@@ -62,7 +62,7 @@ public class HackerService {
 			//			this.folderService.setFoldersByDefault(result);
 
 		} else {
-			this.actorService.checkForSpamWords(brotherhood);
+			this.actorService.checkForSpamWords(hacker);
 			final Actor principal = this.actorService.findByPrincipal();
 			Assert.isTrue(principal.getId() == hacker.getId(), "You only can edit your info");
 			result = (Hacker) this.actorService.save(hacker);

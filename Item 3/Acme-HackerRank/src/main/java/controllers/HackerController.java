@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
+import services.ActorService;
 import services.HackerService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
@@ -32,6 +33,9 @@ import forms.ActorForm;
 @Controller
 @RequestMapping("/hacker")
 public class HackerController extends AbstractController {
+
+	@Autowired
+	private ActorService		actorService;
 
 	@Autowired
 	private HackerService		hackerService;

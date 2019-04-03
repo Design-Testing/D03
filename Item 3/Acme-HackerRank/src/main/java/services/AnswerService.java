@@ -22,6 +22,9 @@ import domain.Hacker;
 public class AnswerService {
 
 	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
 	private AnswerRepository	answerRepository;
 
 	@Autowired
