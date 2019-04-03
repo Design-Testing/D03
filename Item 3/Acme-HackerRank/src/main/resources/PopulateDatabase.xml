@@ -100,14 +100,14 @@
 	</bean>
 
 	<bean class="domain.Administrator" id="system">
-		<property value="AcmeParade" name="name" />
-		<property value="System" name="surname" />
-		<property value="" name="photo" />
-		<property value="correo@gmail.com" name="email" />
-		<property value="" name="phone" />
-		<property value="" name="address" />
-		<property value="0.21" name="vat" />
-		<property ref="creditCard1" name="creditCard" />
+		<property name="name" value="AcmeParade" />
+		<property name="surname" value="System"/>
+		<property name="photo" value="" />
+		<property name="email" value="correo@gmail.com" />
+		<property name="phone" value="" />
+		<property name="address" value="" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard1" />
 		<property name="userAccount" ref="userAccountSystem" />
 	</bean>
 	<!-- ========================= ======== =========================== -->
@@ -123,8 +123,8 @@
 		<property name="email" value="conwdasto@jmsx.es"></property>
 		<property name="phone" value="+34647607406"></property>
 		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard2" name="creditCard" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard2" />
 		<property name="userAccount" ref="userAccountAdmin1"></property>
 	</bean>
 
@@ -136,8 +136,8 @@
 		<property name="email" value="lusi@gamil.es"></property>
 		<property name="phone" value="+34647307406"></property>
 		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard3" name="creditCard" />
+		<property name="vat" value="0.21"/>
+		<property name="creditCard" ref="creditCard3" />
 		<property name="userAccount" ref="userAccountAdmin2"></property>
 	</bean>
 
@@ -153,8 +153,8 @@
 		<property name="email" value="garcia@gmail.es"></property>
 		<property name="phone" value="+34647307406"></property>
 		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard4" name="creditCard" />
+		<property name="vat" value="0.21"/>
+		<property name="creditCard" ref="creditCard4" />
 		<property name="userAccount" ref="userAccountHacker1"></property>
 		
 	</bean>
@@ -167,8 +167,8 @@
 		<property name="email" value="lanzas@gmail.es"></property>
 		<property name="phone" value="+34647307406"></property>
 		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard5" name="creditCard" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard5" />
 		<property name="userAccount" ref="userAccountHacker2"></property>
 	</bean>
 
@@ -184,8 +184,8 @@
 		<property name="email" value="company1@gmail.es"/>
 		<property name="phone" value="+34647307480"/>
 		<property name="address" value="Reina Mercedes"/>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard6" name="creditCard" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard6"/>
 		<property name="userAccount" ref="userAccountCompany1"/>
 		<property name="commercialName" value="commercialName1"/>
 	</bean>
@@ -198,8 +198,8 @@
 		<property name="email" value="company2@gmail.es"/>
 		<property name="phone" value="+34647307484"/>
 		<property name="address" value="Reina Mercedes"/>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard7" name="creditCard" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard7" />
 		<property name="userAccount" ref="userAccountCompany2"/>
 		<property name="commercialName" value="commercialName2"/>
 	</bean>
