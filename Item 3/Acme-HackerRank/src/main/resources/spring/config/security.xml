@@ -39,6 +39,16 @@
 		<security:intercept-url pattern="/security/login.do" access="permitAll" /> 
 		<security:intercept-url pattern="/security/loginFailure.do" access="permitAll" /> 
 
+		<security:intercept-url pattern="/welcome/index.do" access="permitAll" />
+		
+		<!-- PROBLEM -->
+		
+		 <security:intercept-url pattern="/problem/edit.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
+		 <security:intercept-url pattern="/problem/finalMode.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
+		 <security:intercept-url pattern="/problem/create.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
+		 <security:intercept-url pattern="/problem/delete.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
+		 <security:intercept-url pattern="/problem/display.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
+
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" /> 
 		
 		<security:intercept-url pattern="/application/company/**" access="hasRole('COMPANY')" /> 

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
-import domain.Actor;
 import domain.Company;
 import domain.Problem;
 
@@ -53,14 +52,13 @@ public class ProblemService {
 	public Problem save(final Problem problem) {
 		Assert.notNull(problem);
 		final Problem res;
-		final Actor principal = this.actorService.findByPrincipal();
 		final Company company = this.companyService.findByPrincipal();
-		Assert.isTrue(principal.equals(company));
 		if (problem.getId() == 0)
 			problem.setMode("DRAFT");
-		else
-			Assert.isTrue(problem.getMode().equals("DRAFT"));
-
+		else {
+			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que está en FINAL MODE");
+			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
+		}
 		res = this.problemRepository.save(problem);
 		return res;
 	}
@@ -74,6 +72,18 @@ public class ProblemService {
 
 	}
 
+	public Problem toFinalMode(final int problemId) {
+		final Problem problem = this.findOne(problemId);
+		final Problem result;
+		final Company company = this.companyService.findByPrincipal();
+		Assert.isTrue(problem.getCompany() == company, "Actor who want to edit parade mode to FINAL is not his owner");
+		Assert.isTrue(problem.getMode().equals("DRAFT"), "To set final mode, parade must be in draft mode");
+		problem.setMode("FINAL");
+		result = this.problemRepository.save(problem);
+		this.messageService.processionPublished(problem);
+		return result;
+	}
+
 	public Problem findProblemByApplication(final int applicationId) {
 		Problem res;
 		res = this.problemRepository.findProblemByApplication(applicationId);
@@ -84,6 +94,13 @@ public class ProblemService {
 	public Collection<Problem> findProblemByPosition(final int positionId) {
 		Collection<Problem> res = new ArrayList<>();
 		res = this.problemRepository.findProblemByPosition(positionId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public Collection<Problem> findProblemByCompany(final int companyId) {
+		Collection<Problem> res = new ArrayList<>();
+		res = this.problemRepository.findProblemByCompany(companyId);
 		Assert.notNull(res);
 		return res;
 	}
