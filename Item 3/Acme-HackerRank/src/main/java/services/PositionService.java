@@ -14,7 +14,6 @@ import security.Authority;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
-import domain.Problem;
 
 @Service
 @Transactional
@@ -29,10 +28,12 @@ public class PositionService {
 	@Autowired
 	private CompanyService		companyService;
 
+	@Autowired
+	private ProblemService		problemService;
+
 
 	public Position create() {
 		final Position position = new Position();
-		position.setProblems(new ArrayList<Problem>());
 		final Company company = this.companyService.findByPrincipal();
 		position.setCompany(company);
 		return position;
@@ -139,12 +140,11 @@ public class PositionService {
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(position.getProblems().size() >= 2, "Position must have 2 or more Problems associated.");
+		Assert.isTrue(this.problemService.findProblemByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;
 	}
-
 	public Position toCancelMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
