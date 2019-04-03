@@ -8,7 +8,7 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<h2><spring:message code="member.edit.msg"/></h2>
+<h2><spring:message code="hacker.edit.msg"/></h2>
 <jstl:if test="${not empty alert}">
 	<script>
 	 $(document).ready(function() {
@@ -22,7 +22,7 @@
 		<div class="errorDiv">
 			<ul>
 				<jstl:forEach items="${errors}" var="error">
-					<li><spring:message code="member.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+					<li><spring:message code="hacker.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
 				</jstl:forEach>
 			</ul>
 		</div>
