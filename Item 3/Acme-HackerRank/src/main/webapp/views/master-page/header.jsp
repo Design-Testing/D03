@@ -50,6 +50,25 @@
 			</li>
 		</security:authorize>
 		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================  COMPANY  ================================================ -->
+		<!-- ========================================================================================================= -->
+		
+		<security:authorize access="hasRole('COMPANY')">
+			<li><a class="fNiv"><spring:message	code="master.page.applications" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="application/company/list.do"><spring:message code="master.page.application.list" /></a></li>
+					<li><a href="application/company/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
+					<li><a href="application/company/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
+					<li><a href="application/company/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
+					
+				</ul>
+			</li>
+			
+		</security:authorize>
+		
+		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 		</security:authorize>

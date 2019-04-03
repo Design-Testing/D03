@@ -50,8 +50,15 @@ public class PositionService {
 		return result;
 	}
 
-	public Collection<Position> findAllFinalModeByBrotherhood(final int id) {
+	public Collection<Position> findAllFinalModeByCompany(final int id) {
 		final Collection<Position> result = this.positionRepository.findAllFinalModeByCompany(id);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Position> findAllByCompany() {
+		final Company company = this.companyService.findByPrincipal();
+		final Collection<Position> result = this.positionRepository.findAllByCompany(company.getId());
 		Assert.notNull(result);
 		return result;
 	}
@@ -66,17 +73,10 @@ public class PositionService {
 	public Position save(final Position position) {
 		Assert.notNull(position);
 		final Company principal = this.companyService.findByPrincipal();
-		Assert.isTrue(position.getCompany().equals(principal));
 		final Position result;
-		final ArrayList<Problem> problems = new ArrayList<Problem>(position.getProblems());
 		if (position.getId() != 0) {
-			final Position last = this.findOne(position.getId());
-			Assert.isTrue(position.getTicker().equals(last.getTicker()));
-			Assert.isTrue(!last.getMode().equals("CANCELLED"), "This position can't be modified");
-			if (position.getMode().equals("DRAFT"))
-				Assert.isTrue(!last.getMode().equals("FINAL"), "This position can't be modified");
-			if (position.getMode().equals("FINAL"))
-				Assert.isTrue(problems.size() >= 2, "Position must have 2 or more Problems associated.");
+			Assert.isTrue(position.getCompany().equals(principal));
+			Assert.isTrue(position.getMode().equals("DRAFT"), "This position can't be modified");
 		} else {
 			position.setMode("DRAFT");
 			final String ticker = this.generateTicker(position.getCompany().getCommercialName());
@@ -136,19 +136,21 @@ public class PositionService {
 		return res;
 	}
 
-	public Position toFinalMode(final int id) {
-		final Position position = this.findOne(id);
+	public Position toFinalMode(final int positionId) {
+		final Position position = this.findOne(positionId);
 		final Position result;
+		Assert.isTrue(position.getProblems().size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;
 	}
 
-	public Position toCancelMode(final int id) {
-		final Position position = this.findOne(id);
+	public Position toCancelMode(final int positionId) {
+		final Position position = this.findOne(positionId);
 		final Position result;
+		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posición en CANCELLED MODE debe de estar en FINAL MODE.");
 		position.setMode("CANCELLED");
-		result = this.save(position);
+		result = this.positionRepository.save(position);
 		return result;
 	}
 

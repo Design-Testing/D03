@@ -27,6 +27,8 @@
 		<value>/views/customer/messages</value>
 		<value>/views/profile/messages</value>
 		<value>/views/problem/messages</value>
+		<value>/views/hacker/messages</value>
+		<value>/views/application/messages</value>
 	</util:list>
 
 </beans>

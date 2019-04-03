@@ -1,9 +1,12 @@
 
 package domain;
 
+import java.util.Collection;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -24,19 +27,19 @@ import security.UserAccount;
 @Access(AccessType.PROPERTY)
 public class Actor extends DomainEntity {
 
-	private String		name;
-	private String		surname;
-	private String		photo;
-	private String		email;
-	private String		phone;
-	private String		address;
-	private double		vat;
-	private CreditCard	creditCard;
+	private String				name;
+	private Collection<String>	surname;
+	private String				photo;
+	private String				email;
+	private String				phone;
+	private String				address;
+	private Double				vat;
+	private CreditCard			creditCard;
 	//private Double		score;
-	//private Boolean		spammer;
+	private Boolean				spammer;
 
 	//Relational attributes
-	private UserAccount	userAccount;
+	private UserAccount			userAccount;
 
 
 	@NotBlank
@@ -49,13 +52,13 @@ public class Actor extends DomainEntity {
 		this.name = name;
 	}
 
-	@NotBlank
 	@SafeHtml
-	public String getSurname() {
+	@ElementCollection
+	public Collection<String> getSurname() {
 		return this.surname;
 	}
 
-	public void setSurname(final String surname) {
+	public void setSurname(final Collection<String> surname) {
 		this.surname = surname;
 	}
 
@@ -107,13 +110,13 @@ public class Actor extends DomainEntity {
 	//		this.score = score;
 	//	}
 
-	//	public Boolean getSpammer() {
-	//		return this.spammer;
-	//	}
-	//
-	//	public void setSpammer(final Boolean spammer) {
-	//		this.spammer = spammer;
-	//	}
+	public Boolean getSpammer() {
+		return this.spammer;
+	}
+
+	public void setSpammer(final Boolean spammer) {
+		this.spammer = spammer;
+	}
 
 	//Relational methods
 
@@ -140,11 +143,11 @@ public class Actor extends DomainEntity {
 
 	@Range(min = 0, max = 0)
 	@Digits(integer = 1, fraction = 2)
-	public double getVat() {
+	public Double getVat() {
 		return this.vat;
 	}
 
-	public void setVat(final double vat) {
+	public void setVat(final Double vat) {
 		this.vat = vat;
 	}
 

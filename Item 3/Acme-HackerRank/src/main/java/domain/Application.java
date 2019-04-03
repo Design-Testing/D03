@@ -54,7 +54,7 @@ public class Application extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne
+	@OneToOne(optional = true)
 	public Answer getAnswer() {
 		return this.answer;
 	}
@@ -84,7 +84,7 @@ public class Application extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne
+	@OneToOne(optional = false)
 	public Problem getProblem() {
 		return this.problem;
 	}
