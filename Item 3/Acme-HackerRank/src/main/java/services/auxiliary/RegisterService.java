@@ -10,10 +10,13 @@ import org.springframework.validation.BindingResult;
 
 import security.UserAccount;
 import security.UserAccountRepository;
+import services.AdministratorService;
+import services.CompanyService;
 import services.HackerService;
 import services.UserAccountService;
 import domain.Actor;
 import domain.Administrator;
+import domain.Company;
 import domain.Hacker;
 import forms.ActorForm;
 
@@ -32,6 +35,9 @@ public class RegisterService {
 
 	@Autowired
 	private HackerService			hackerService;
+
+	@Autowired
+	private CompanyService			companyService;
 
 
 	public Administrator saveAdmin(final Administrator admin, final BindingResult binding) {
@@ -88,6 +94,36 @@ public class RegisterService {
 				Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
 
 			result = this.hackerService.save(hacker);
+
+		}
+
+		return result;
+	}
+
+	public Company saveCompany(final Company company, final BindingResult binding) {
+		Company result;
+		final UserAccount ua = company.getUserAccount();
+		final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		final String hash = encoder.encodePassword(ua.getPassword(), null);
+		if (company.getId() == 0) {
+			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+			ua.setPassword(hash);
+			company.setUserAccount(ua);
+			result = this.companyService.save(company);
+			UserAccount uaSaved = result.getUserAccount();
+			uaSaved.setAuthorities(ua.getAuthorities());
+			uaSaved.setUsername(ua.getUsername());
+			uaSaved.setPassword(ua.getPassword());
+			uaSaved = this.userAccountService.save(uaSaved);
+			result.setUserAccount(uaSaved);
+		} else {
+			final Company old = this.companyService.findOne(company.getId());
+
+			ua.setPassword(hash);
+			if (!old.getUserAccount().getUsername().equals(ua.getUsername()))
+				Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+
+			result = this.companyService.save(company);
 
 		}
 

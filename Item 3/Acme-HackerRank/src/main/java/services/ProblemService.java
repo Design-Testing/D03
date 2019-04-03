@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
+import security.Authority;
 import domain.Company;
+import domain.Position;
 import domain.Problem;
 
 @Service
@@ -23,6 +25,10 @@ public class ProblemService {
 	private ActorService		actorService;
 	@Autowired
 	private CompanyService		companyService;
+	@Autowired
+	private MessageService		messageService;
+	@Autowired
+	private PositionService		positionService;
 
 
 	//Metodos CRUD
@@ -49,13 +55,17 @@ public class ProblemService {
 		return result;
 	}
 
-	public Problem save(final Problem problem) {
+	public Problem save(final Problem problem, final int positionId) {
 		Assert.notNull(problem);
+		Assert.isTrue(positionId != 0);
 		final Problem res;
 		final Company company = this.companyService.findByPrincipal();
-		if (problem.getId() == 0)
+		this.actorService.checkAuthority(company, Authority.COMPANY);
+		if (problem.getId() == 0) {
+			final Position position = this.positionService.findOne(positionId);
+			position.getProblems().add(problem);
 			problem.setMode("DRAFT");
-		else {
+		} else {
 			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que está en FINAL MODE");
 			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
 		}
@@ -80,7 +90,7 @@ public class ProblemService {
 		Assert.isTrue(problem.getMode().equals("DRAFT"), "To set final mode, parade must be in draft mode");
 		problem.setMode("FINAL");
 		result = this.problemRepository.save(problem);
-		this.messageService.processionPublished(problem);
+		//		this.messageService.processionPublished(problem);
 		return result;
 	}
 

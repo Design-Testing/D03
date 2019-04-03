@@ -188,12 +188,6 @@
 		<property ref="creditCard6" name="creditCard" />
 		<property name="userAccount" ref="userAccountCompany1"/>
 		<property name="commercialName" value="commercialName1"/>
-		<property name="title" value="title 1"/>
-		<property name="date" value="2018/03/15 15:25"/>
-		<property name="pictures">
-			<list>
-			</list>
-		</property>
 	</bean>
 	
 	<bean id="company2" class="domain.Company">
@@ -208,12 +202,6 @@
 		<property ref="creditCard7" name="creditCard" />
 		<property name="userAccount" ref="userAccountCompany2"/>
 		<property name="commercialName" value="commercialName2"/>
-		<property name="title" value="title 2"/>
-		<property name="date" value="2018/03/15 15:25"/>
-		<property name="pictures">
-			<list>
-			</list>
-		</property>
 	</bean>
 
 

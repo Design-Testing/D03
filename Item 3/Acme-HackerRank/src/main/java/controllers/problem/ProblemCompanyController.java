@@ -1,5 +1,5 @@
 
-package controllers;
+package controllers.problem;
 
 import java.util.Collection;
 
@@ -15,14 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CompanyService;
+import services.ConfigurationParametersService;
 import services.PositionService;
 import services.ProblemService;
+import controllers.AbstractController;
 import domain.Company;
 import domain.Problem;
 
 @Controller
-@RequestMapping("/problem")
-public class ProblemController extends AbstractController {
+@RequestMapping("/problem/company")
+public class ProblemCompanyController extends AbstractController {
 
 	//Listar, mostrar, crear, actualizar y borrar.
 	@Autowired
@@ -111,7 +113,7 @@ public class ProblemController extends AbstractController {
 			result = this.createEditModelAndView(problem);
 		else
 			try {
-				this.problemService.save(problem);
+				this.problemService.save(problem, problem.getPosition().getId());
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(problem, "problem.commit.error");
