@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
-import security.Authority;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
@@ -104,7 +103,6 @@ public class PositionService {
 	public Collection<Position> findAllByPrincipal() {
 		Collection<Position> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
-		final Boolean isCompany = this.actorService.checkAuthority(principal, Authority.COMPANY);
 		res = this.positionRepository.findAllPositionByCompanyId(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
