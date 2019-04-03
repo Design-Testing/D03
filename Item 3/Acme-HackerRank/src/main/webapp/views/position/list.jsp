@@ -34,5 +34,4 @@
 		<acme:button url="position/company/display.do?positionId=${row.id}" name="display" code="position.display"/>
 	</display:column>
 
-
 </display:table>

@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
 import services.CompanyService;
-import services.ConfigurationParametersService;
 import controllers.AbstractController;
 import domain.Application;
 import domain.Company;
@@ -24,15 +23,12 @@ import domain.Company;
 public class ApplicationCompanyController extends AbstractController {
 
 	@Autowired
-	private ApplicationService				applicationService;
+	private ApplicationService	applicationService;
 
 	@Autowired
-	private CompanyService					companyService;
+	private CompanyService		companyService;
 
-	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
-
-	final String							lang	= LocaleContextHolder.getLocale().getLanguage();
+	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	// DISPLAY --------------------------------------------------------
@@ -149,9 +145,6 @@ public class ApplicationCompanyController extends AbstractController {
 			result = this.listAccepted();
 		}
 
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
-
 		return result;
 	}
 	// REJECT PARADE --------------------------------------------------------
@@ -168,9 +161,6 @@ public class ApplicationCompanyController extends AbstractController {
 			this.applicationService.rejectApplication(applicationId);
 			result = this.listAccepted();
 		}
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}

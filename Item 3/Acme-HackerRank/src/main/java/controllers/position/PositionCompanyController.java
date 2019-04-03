@@ -102,9 +102,6 @@ public class PositionCompanyController extends AbstractController {
 			result = this.myPositions();
 		}
 
-		//		final String banner = this.configurationParametersService.findBanner();
-		//		result.addObject("banner", banner);
-
 		return result;
 	}
 
@@ -121,9 +118,6 @@ public class PositionCompanyController extends AbstractController {
 			this.positionService.toCancelMode(positionId);
 			result = this.myPositions();
 		}
-
-		//		final String banner = this.configurationParametersService.findBanner();
-		//		result.addObject("banner", banner);
 
 		return result;
 	}

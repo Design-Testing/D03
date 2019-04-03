@@ -20,35 +20,53 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
-<acme:display code="application.status" value="${application.status}"/>
+<acme:display code="position.title" value="${position.title}"/>
+
+<acme:display code="position.description" value="${position.description}"/>
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="application.moment" />: <fmt:formatDate
-			value="${application.moment}" type="both" pattern="yyyy/MM/dd HH:mm" />
+		<spring:message code="position.deadline" />: <fmt:formatDate
+			value="${position.deadline}" type="both" pattern="yyyy/MM/dd HH:mm" />
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="application.moment" />: <fmt:formatDate
-			value="${application.moment}" type="both" pattern="dd/MM/yyyy HH:mm" />
+		<spring:message code="position.deadline" />: <fmt:formatDate
+			value="${position.deadline}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
 
-<jstl:choose>
-	<jstl:when test="${lang eq 'en' }">
-		<spring:message code="application.submitMoment" />: <fmt:formatDate
-			value="${application.submitMoment}" type="both" pattern="yyyy/MM/dd HH:mm" />
-	</jstl:when>
-	<jstl:otherwise>
-		<spring:message code="application.submitMoment" />: <fmt:formatDate
-			value="${application.submitMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
-	</jstl:otherwise>
-</jstl:choose>
+<acme:display code="position.ticker" value="${position.ticker}"/>
 
-<acme:button url="answer/hacker/display.do?answerId=${answer.id}" name="seeAnswer" code="application.seeAnswer"/>
+<acme:display code="position.profile" value="${position.profile}"/>
 
-<acme:display code="application.position" value="${application.position.title}"/>
+<acme:display code="position.skills" value="${position.skills}"/>
 
-<acme:display code="application.hacker" value="${application.hacker.name}"/>
+<acme:display code="position.technologies" value="${position.technologies}"/>
 
-<acme:display code="application.problem" value="${application.problem.title}"/>
+<acme:display code="position.salary" value="${position.salary}"/>
+
+<acme:display code="position.mode" value="${position.mode}"/>
+
+<acme:display code="position.company" value="${position.company.name}"/>
+
+<jstl:if test="${position.status eq 'DEFAULT'}">
+<acme:button url="problem/company/create.do?positionId=${position.id}" name="create" code="position.create" />
+</jstl:if>
+
+<display:table pagesize="5" class="displaytag" keepStatus="true"
+               name="problems" requestURI="problem/company/list.do" id="row">
+	
+    <display:column property="problem.title" title="${problem.title}" sortable="true"/>
+
+    <display:column property="problem.statement" title="${problem.statement}" sortable="true"/>
+
+    <display:column property="problem.hint" title="${problem.hint}" sortable="true"/>
+
+	<display:column>
+			<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
+	</display:column>
+        
+</display:table>
+
+
 

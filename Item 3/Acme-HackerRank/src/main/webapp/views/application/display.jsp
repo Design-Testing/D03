@@ -19,6 +19,15 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<acme:display code="application.position" value="${application.position.title}"/>
+
+<acme:display code="application.hacker" value="${application.hacker.name}"/>
+
+<acme:display code="application.problem" value="${application.problem.title}"/>
+
+<acme:display code="application.explanation" value="${application.explanation}"/>
+
+<acme:display code="application.link" value="${application.link}"/>
 
 <acme:display code="application.status" value="${application.status}"/>
 
@@ -44,11 +53,4 @@
 	</jstl:otherwise>
 </jstl:choose>
 
-<acme:button url="answer/hacker/display.do?answerId=${answer.id}" name="seeAnswer" code="application.seeAnswer"/>
-
-<acme:display code="application.position" value="${application.position.title}"/>
-
-<acme:display code="application.hacker" value="${application.hacker.name}"/>
-
-<acme:display code="application.problem" value="${application.problem.title}"/>
 
