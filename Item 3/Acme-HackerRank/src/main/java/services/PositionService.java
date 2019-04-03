@@ -16,7 +16,6 @@ import security.Authority;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
-import domain.Problem;
 import forms.PositionForm;
 
 @Service
@@ -32,6 +31,11 @@ public class PositionService {
 	@Autowired
 	private CompanyService		companyService;
 
+	@Autowired
+	private ProblemService		problemService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	public Position create() {
