@@ -378,12 +378,6 @@
 		</property>
 		<!-- Relations -->
 		<property name="company" ref="company1" />
-		<property name="problems">
-			<list>
-				<ref bean="problem1" />
-				<ref bean="problem2" />
-			</list>
-		</property>
 	</bean>
 	
 	<bean id="position2" class="domain.Position">
@@ -406,11 +400,6 @@
 		</property>
 		<!-- Relations -->
 		<property name="company" ref="company2" />
-		<property name="problems">
-			<list>
-				<ref bean="problem3" />
-			</list>
-		</property>
 	</bean>
 	
 	<!-- =================================================================== 
@@ -429,6 +418,7 @@
 		</property>
 		<property name="mode" value="DRAFT" />
 		<property name="company" ref="company1" />
+		<property name="position" ref="position1"/>
 	</bean>
 	
 	<bean id="problem2" class="domain.Problem">
@@ -442,6 +432,7 @@
 		</property>
 		<property name="mode" value="FINAL" />
 		<property name="company" ref="company1" />
+		<property name="position" ref="position1"/>
 	</bean>
 	
 	<bean id="problem3" class="domain.Problem">
@@ -454,6 +445,7 @@
 		</property>
 		<property name="mode" value="DRAFT" />
 		<property name="company" ref="company2" />
+		<property name="position" ref="position2"/>
 	</bean>
 	
 	<!-- =================================================================== 

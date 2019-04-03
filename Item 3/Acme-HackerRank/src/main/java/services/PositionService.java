@@ -15,7 +15,6 @@ import repositories.PositionRepository;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
-import domain.Problem;
 import forms.PositionForm;
 
 @Service
@@ -32,12 +31,14 @@ public class PositionService {
 	private CompanyService		companyService;
 
 	@Autowired
+	private ProblemService		problemService;
+
+	@Autowired
 	private Validator			validator;
 
 
 	public Position create() {
 		final Position position = new Position();
-		position.setProblems(new ArrayList<Problem>());
 		final Company company = this.companyService.findByPrincipal();
 		position.setCompany(company);
 		return position;
@@ -143,16 +144,15 @@ public class PositionService {
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(position.getProblems().size() >= 2, "Position must have 2 or more Problems associated.");
+		Assert.isTrue(this.problemService.findProblemByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;
 	}
-
 	public Position toCancelMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posición en CANCELLED MODE debe de estar en FINAL MODE.");
+		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posiciï¿½n en CANCELLED MODE debe de estar en FINAL MODE.");
 		position.setMode("CANCELLED");
 		result = this.positionRepository.save(position);
 		return result;

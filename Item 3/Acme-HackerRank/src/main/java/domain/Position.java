@@ -9,7 +9,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,7 +38,6 @@ public class Position extends DomainEntity {
 	private String				mode;
 
 	private Company				company;
-	private Collection<Problem>	problems;
 
 
 	@NotBlank
@@ -141,14 +139,4 @@ public class Position extends DomainEntity {
 	public void setCompany(final Company company) {
 		this.company = company;
 	}
-
-	@ManyToMany
-	public Collection<Problem> getProblems() {
-		return this.problems;
-	}
-
-	public void setProblems(final Collection<Problem> problems) {
-		this.problems = problems;
-	}
-
 }
