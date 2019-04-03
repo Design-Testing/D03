@@ -25,6 +25,7 @@ public class Problem extends DomainEntity {
 	private String				mode;
 
 	private Company				company;
+	private Position			position;
 
 
 	@NotBlank
@@ -80,6 +81,16 @@ public class Problem extends DomainEntity {
 
 	public void setCompany(final Company company) {
 		this.company = company;
+	}
+
+	@Valid
+	@ManyToOne(optional = false)
+	public Position getPosition() {
+		return this.position;
+	}
+
+	public void setPosition(final Position position) {
+		this.position = position;
 	}
 
 }

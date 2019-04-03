@@ -268,19 +268,19 @@
 	<bean id="creditCard6" class="domain.CreditCard">
 		<property name="holderName" value="Company 1" />
 		<property name="make" value="VISA" />
-		<property name="number" value="4117153889927504" />
-		<property name="expirationMonth" value="10" />
-		<property name="expirationYear" value="21" />
-		<property name="cvv" value="202" />
+		<property name="number" value="4231348143458624" />
+		<property name="expirationMonth" value="11" />
+		<property name="expirationYear" value="22" />
+		<property name="cvv" value="837" />
 	</bean>
 	
 	<bean id="creditCard7" class="domain.CreditCard">
 		<property name="holderName" value="Company 2" />
 		<property name="make" value="VISA" />
-		<property name="number" value="4807011673979989" />
-		<property name="expirationMonth" value="01" />
-		<property name="expirationYear" value="23" />
-		<property name="cvv" value="689" />
+		<property name="number" value="4294148159742547" />
+		<property name="expirationMonth" value="11" />
+		<property name="expirationYear" value="20" />
+		<property name="cvv" value="988" />
 	</bean>
 	
 	<!-- =================================================================== 
@@ -378,12 +378,6 @@
 		</property>
 		<!-- Relations -->
 		<property name="company" ref="company1" />
-		<property name="problems">
-			<list>
-				<ref bean="problem1" />
-				<ref bean="problem2" />
-			</list>
-		</property>
 	</bean>
 	
 	<bean id="position2" class="domain.Position">
@@ -406,11 +400,6 @@
 		</property>
 		<!-- Relations -->
 		<property name="company" ref="company2" />
-		<property name="problems">
-			<list>
-				<ref bean="problem3" />
-			</list>
-		</property>
 	</bean>
 	
 	<!-- =================================================================== 
@@ -429,6 +418,7 @@
 		</property>
 		<property name="mode" value="DRAFT" />
 		<property name="company" ref="company1" />
+		<property name="position" ref="position1"/>
 	</bean>
 	
 	<bean id="problem2" class="domain.Problem">
@@ -442,6 +432,7 @@
 		</property>
 		<property name="mode" value="FINAL" />
 		<property name="company" ref="company1" />
+		<property name="position" ref="position1"/>
 	</bean>
 	
 	<bean id="problem3" class="domain.Problem">
@@ -450,11 +441,11 @@
 		<property name="hint" value="Hint of problem 3"/>
 		<property name="attachments">
 			<list>
-			
 			</list>
 		</property>
 		<property name="mode" value="DRAFT" />
 		<property name="company" ref="company2" />
+		<property name="position" ref="position2"/>
 	</bean>
 	
 	<!-- =================================================================== 
@@ -468,6 +459,7 @@
 		<property name="answer" ref="answer1"/>
 		<property name="position" ref="position1"/>
 		<property name="hacker" ref="hacker1"/>
+		<property name="problem" ref="problem1"/>
 	</bean>
 	
 	<bean id="application2" class="domain.Application">
@@ -477,6 +469,7 @@
 		<property name="answer" ref="answer2"/>
 		<property name="position" ref="position2"/>
 		<property name="hacker" ref="hacker2"/>
+		<property name="problem" ref="problem2"/>
 	</bean>
 	
 	<!-- =================================================================== 

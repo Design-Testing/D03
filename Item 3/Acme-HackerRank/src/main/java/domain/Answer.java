@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -25,6 +26,7 @@ public class Answer extends DomainEntity {
 		this.explanation = explanation;
 	}
 
+	@NotNull
 	@URL
 	public String getLink() {
 		return this.link;

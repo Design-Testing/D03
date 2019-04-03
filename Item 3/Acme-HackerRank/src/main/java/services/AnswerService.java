@@ -22,6 +22,9 @@ import domain.Hacker;
 public class AnswerService {
 
 	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
 	private AnswerRepository	answerRepository;
 
 	@Autowired
@@ -65,11 +68,11 @@ public class AnswerService {
 		final Hacker hacker = this.hackerService.findByPrincipal();
 		final Application application = this.applicationService.findOne(applicationId);
 
-		if (answer.getId() == 0)
-			application.setAnswer(answer);
-		else
+		if (answer.getId() == 0) {
 			Assert.isTrue(application.getHacker().equals(hacker));
-		//		Assert.isTrue(answer.getExplanation() == null, "Debe explicar la solución que ofrece.");
+			application.setAnswer(answer);
+			this.applicationService.save(application, application.getPosition().getId());
+		}
 		result = this.answerRepository.save(answer);
 		return result;
 	}

@@ -8,13 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
 import security.Authority;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
-import domain.Problem;
+import forms.PositionForm;
 
 @Service
 @Transactional
@@ -29,10 +31,15 @@ public class PositionService {
 	@Autowired
 	private CompanyService		companyService;
 
+	@Autowired
+	private ProblemService		problemService;
+
+	@Autowired
+	private Validator			validator;
+
 
 	public Position create() {
 		final Position position = new Position();
-		position.setProblems(new ArrayList<Problem>());
 		final Company company = this.companyService.findByPrincipal();
 		position.setCompany(company);
 		return position;
@@ -50,8 +57,15 @@ public class PositionService {
 		return result;
 	}
 
-	public Collection<Position> findAllFinalModeByBrotherhood(final int id) {
+	public Collection<Position> findAllFinalModeByCompany(final int id) {
 		final Collection<Position> result = this.positionRepository.findAllFinalModeByCompany(id);
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Position> findAllByCompany() {
+		final Company company = this.companyService.findByPrincipal();
+		final Collection<Position> result = this.positionRepository.findAllByCompany(company.getId());
 		Assert.notNull(result);
 		return result;
 	}
@@ -66,17 +80,10 @@ public class PositionService {
 	public Position save(final Position position) {
 		Assert.notNull(position);
 		final Company principal = this.companyService.findByPrincipal();
-		Assert.isTrue(position.getCompany().equals(principal));
 		final Position result;
-		final ArrayList<Problem> problems = new ArrayList<Problem>(position.getProblems());
 		if (position.getId() != 0) {
-			final Position last = this.findOne(position.getId());
-			Assert.isTrue(position.getTicker().equals(last.getTicker()));
-			Assert.isTrue(!last.getMode().equals("CANCELLED"), "This position can't be modified");
-			if (position.getMode().equals("DRAFT"))
-				Assert.isTrue(!last.getMode().equals("FINAL"), "This position can't be modified");
-			if (position.getMode().equals("FINAL"))
-				Assert.isTrue(problems.size() >= 2, "Position must have 2 or more Problems associated.");
+			Assert.isTrue(position.getCompany().equals(principal));
+			Assert.isTrue(position.getMode().equals("DRAFT"), "This position can't be modified");
 		} else {
 			position.setMode("DRAFT");
 			final String ticker = this.generateTicker(position.getCompany().getCommercialName());
@@ -136,19 +143,42 @@ public class PositionService {
 		return res;
 	}
 
-	public Position toFinalMode(final int id) {
-		final Position position = this.findOne(id);
+	public Position toFinalMode(final int positionId) {
+		final Position position = this.findOne(positionId);
 		final Position result;
+		Assert.isTrue(this.problemService.findProblemByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;
 	}
-
-	public Position toCancelMode(final int id) {
-		final Position position = this.findOne(id);
+	public Position toCancelMode(final int positionId) {
+		final Position position = this.findOne(positionId);
 		final Position result;
+		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posici�n en CANCELLED MODE debe de estar en FINAL MODE.");
 		position.setMode("CANCELLED");
-		result = this.save(position);
+		result = this.positionRepository.save(position);
+		return result;
+	}
+
+	public Position reconstruct(final PositionForm positionForm, final BindingResult binding) {
+		Position result;
+
+		Assert.isTrue(positionForm.getId() != 0);
+
+		result = this.findOne(positionForm.getId());
+
+		result.setId(positionForm.getId());
+		result.setVersion(positionForm.getVersion());
+		result.setTitle(positionForm.getTitle());
+		result.setDescription(positionForm.getDescription());
+		result.setProfile(positionForm.getProfile());
+		result.setDeadline(positionForm.getDeadline());
+		result.setSkills(positionForm.getSkills());
+		result.setTechnologies(positionForm.getTechnologies());
+		result.setSalary(positionForm.getSalary());
+
+		this.validator.validate(result, binding);
+
 		return result;
 	}
 

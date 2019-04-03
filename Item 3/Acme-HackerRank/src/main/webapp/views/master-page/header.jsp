@@ -25,7 +25,17 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>					
+					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>
+					<li><a href="problem/list.do"><spring:message code="master.page.problem" /></a></li>					
+				</ul>
+			</li>
+		</security:authorize>
+		
+				<security:authorize access="hasRole('COMPANY')">
+			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="problem/list.do"><spring:message code="master.page.problem" /></a></li>					
 				</ul>
 			</li>
 		</security:authorize>
@@ -39,6 +49,55 @@
 				</ul>
 			</li>
 		</security:authorize>
+		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================  COMPANY  ================================================ -->
+		<!-- ========================================================================================================= -->
+		
+		<security:authorize access="hasRole('COMPANY')">
+			<!-- APPLICATIONS -->
+			<li><a class="fNiv"><spring:message	code="master.page.applications" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="application/company/list.do"><spring:message code="master.page.application.list" /></a></li>
+					<li><a href="application/company/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
+					<li><a href="application/company/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
+					<li><a href="application/company/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
+					
+				</ul>
+			</li>
+			
+			<!-- POSITION -->
+			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="position/company/create.do"><spring:message code="master.page.position.create" /></a></li>
+					<li><a href="position/company/myPositions.do"><spring:message code="master.page.position.myPositions" /></a></li>										
+				</ul>
+			</li>
+			
+		</security:authorize>
+		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================  HACKER  ================================================ -->
+		<!-- ========================================================================================================= -->
+		
+		<security:authorize access="hasRole('HACKER')">
+			<li><a class="fNiv"><spring:message	code="master.page.applications" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="application/hacker/create.do"><spring:message code="master.page.application.create" /></a></li>
+					<li><a href="application/hacker/listPending.do"><spring:message code="master.page.application.listPendig" /></a></li>
+					<li><a href="application/hacker/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
+					<li><a href="application/hacker/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
+					<li><a href="application/hacker/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
+					
+				</ul>
+			</li>
+			
+		</security:authorize>
+		
+		
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
