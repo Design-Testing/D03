@@ -1,5 +1,5 @@
 
-package controllers;
+package controllers.company;
 
 import java.util.Collection;
 
@@ -17,18 +17,21 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CompanyService;
 import services.PositionService;
 import services.ProblemService;
+import controllers.AbstractController;
 import domain.Company;
+import domain.Position;
 import domain.Problem;
 
 @Controller
-@RequestMapping("/problem")
-public class ProblemController extends AbstractController {
+@RequestMapping("/problem/company")
+public class ProblemCompanyController extends AbstractController {
 
-	//Listar, mostrar, crear, actualizar y borrar.
 	@Autowired
 	private ProblemService	problemService;
+
 	@Autowired
 	private PositionService	positionService;
+
 	@Autowired
 	private CompanyService	companyService;
 
@@ -36,10 +39,20 @@ public class ProblemController extends AbstractController {
 	//Create
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int positionId) {
 		ModelAndView result;
-		final Problem problem = this.problemService.create();
-		result = this.createEditModelAndView(problem);
+		Problem problem;
+		final Position position = this.positionService.findOne(positionId);
+		if (position.getMode().equals("DRAFT")) {
+			problem = this.problemService.create();
+			result = this.createEditModelAndView(problem);
+			result.addObject("problem", problem);
+			result.addObject("positionId", positionId);
+		} else {
+			result = new ModelAndView("problem/error");
+			result.addObject("ok", "Cannot create a new problem in position whose mode is not DRAFT.");
+		}
+
 		return result;
 	}
 

@@ -1,5 +1,5 @@
 
-package controllers.application;
+package controllers.company;
 
 import java.util.Collection;
 

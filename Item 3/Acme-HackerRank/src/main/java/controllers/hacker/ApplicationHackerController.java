@@ -1,5 +1,5 @@
 
-package controllers.application;
+package controllers.hacker;
 
 import java.util.Collection;
 

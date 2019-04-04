@@ -1,5 +1,5 @@
 
-package controllers.position;
+package controllers.company;
 
 import java.util.Collection;
 

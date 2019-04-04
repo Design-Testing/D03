@@ -15,11 +15,11 @@
 <acme:display code="problem.title" value="${problem.title}" />
 <acme:display code="problem.statement" value="${problem.statement}" />
 <acme:display code="problem.hint" value="${problem.hint}" />
-<acme:modeChoose code="problem.mode"  mode="${problem.mode}"/>
+<acme:modeChoose mode="${problem.mode}"/>
 <br>
 <acme:display code="problem.attachments" value="${problem.attachments}" />
 
-<acme:button url="problem/list.do" name="cancel"
+<acme:button url="problem/company/list.do" name="cancel"
 		code="problem.cancel" />
 
 <br />
