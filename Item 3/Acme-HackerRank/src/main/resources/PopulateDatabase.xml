@@ -6,11 +6,8 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	">
-
-
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		
 	<!-- =================================================================== 
 		======= USER ACCOUNTS ========= =================================================================== -->
 
@@ -99,9 +96,13 @@
 		</property>
 	</bean>
 
-	<bean class="domain.Administrator" id="system">
+	<bean id="system" class="domain.Administrator" >
 		<property name="name" value="AcmeParade" />
-		<property name="surname" value="System"/>
+		<property name="surname">
+		<list>
+			<value>System</value>
+		</list>
+		</property>
 		<property name="photo" value="" />
 		<property name="email" value="correo@gmail.com" />
 		<property name="phone" value="" />
@@ -117,28 +118,36 @@
 
 	<bean id="administrator1" class="domain.Administrator">
 		<!-- Actor -->
-		<property name="name" value="Admim1"></property>
-		<property name="surname" value="Gonzalez"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="conwdasto@jmsx.es"></property>
-		<property name="phone" value="+34647607406"></property>
-		<property name="address" value="Reina Mercedes"></property>
+		<property name="name" value="Admin1"/>
+		<property name="surname">
+		<list>
+			<value>Admin</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="conwdasto@jmsx.es"/>
+		<property name="phone" value="+34647607406"/>
+		<property name="address" value="Reina Mercedes"/>
 		<property name="vat" value="0.21" />
 		<property name="creditCard" ref="creditCard2" />
-		<property name="userAccount" ref="userAccountAdmin1"></property>
+		<property name="userAccount" ref="userAccountAdmin1"/>
 	</bean>
 
 	<bean id="administrator2" class="domain.Administrator">
 		<!-- Actor -->
-		<property name="name" value="Admin2"></property>
-		<property name="surname" value="Gonzalez"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="lusi@gamil.es"></property>
-		<property name="phone" value="+34647307406"></property>
-		<property name="address" value="Reina Mercedes"></property>
+		<property name="name" value="Admin2"/>
+		<property name="surname">
+		<list>
+			<value>Gonzalez</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="lusi@gamil.es"/>
+		<property name="phone" value="+34647307406"/>
+		<property name="address" value="Reina Mercedes"/>
 		<property name="vat" value="0.21"/>
 		<property name="creditCard" ref="creditCard3" />
-		<property name="userAccount" ref="userAccountAdmin2"></property>
+		<property name="userAccount" ref="userAccountAdmin2"/>
 	</bean>
 
 
@@ -147,29 +156,37 @@
 
 	<bean id="hacker1" class="domain.Hacker">
 		<!-- Actor -->
-		<property name="name" value="Hacker1"></property>
-		<property name="surname" value="Garcia"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="garcia@gmail.es"></property>
-		<property name="phone" value="+34647307406"></property>
-		<property name="address" value="Reina Mercedes"></property>
+		<property name="name" value="Hacker1"/>
+		<property name="surname">
+		<list>
+			<value>Garcia</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="garcia@gmail.es"/>
+		<property name="phone" value="+34647307406"/>
+		<property name="address" value="Reina Mercedes"/>
 		<property name="vat" value="0.21"/>
 		<property name="creditCard" ref="creditCard4" />
-		<property name="userAccount" ref="userAccountHacker1"></property>
+		<property name="userAccount" ref="userAccountHacker1"/>
 		
 	</bean>
 	
 	<bean id="hacker2" class="domain.Hacker">
 		<!-- Actor -->
-		<property name="name" value="Hacker2"></property>
-		<property name="surname" value="Lanzas"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="lanzas@gmail.es"></property>
-		<property name="phone" value="+34647307406"></property>
-		<property name="address" value="Reina Mercedes"></property>
+		<property name="name" value="Hacker2"/>
+		<property name="surname">
+		<list>
+			<value>Lanzas</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="lanzas@gmail.es"/>
+		<property name="phone" value="+34647307406"/>
+		<property name="address" value="Reina Mercedes"/>
 		<property name="vat" value="0.21" />
 		<property name="creditCard" ref="creditCard5" />
-		<property name="userAccount" ref="userAccountHacker2"></property>
+		<property name="userAccount" ref="userAccountHacker2"/>
 	</bean>
 
 	<!-- =================================================================== 
@@ -179,7 +196,11 @@
 	<bean id="company1" class="domain.Company">
 		<!-- Actor -->
 		<property name="name" value="Company1"/>
-		<property name="surname" value="Company's"/>
+		<property name="surname">
+		<list>
+			<value>Company's</value>
+		</list>
+		</property>
 		<property name="photo" value="http://tinyurl.com/picture.png"/>
 		<property name="email" value="company1@gmail.es"/>
 		<property name="phone" value="+34647307480"/>
@@ -193,7 +214,11 @@
 	<bean id="company2" class="domain.Company">
 		<!-- Actor -->
 		<property name="name" value="Company2"/>
-		<property name="surname" value="Company's"/>
+		<property name="surname">
+		<list>
+			<value>Company's</value>
+		</list>
+		</property>
 		<property name="photo" value="http://tinyurl.com/picture.png"/>
 		<property name="email" value="company2@gmail.es"/>
 		<property name="phone" value="+34647307484"/>

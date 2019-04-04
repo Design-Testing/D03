@@ -144,7 +144,7 @@ public class PositionService {
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(this.problemService.findProblemByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
+		Assert.isTrue(this.problemService.findProblemsByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;
