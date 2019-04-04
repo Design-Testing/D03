@@ -23,7 +23,7 @@
 		requestURI="application${chooseList}.do" pagesize="5"
 		class="displaytag">
 
-	<display:column property="position" titleKey="application.position" />
+	<display:column property="position" titleKey="application.position"/>
 
 	<display:column property="hacker" titleKey="application.hacker" />
 		
@@ -45,6 +45,14 @@
 			</display:column>
 	</security:authorize>
 
+	<security:authorize access="hasRole('HACKER')">
+	<display:column>
+				<jstl:if test="${row.status eq 'PENDING'}">
+					<acme:button url="application/hacker/edit.do?applicationId=${row.id}"
+						name="submit" code="application.submit" />
+				</jstl:if>
+			</display:column>
+	</security:authorize>
 	
 	<display:column>
 		<a href="application/company/display.do?applicationId=${row.id}"> <spring:message

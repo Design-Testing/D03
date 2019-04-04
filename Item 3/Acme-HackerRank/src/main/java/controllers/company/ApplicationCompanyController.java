@@ -106,7 +106,7 @@ public class ApplicationCompanyController extends AbstractController {
 
 	// LIST ACCEPTED --------------------------------------------------------
 
-	@RequestMapping(value = "/listRejected", method = RequestMethod.GET)
+	@RequestMapping(value = "/listAccepted", method = RequestMethod.GET)
 	public ModelAndView listAccepted() {
 		final ModelAndView result;
 		final Collection<Application> applications;
@@ -160,7 +160,7 @@ public class ApplicationCompanyController extends AbstractController {
 			result.addObject("ok", false);
 		} else {
 			this.applicationService.rejectApplication(applicationId);
-			result = this.listAccepted();
+			result = this.listRejected();
 		}
 
 		return result;
