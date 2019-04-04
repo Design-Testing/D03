@@ -377,7 +377,7 @@
 		<property name="ticker" value="COMM-1234" />
 		<property name="profile" value="Profile for position 1" />
 		<property name="salary" value="1500.0" />
-		<property name="mode" value="FINAL" />
+		<property name="mode" value="DRAFT" />
 		<property name="skills">
 			<list>
 				<value>Skill1 for position 1</value>

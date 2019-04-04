@@ -1,6 +1,7 @@
 
 package Services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -72,12 +73,12 @@ public class PositionServiceTest extends AbstractTest {
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Date) testingData[i][3], (String) testingData[i][4], (Collection<String>) testingData[i][5], (Collection<String>) testingData[i][6],
+			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Collection<String>) testingData[i][5], (Collection<String>) testingData[i][6],
 				(Double) testingData[i][7], (Class<?>) testingData[i][8]);
 
 	}
 
-	protected void templateCreateSave(final String user, final String title, final String description, final Date deadline, final String profile, final Collection<String> skills, final Collection<String> technologies, final Double salary,
+	protected void templateCreateSave(final String user, final String title, final String description, final String deadline, final String profile, final Collection<String> skills, final Collection<String> technologies, final Double salary,
 		final Class<?> expected) {
 
 		Class<?> caught = null;
@@ -87,13 +88,14 @@ public class PositionServiceTest extends AbstractTest {
 			final Position pos = this.positionService.create();
 			pos.setTitle(title);
 			pos.setDescription(description);
-			pos.setDeadline(deadline);
+			final Date dead = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).parse(deadline);
+			pos.setDeadline(dead);
 			pos.setProfile(profile);
 			pos.setSkills(skills);
 			pos.setTechnologies(technologies);
 			pos.setSalary(salary);
-			final Position incRecSaved = this.positionService.save(pos);
-			Assert.isTrue(incRecSaved.getId() != 0);
+			final Position saved = this.positionService.save(pos);
+			Assert.isTrue(saved.getId() != 0);
 			this.positionService.flush();
 			this.unauthenticate();
 		} catch (final Throwable oops) {
@@ -124,17 +126,11 @@ public class PositionServiceTest extends AbstractTest {
 			}, {
 				"company1", "Title", null, "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, ConstraintViolationException.class
 			}, {
-				"company1", "Title", "Description", "", "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, ConstraintViolationException.class
-			}, {
-				"company1", "Title", "Description", null, "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, ConstraintViolationException.class
+				"company1", "Title", "Description", null, "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, NullPointerException.class
 			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "", new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, ConstraintViolationException.class
 			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", null, new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, ConstraintViolationException.class
-			}, {
-				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", null, new ArrayList<String>(), 15000.0, false, ConstraintViolationException.class
-			}, {
-				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), null, 15000.0, false, ConstraintViolationException.class
 			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), -1.0, false, ConstraintViolationException.class
 			}, {
@@ -143,12 +139,12 @@ public class PositionServiceTest extends AbstractTest {
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Date) testingData[i][3], (String) testingData[i][4], (Collection<String>) testingData[i][5], (Collection<String>) testingData[i][6],
+			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Collection<String>) testingData[i][5], (Collection<String>) testingData[i][6],
 				(Double) testingData[i][7], (Boolean) testingData[i][8], (Class<?>) testingData[i][9]);
 
 	}
 
-	protected void templateEdit(final String user, final String title, final String description, final Date deadline, final String profile, final Collection<String> skills, final Collection<String> technologies, final Double salary, final Boolean prop,
+	protected void templateEdit(final String user, final String title, final String description, final String deadline, final String profile, final Collection<String> skills, final Collection<String> technologies, final Double salary, final Boolean prop,
 		final Class<?> expected) {
 		Class<?> caught = null;
 		try {
@@ -163,7 +159,8 @@ public class PositionServiceTest extends AbstractTest {
 			}
 			pos.setTitle(title);
 			pos.setDescription(description);
-			pos.setDeadline(deadline);
+			final Date dead = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).parse(deadline);
+			pos.setDeadline(dead);
 			pos.setProfile(profile);
 			pos.setSkills(skills);
 			pos.setTechnologies(technologies);
@@ -184,38 +181,44 @@ public class PositionServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, false, null
+				//To FINAL mode correcto
+				"company1", 1, null
 			}, {
-				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, true, IllegalArgumentException.class
+				//To CANCELLED mode correcto
+				"company1", 2, null
+			}, {
+				//Error To CANCELLED from DRAFT
+				"company1", 3, IllegalArgumentException.class
+			}, {
+				//Error To FINAL because problems<2
+				"company1", 4, IllegalArgumentException.class
 			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateEdit2((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Date) testingData[i][3], (String) testingData[i][4], (Collection<String>) testingData[i][5], (Collection<String>) testingData[i][6],
-				(Double) testingData[i][7], (Boolean) testingData[i][8], (Class<?>) testingData[i][9]);
+			this.templateEdit2((String) testingData[i][0], (Integer) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 
-	protected void templateEdit2(final String user, final String title, final String description, final Date deadline, final String profile, final Collection<String> skills, final Collection<String> technologies, final Double salary, final Boolean prop,
-		final Class<?> expected) {
+	protected void templateEdit2(final String user, final Integer option, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
 			this.authenticate(user);
-			final Position pos;
-			if (!prop) {
+			Position pos = null;
+			if (option == 1) {
 				final Integer id = this.getEntityId("position1");
-				pos = this.positionService.findOne(id);
-			} else {
+				pos = this.positionService.toFinalMode(id);
+			} else if (option == 2) {
+				final Integer id = this.getEntityId("position1");
+				final Position fin = this.positionService.toFinalMode(id);
+				pos = this.positionService.toCancelMode(fin.getId());
+			} else if (option == 3) {
+				final Integer id = this.getEntityId("position1");
+				pos = this.positionService.toCancelMode(id);
+			} else if (option == 4) {
 				final Integer id = this.getEntityId("position2");
-				pos = this.positionService.findOne(id);
+				pos = this.positionService.toFinalMode(id);
 			}
-			pos.setTitle(title);
-			pos.setDescription(description);
-			pos.setDeadline(deadline);
-			pos.setProfile(profile);
-			pos.setSkills(skills);
-			pos.setTechnologies(technologies);
-			pos.setSalary(salary);
 			this.positionService.save(pos);
 			this.positionService.flush();
 			this.unauthenticate();
