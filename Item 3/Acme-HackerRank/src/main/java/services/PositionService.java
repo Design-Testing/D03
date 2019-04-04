@@ -135,11 +135,11 @@ public class PositionService {
 		return res;
 	}
 
-	public Collection<Position> findPositions(final String key) {
-		final Collection<Position> res = this.positionRepository.findPositions(key);
-		Assert.notNull(res);
-		return res;
-	}
+	//	public Collection<Position> findPositions(final String key) {
+	//		final Collection<Position> res = this.positionRepository.findPositions(key);
+	//		Assert.notNull(res);
+	//		return res;
+	//	}
 
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);

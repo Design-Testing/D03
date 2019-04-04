@@ -70,7 +70,7 @@ public class ProblemController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView res;
 		final Company company = this.companyService.findByPrincipal();
-		final Collection<Problem> problems = this.problemService.findProblemByCompany(company.getId());
+		final Collection<Problem> problems = this.problemService.findProblemByCompany();
 
 		res = new ModelAndView("problem/list");
 		res.addObject("company", company);
@@ -139,8 +139,7 @@ public class ProblemController extends AbstractController {
 	public ModelAndView finalMode(@RequestParam final int problemId) {
 		final ModelAndView result;
 		final Problem problem = this.problemService.findOne(problemId);
-		final Company company = this.companyService.findByPrincipal();
-		final Collection<Problem> problems = this.problemService.findProblemByCompany(company.getId());
+		final Collection<Problem> problems = this.problemService.findProblemByCompany();
 		Assert.isTrue(problems.contains(problem));
 		if (problem.getMode() == "DRAFT") {
 			this.problemService.toFinalMode(problemId);

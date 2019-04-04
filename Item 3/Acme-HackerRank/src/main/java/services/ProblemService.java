@@ -100,9 +100,10 @@ public class ProblemService {
 		return res;
 	}
 
-	public Collection<Problem> findProblemByCompany(final int companyId) {
+	public Collection<Problem> findProblemByCompany() {
+		final Company company = this.companyService.findByPrincipal();
 		Collection<Problem> res = new ArrayList<>();
-		res = this.problemRepository.findProblemByCompany(companyId);
+		res = this.problemRepository.findProblemsByCompany(company.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
