@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
+import security.Authority;
 import domain.Company;
+import domain.Position;
 import domain.Problem;
 
 @Service
@@ -22,6 +24,10 @@ public class ProblemService {
 
 	@Autowired
 	private CompanyService		companyService;
+	@Autowired
+	private MessageService		messageService;
+	@Autowired
+	private PositionService		positionService;
 
 	@Autowired
 	private MessageService		messageService;
@@ -51,14 +57,18 @@ public class ProblemService {
 		return result;
 	}
 
-	public Problem save(final Problem problem) {
+	public Problem save(final Problem problem, final int positionId) {
 		Assert.notNull(problem);
+		Assert.isTrue(positionId != 0);
 		final Problem res;
 		final Company company = this.companyService.findByPrincipal();
-		if (problem.getId() == 0)
+		this.actorService.checkAuthority(company, Authority.COMPANY);
+		if (problem.getId() == 0) {
+			final Position position = this.positionService.findOne(positionId);
+			position.getProblems().add(problem);
 			problem.setMode("DRAFT");
-		else {
-			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que está en FINAL MODE");
+		} else {
+			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que estï¿½ en FINAL MODE");
 			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
 		}
 		res = this.problemRepository.save(problem);
