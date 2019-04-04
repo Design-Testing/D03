@@ -1,16 +1,24 @@
 
 package services;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import forms.ActorForm;
 
 @Service
 @Transactional
@@ -27,6 +35,9 @@ public class AdministratorService {
 
 	@Autowired
 	private UserAccountService		userAccountService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	public Administrator create() {
@@ -81,34 +92,51 @@ public class AdministratorService {
 		return this.administratorRepository.findSystem();
 	}
 
-	public Administrator reconstruct(final ActorFrom actorForm) {
+	public Administrator reconstruct(final ActorForm actorForm, final BindingResult binding) {
 		Administrator admin;
 		if (actorForm.getId() == 0) {
 			admin = this.create();
 			admin.setName(actorForm.getName());
-			admin.setMiddleName(actorForm.getMiddleName());
 			admin.setSurname(actorForm.getSurname());
 			admin.setPhoto(actorForm.getPhoto());
 			admin.setPhone(actorForm.getPhone());
 			admin.setEmail(actorForm.getEmail());
 			admin.setAddress(actorForm.getAddress());
-			admin.setScore(0.0);
+			admin.setVat(actorForm.getVat());
+			admin.setCreditCard(actorForm.getCreditCard());
+			admin.setVersion(actorForm.getVersion());
+			//			admin.setScore(0.0);
 			admin.setSpammer(false);
-
+			final UserAccount account = this.userAccountService.create();
+			final Collection<Authority> authorities = new ArrayList<>();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.ADMIN);
+			authorities.add(auth);
+			account.setAuthorities(authorities);
+			account.setUsername(actorForm.getUserAccountuser());
+			account.setPassword(actorForm.getUserAccountpassword());
+			admin.setUserAccount(account);
 		} else {
 			admin = this.administratorRepository.findOne(actorForm.getId());
 			admin.setName(actorForm.getName());
-			admin.setMiddleName(actorForm.getMiddleName());
 			admin.setSurname(actorForm.getSurname());
 			admin.setPhoto(actorForm.getPhoto());
 			admin.setPhone(actorForm.getPhone());
 			admin.setEmail(actorForm.getEmail());
 			admin.setAddress(actorForm.getAddress());
+			admin.setVat(actorForm.getVat());
+			admin.setCreditCard(actorForm.getCreditCard());
+			admin.setVersion(actorForm.getVersion());
 			final UserAccount account = this.userAccountService.findOne(admin.getUserAccount().getId());
 			account.setUsername(actorForm.getUserAccountuser());
 			account.setPassword(actorForm.getUserAccountpassword());
 			admin.setUserAccount(account);
 		}
+
+		this.validator.validate(admin, binding);
+		if (binding.hasErrors())
+			throw new ValidationException();
+
 		return admin;
 	}
 

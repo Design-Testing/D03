@@ -26,13 +26,11 @@ public class ProblemController extends AbstractController {
 
 	//Listar, mostrar, crear, actualizar y borrar.
 	@Autowired
-	private ProblemService					problemService;
+	private ProblemService	problemService;
 	@Autowired
-	private PositionService					positionService;
+	private PositionService	positionService;
 	@Autowired
-	private CompanyService					companyService;
-	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
+	private CompanyService	companyService;
 
 
 	//Create
@@ -59,8 +57,6 @@ public class ProblemController extends AbstractController {
 			res = new ModelAndView("problem/display");
 			res.addObject("problem", problem);
 
-			final String banner = this.configurationParametersService.find().getBanner();
-			res.addObject("banner", banner);
 		} else
 			res = new ModelAndView("redirect:/misc/403.jsp");
 

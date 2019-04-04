@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,6 @@ public class CompanyService {
 
 	public Company create() {
 		final Company company = new Company();
-		final Collection<String> pictures = new ArrayList<>();
-		company.setPictures(pictures);
 		return company;
 	}
 

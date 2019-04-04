@@ -83,7 +83,6 @@ public class ProblemService {
 		Assert.isTrue(problem.getMode().equals("DRAFT"), "To set final mode, parade must be in draft mode");
 		problem.setMode("FINAL");
 		result = this.problemRepository.save(problem);
-		this.messageService.processionPublished(problem);
 		return result;
 	}
 
