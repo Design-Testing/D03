@@ -13,8 +13,8 @@
 
 <!-- Only brotherhood can access to this view -->
 
-<form:form action="parade/brotherhood/edit.do"
-	modelAttribute="parade">
+<form:form action="problem/company/edit.do"
+	modelAttribute="problem">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -30,7 +30,7 @@
 	<input type="submit" name="save"
 		value="<spring:message code="parade.save" />" />
 
-	<acme:button url="problem/list.do" name="cancel"
+	<acme:button url="problem/company/list.do" name="cancel"
 		code="problem.cancel" />
 
 </form:form>

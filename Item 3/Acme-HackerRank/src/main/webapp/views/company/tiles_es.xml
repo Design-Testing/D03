@@ -15,21 +15,20 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
       
 <tiles-definitions>
-
-	<definition name="problem/edit" extends="master.page">	
-		<put-attribute name="title" value="Editar problema" />
-		<put-attribute name="body" value="/views/problem/edit.jsp" />
+	
+	<definition name="company/edit" extends="master.page">	
+		<put-attribute name="title" value="Company: Editar" />
+		<put-attribute name="body" value="/views/company/edit.jsp" />
 	</definition>
 	
-	<definition name="problem/display" extends="master.page">	
-		<put-attribute name="title" value="Mostrar problema" />
-		<put-attribute name="body" value="/views/problem/display.jsp" />
+	<definition name="company/display" extends="master.page">	
+		<put-attribute name="title" value="Company Mostrar" />
+		<put-attribute name="body" value="/views/company/display.jsp" />
 	</definition>
 	
-	<definition name="problem/list" extends="master.page">	
-		<put-attribute name="title" value="Listar problemas" />
-		<put-attribute name="body" value="/views/problem/list.jsp" />
+	<definition name="company/list" extends="master.page">	
+		<put-attribute name="title" value="Compañia: Listar" />
+		<put-attribute name="body" value="/views/company/list.jsp" />
 	</definition>
-	
 	
 </tiles-definitions>

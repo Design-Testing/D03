@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
+import security.Authority;
 import domain.Company;
+import domain.Position;
 import domain.Problem;
 
 @Service
@@ -19,10 +21,18 @@ public class ProblemService {
 
 	@Autowired
 	private ProblemRepository	problemRepository;
-	@Autowired
-	private ActorService		actorService;
+
 	@Autowired
 	private CompanyService		companyService;
+
+	@Autowired
+	private MessageService		messageService;
+
+	@Autowired
+	private PositionService		positionService;
+
+	@Autowired
+	private ActorService		actorService;
 
 
 	//Metodos CRUD
@@ -49,20 +59,27 @@ public class ProblemService {
 		return result;
 	}
 
-	public Problem save(final Problem problem) {
+	public Problem save(final Problem problem, final int positionId) {
 		Assert.notNull(problem);
+		Assert.isTrue(positionId != 0);
 		final Problem res;
 		final Company company = this.companyService.findByPrincipal();
-		if (problem.getId() == 0)
+		this.actorService.checkAuthority(company, Authority.COMPANY);
+		if (problem.getId() == 0) {
+			final Position position = this.positionService.findOne(positionId);
+			problem.setPosition(position);
 			problem.setMode("DRAFT");
-		else {
-			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que está en FINAL MODE");
+		} else {
+			final Position position = this.positionService.findOne(positionId);
+			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que estï¿½ en FINAL MODE");
 			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
+			Assert.isTrue(problem.getPosition().equals(position), "Ese problema no pertenece a esa posición.");
+
 		}
 		res = this.problemRepository.save(problem);
 		return res;
 	}
-	
+
 	public void delete(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(problem.getId() != 0);
@@ -81,7 +98,6 @@ public class ProblemService {
 		Assert.isTrue(problem.getMode().equals("DRAFT"), "To set final mode, parade must be in draft mode");
 		problem.setMode("FINAL");
 		result = this.problemRepository.save(problem);
-		this.messageService.processionPublished(problem);
 		return result;
 	}
 
@@ -92,16 +108,17 @@ public class ProblemService {
 		return res;
 	}
 
-	public Collection<Problem> findProblemByPosition(final int positionId) {
+	public Collection<Problem> findProblemsByPosition(final int positionId) {
 		Collection<Problem> res = new ArrayList<>();
-		res = this.problemRepository.findProblemByPosition(positionId);
+		res = this.problemRepository.findProblemsByPosition(positionId);
 		Assert.notNull(res);
 		return res;
 	}
 
-	public Collection<Problem> findProblemByCompany(final int companyId) {
+	public Collection<Problem> findProblemByCompany() {
+		final Company company = this.companyService.findByPrincipal();
 		Collection<Problem> res = new ArrayList<>();
-		res = this.problemRepository.findProblemByCompany(companyId);
+		res = this.problemRepository.findProblemsByCompany(company.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}

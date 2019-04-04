@@ -1,23 +1,22 @@
 
-package domain;
+package forms;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
+
+import domain.DomainEntity;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Answer extends DomainEntity {
+public class ApplicationForm extends DomainEntity {
 
 	private String	explanation;
 	private String	link;
 
 
-	@NotBlank
 	public String getExplanation() {
 		return this.explanation;
 	}
@@ -26,7 +25,6 @@ public class Answer extends DomainEntity {
 		this.explanation = explanation;
 	}
 
-	@NotNull
 	@URL
 	public String getLink() {
 		return this.link;

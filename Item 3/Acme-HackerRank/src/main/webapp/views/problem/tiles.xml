@@ -25,5 +25,10 @@
 		<put-attribute name="body" value="/views/problem/list.jsp" />
 	</definition>
 	
+	<definition name="problem/error" extends="master.page">	
+		<put-attribute name="title" value="Problem: Error" />
+		<put-attribute name="body" value="/views/problem/error.jsp" />
+	</definition>
+	
 
 </tiles-definitions>

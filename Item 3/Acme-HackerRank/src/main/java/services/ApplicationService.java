@@ -11,16 +11,17 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ApplicationRepository;
 import security.Authority;
 import domain.Actor;
-import domain.Answer;
 import domain.Application;
 import domain.Company;
 import domain.Hacker;
-import domain.Position;
 import domain.Problem;
+import forms.ApplicationForm;
 
 @Service
 @Transactional
@@ -36,13 +37,13 @@ public class ApplicationService {
 	private CompanyService			companyService;
 
 	@Autowired
-	private AnswerService			answerService;
-
-	@Autowired
-	private PositionService			positionService;
-
-	@Autowired
 	private HackerService			hackerService;
+
+	@Autowired
+	private ProblemService			problemService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	public Application create() {
@@ -76,9 +77,7 @@ public class ApplicationService {
 		Assert.notNull(application);
 		Assert.isTrue(positionId != 0);
 		final Actor principal = this.actorService.findByPrincipal();
-		final Position position = this.positionService.findOne(positionId);
 		final Application result;
-		final Boolean isCompany = this.actorService.checkAuthority(principal, Authority.COMPANY);
 		final Boolean isHacker = this.actorService.checkAuthority(principal, Authority.HACKER);
 
 		if (isHacker) {
@@ -86,11 +85,13 @@ public class ApplicationService {
 				Assert.isTrue(isHacker);
 				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
 				List<Problem> problems = new ArrayList<>();
-				problems = (List<Problem>) position.getProblems();
+				problems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
 				final Integer numRandom = (int) (Math.random() * (problems.size() - 1));
 				final Problem assigned = problems.get(numRandom);
 				application.setProblem(assigned);
 				application.setStatus("PENDING");
+				application.setExplanation(null);
+				application.setLink(null);
 				final Date moment = new Date(System.currentTimeMillis() - 1);
 				application.setMoment(moment);
 				application.setSubmitMoment(null);
@@ -98,8 +99,6 @@ public class ApplicationService {
 			} else {
 				Assert.isTrue(application.getStatus() == "PENDING", "No puede actualizar una solicitud que no esté en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
-				final Answer answer = this.answerService.create();
-				this.answerService.save(answer, application.getId());
 				application.setStatus("SUBMITTED");
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
 				application.setSubmitMoment(submitMoment);
@@ -145,8 +144,7 @@ public class ApplicationService {
 	}
 
 	public Application apply(final int positionId) {
-		final Position position = this.positionService.findOne(positionId);
-		final Hacker hacker = this.hackerService.findByPrincipal();
+		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), Authority.HACKER));
 		final Application application = this.create();
 
 		final Application retreived = this.save(application, positionId);
@@ -155,51 +153,68 @@ public class ApplicationService {
 
 	public Collection<Application> findAllSubmittedByCompany() {
 		final Company principal = this.companyService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllSubmittedByCompany(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllSubmittedByCompany(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllAcceptedByCompany() {
 		final Company principal = this.companyService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllAcceptedByCompany(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllAcceptedByCompany(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllRejectedByCompany() {
 		final Company principal = this.companyService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllRejectedByCompany(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllRejectedByCompany(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllPendingByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllPendingByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllPendingByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllSubmittedByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllSubmittedByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllSubmittedByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllAcceptedByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllAcceptedByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllAcceptedByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllRejectedByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllRejectedByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllRejectedByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
+	}
+
+	public Application reconstruct(final ApplicationForm applicationForm, final BindingResult binding) {
+		Application result;
+
+		Assert.isTrue(applicationForm.getId() != 0);
+
+		result = this.findOne(applicationForm.getId());
+
+		result.setId(applicationForm.getId());
+		result.setVersion(applicationForm.getVersion());
+		result.setExplanation(applicationForm.getExplanation());
+		result.setLink(applicationForm.getLink());
+
+		this.validator.validate(result, binding);
+
+		return result;
 	}
 
 }

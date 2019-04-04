@@ -1,5 +1,5 @@
 
-package controllers.position;
+package controllers.company;
 
 import java.util.Collection;
 
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CompanyService;
 import services.PositionService;
+import services.ProblemService;
 import controllers.AbstractController;
 import domain.Company;
 import domain.Position;
@@ -31,6 +32,9 @@ public class PositionCompanyController extends AbstractController {
 
 	@Autowired
 	private CompanyService	companyService;
+
+	@Autowired
+	private ProblemService	problemService;
 
 	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -95,7 +99,7 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
-		if (position == null || !position.getMode().equals("DRAFT") || (position.getProblems().size() < 2))
+		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2))
 			result = new ModelAndView("redirect:position/error");
 		else {
 			this.positionService.toFinalMode(positionId);

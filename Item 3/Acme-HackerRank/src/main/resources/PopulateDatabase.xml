@@ -6,11 +6,8 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	">
-
-
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		
 	<!-- =================================================================== 
 		======= USER ACCOUNTS ========= =================================================================== -->
 
@@ -99,15 +96,19 @@
 		</property>
 	</bean>
 
-	<bean class="domain.Administrator" id="system">
-		<property value="AcmeParade" name="name" />
-		<property value="System" name="surname" />
-		<property value="" name="photo" />
-		<property value="correo@gmail.com" name="email" />
-		<property value="" name="phone" />
-		<property value="" name="address" />
-		<property value="0.21" name="vat" />
-		<property ref="creditCard1" name="creditCard" />
+	<bean id="system" class="domain.Administrator" >
+		<property name="name" value="AcmeParade" />
+		<property name="surname">
+		<list>
+			<value>System</value>
+		</list>
+		</property>
+		<property name="photo" value="" />
+		<property name="email" value="correo@gmail.com" />
+		<property name="phone" value="" />
+		<property name="address" value="" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard1" />
 		<property name="userAccount" ref="userAccountSystem" />
 	</bean>
 	<!-- ========================= ======== =========================== -->
@@ -117,28 +118,36 @@
 
 	<bean id="administrator1" class="domain.Administrator">
 		<!-- Actor -->
-		<property name="name" value="Admim1"></property>
-		<property name="surname" value="Gonzalez"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="conwdasto@jmsx.es"></property>
-		<property name="phone" value="+34647607406"></property>
-		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard2" name="creditCard" />
-		<property name="userAccount" ref="userAccountAdmin1"></property>
+		<property name="name" value="Admin1"/>
+		<property name="surname">
+		<list>
+			<value>Admin</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="conwdasto@jmsx.es"/>
+		<property name="phone" value="+34647607406"/>
+		<property name="address" value="Reina Mercedes"/>
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard2" />
+		<property name="userAccount" ref="userAccountAdmin1"/>
 	</bean>
 
 	<bean id="administrator2" class="domain.Administrator">
 		<!-- Actor -->
-		<property name="name" value="Admin2"></property>
-		<property name="surname" value="Gonzalez"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="lusi@gamil.es"></property>
-		<property name="phone" value="+34647307406"></property>
-		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard3" name="creditCard" />
-		<property name="userAccount" ref="userAccountAdmin2"></property>
+		<property name="name" value="Admin2"/>
+		<property name="surname">
+		<list>
+			<value>Gonzalez</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="lusi@gamil.es"/>
+		<property name="phone" value="+34647307406"/>
+		<property name="address" value="Reina Mercedes"/>
+		<property name="vat" value="0.21"/>
+		<property name="creditCard" ref="creditCard3" />
+		<property name="userAccount" ref="userAccountAdmin2"/>
 	</bean>
 
 
@@ -147,29 +156,37 @@
 
 	<bean id="hacker1" class="domain.Hacker">
 		<!-- Actor -->
-		<property name="name" value="Hacker1"></property>
-		<property name="surname" value="Garcia"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="garcia@gmail.es"></property>
-		<property name="phone" value="+34647307406"></property>
-		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard4" name="creditCard" />
-		<property name="userAccount" ref="userAccountHacker1"></property>
+		<property name="name" value="Hacker1"/>
+		<property name="surname">
+		<list>
+			<value>Garcia</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="garcia@gmail.es"/>
+		<property name="phone" value="+34647307406"/>
+		<property name="address" value="Reina Mercedes"/>
+		<property name="vat" value="0.21"/>
+		<property name="creditCard" ref="creditCard4" />
+		<property name="userAccount" ref="userAccountHacker1"/>
 		
 	</bean>
 	
 	<bean id="hacker2" class="domain.Hacker">
 		<!-- Actor -->
-		<property name="name" value="Hacker2"></property>
-		<property name="surname" value="Lanzas"></property>
-		<property name="photo" value="http://tinyurl.com/picture.png"></property>
-		<property name="email" value="lanzas@gmail.es"></property>
-		<property name="phone" value="+34647307406"></property>
-		<property name="address" value="Reina Mercedes"></property>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard5" name="creditCard" />
-		<property name="userAccount" ref="userAccountHacker2"></property>
+		<property name="name" value="Hacker2"/>
+		<property name="surname">
+		<list>
+			<value>Lanzas</value>
+		</list>
+		</property>
+		<property name="photo" value="http://tinyurl.com/picture.png"/>
+		<property name="email" value="lanzas@gmail.es"/>
+		<property name="phone" value="+34647307406"/>
+		<property name="address" value="Reina Mercedes"/>
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard5" />
+		<property name="userAccount" ref="userAccountHacker2"/>
 	</bean>
 
 	<!-- =================================================================== 
@@ -179,41 +196,37 @@
 	<bean id="company1" class="domain.Company">
 		<!-- Actor -->
 		<property name="name" value="Company1"/>
-		<property name="surname" value="Company's"/>
+		<property name="surname">
+		<list>
+			<value>Company's</value>
+		</list>
+		</property>
 		<property name="photo" value="http://tinyurl.com/picture.png"/>
 		<property name="email" value="company1@gmail.es"/>
 		<property name="phone" value="+34647307480"/>
 		<property name="address" value="Reina Mercedes"/>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard6" name="creditCard" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard6"/>
 		<property name="userAccount" ref="userAccountCompany1"/>
 		<property name="commercialName" value="commercialName1"/>
-		<property name="title" value="title 1"/>
-		<property name="date" value="2018/03/15 15:25"/>
-		<property name="pictures">
-			<list>
-			</list>
-		</property>
 	</bean>
 	
 	<bean id="company2" class="domain.Company">
 		<!-- Actor -->
 		<property name="name" value="Company2"/>
-		<property name="surname" value="Company's"/>
+		<property name="surname">
+		<list>
+			<value>Company's</value>
+		</list>
+		</property>
 		<property name="photo" value="http://tinyurl.com/picture.png"/>
 		<property name="email" value="company2@gmail.es"/>
 		<property name="phone" value="+34647307484"/>
 		<property name="address" value="Reina Mercedes"/>
-		<property value="0.21" name="vat" />
-		<property ref="creditCard7" name="creditCard" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard" ref="creditCard7" />
 		<property name="userAccount" ref="userAccountCompany2"/>
 		<property name="commercialName" value="commercialName2"/>
-		<property name="title" value="title 2"/>
-		<property name="date" value="2018/03/15 15:25"/>
-		<property name="pictures">
-			<list>
-			</list>
-		</property>
 	</bean>
 
 
@@ -456,7 +469,8 @@
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/03/16 15:20"/>
 		<property name="submitMoment" value="2018/03/16 15:25"/>
-		<property name="answer" ref="answer1"/>
+		<property name="explanation" value="Explanation Answer 1"/>
+		<property name="link" value="http://www.linkAnswer1.com"/>
 		<property name="position" ref="position1"/>
 		<property name="hacker" ref="hacker1"/>
 		<property name="problem" ref="problem1"/>
@@ -466,26 +480,12 @@
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/03/15 15:20"/>
 		<property name="submitMoment" value="2018/03/15 15:25"/>
-		<property name="answer" ref="answer2"/>
+		<property name="explanation" value="Explanation Answer 2"/>
+		<property name="link" value="http://www.linkAnswer2.com"/>
 		<property name="position" ref="position2"/>
 		<property name="hacker" ref="hacker2"/>
 		<property name="problem" ref="problem2"/>
-	</bean>
-	
-	<!-- =================================================================== 
-					======= Answer ========= 
-		=================================================================== -->
-		
-	<bean id="answer1" class="domain.Answer">
-		<property name="explanation" value="Explanation Answer 1"/>
-		<property name="link" value="http://www.linkAnswer1.com"/>
-	</bean>
-	
-	<bean id="answer2" class="domain.Answer">
-		<property name="explanation" value="Explanation Answer 2"/>
-		<property name="link" value="http://www.linkAnswer2.com"/>
-	</bean>
-	
+	</bean>	
 
 </beans>
 

@@ -27,9 +27,4 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 	@Query("select p from Position p where p.company.id=?1")
 	Collection<Position> findAllByCompany(int companyId);
 
-	//TODO:Hay que corregirla
-	@Query("select distinct p from Position p where p.mode='FINAL' AND (?1='' OR p.title LIKE CONCAT('%',?1,'%') OR p.description LIKE CONCAT('%',?1,'%') " + "OR p.profile LIKE CONCAT('%',?1,'%') OR p join p.skills s where s LIKE CONCAT('%',?1,'%') "
-		+ "OR p join p.technologies t where t LIKE CONCAT('%',?1,'%') OR p join p.company c where c.commercialName LIKE CONCAT('%',?1,'%'))")
-	Collection<Position> findPositions(String key);
-
 }

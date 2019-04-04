@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
-import security.Authority;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
@@ -105,7 +104,6 @@ public class PositionService {
 	public Collection<Position> findAllByPrincipal() {
 		Collection<Position> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
-		final Boolean isCompany = this.actorService.checkAuthority(principal, Authority.COMPANY);
 		res = this.positionRepository.findAllPositionByCompanyId(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
@@ -137,16 +135,16 @@ public class PositionService {
 		return res;
 	}
 
-	public Collection<Position> findPositions(final String key) {
-		final Collection<Position> res = this.positionRepository.findPositions(key);
-		Assert.notNull(res);
-		return res;
-	}
+	//	public Collection<Position> findPositions(final String key) {
+	//		final Collection<Position> res = this.positionRepository.findPositions(key);
+	//		Assert.notNull(res);
+	//		return res;
+	//	}
 
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(this.problemService.findProblemByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
+		Assert.isTrue(this.problemService.findProblemsByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;

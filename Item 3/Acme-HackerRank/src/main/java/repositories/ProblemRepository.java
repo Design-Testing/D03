@@ -15,10 +15,10 @@ public interface ProblemRepository extends JpaRepository<Problem, Integer> {
 	@Query("select a.problem from Application a where a.id=?1")
 	Problem findProblemByApplication(int applicationId);
 
-	@Query("select p.problems from Position p where p.id=?1")
-	Collection<Problem> findProblemByPosition(int positionId);
+	@Query("select p from Problem p where p.position.id=?1")
+	Collection<Problem> findProblemsByPosition(int positionId);
 
-	@Query("select p.problems from Position p where p.company.id=?1")
-	Collection<Problem> findProblemByCompany(int companyId);
+	@Query("select p from Problem p where p.company.userAccount.id=?1")
+	Collection<Problem> findProblemsByCompany(int companyUAId);
 
 }

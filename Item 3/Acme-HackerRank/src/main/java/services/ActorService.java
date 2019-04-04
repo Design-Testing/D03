@@ -232,12 +232,12 @@ public class ActorService {
 		return auths.contains(newAuth);
 	}
 
-	public Collection<Actor> findAllTooNegativeScore() {
-		this.administratorService.findByPrincipal();
-		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
-		Assert.notNull(result);
-		return result;
-	}
+	//	public Collection<Actor> findAllTooNegativeScore() {
+	//		this.administratorService.findByPrincipal();
+	//		final Collection<Actor> result = this.actorRepository.findAllTooNegativeScore();
+	//		Assert.notNull(result);
+	//		return result;
+	//	}
 
 	public void checkForSpamWords(final Actor a) {
 		final Collection<String> words = new ArrayList<>();
