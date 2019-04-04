@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
+import services.CompanyService;
 import controllers.AbstractController;
 import domain.Application;
 import domain.Company;
+import forms.ApplicationForm;
 
 @Controller
 @RequestMapping("/application/company")
@@ -137,15 +139,12 @@ public class ApplicationCompanyController extends AbstractController {
 		final Application application = this.applicationService.findOne(applicationId);
 
 		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.commit.error");
+			result = this.createEditModelAndView(application, "application.accept.error");
 			result.addObject("ok", false);
 		} else {
 			this.applicationService.acceptApplication(applicationId);
 			result = this.listAccepted();
 		}
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -157,15 +156,12 @@ public class ApplicationCompanyController extends AbstractController {
 		final Application application = this.applicationService.findOne(applicationId);
 
 		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.commit.error");
+			result = this.createEditModelAndView(application, "application.reject.error");
 			result.addObject("ok", false);
 		} else {
 			this.applicationService.rejectApplication(applicationId);
 			result = this.listAccepted();
 		}
-
-		final String banner = this.configurationParametersService.findBanner();
-		result.addObject("banner", banner);
 
 		return result;
 	}
@@ -185,11 +181,20 @@ public class ApplicationCompanyController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("application/edit");
-		result.addObject("application", application); // this.constructPruned(parade));
-
+		result.addObject("application", this.constructPruned(application));
 		result.addObject("message", messageCode);
 
 		return result;
 	}
 
+	public ApplicationForm constructPruned(final Application application) {
+		final ApplicationForm pruned = new ApplicationForm();
+
+		pruned.setId(application.getId());
+		pruned.setVersion(application.getVersion());
+		pruned.setExplanation(application.getExplanation());
+		pruned.setLink(application.getLink());
+
+		return pruned;
+	}
 }

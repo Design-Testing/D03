@@ -1,43 +1,36 @@
 
-package domain;
+package forms;
 
 import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import cz.jirutka.validator.collection.constraints.EachNotBlank;
+import domain.DomainEntity;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Position extends DomainEntity {
+public class PositionForm extends DomainEntity {
 
 	private String				title;
 	private String				description;
 	private Date				deadline;
-	private String				ticker;
 	private String				profile;
 	private Collection<String>	skills;
 	private Collection<String>	technologies;
 	private Double				salary;
-	private String				mode;
-
-	private Company				company;
 
 
 	@NotBlank
@@ -68,17 +61,6 @@ public class Position extends DomainEntity {
 
 	public void setDeadline(final Date deadline) {
 		this.deadline = deadline;
-	}
-
-	@NotBlank
-	@Column(unique = true)
-	@Pattern(regexp = "^[A-Z]{4}-[0-9]{4}$")
-	public String getTicker() {
-		return this.ticker;
-	}
-
-	public void setTicker(final String ticker) {
-		this.ticker = ticker;
 	}
 
 	@NotBlank
@@ -120,23 +102,4 @@ public class Position extends DomainEntity {
 		this.salary = salary;
 	}
 
-	@NotBlank
-	@Pattern(regexp = "^(DRAFT|FINAL|CANCELLED)$")
-	public String getMode() {
-		return this.mode;
-	}
-
-	public void setMode(final String mode) {
-		this.mode = mode;
-	}
-
-	@Valid
-	@ManyToOne(optional = false)
-	public Company getCompany() {
-		return this.company;
-	}
-
-	public void setCompany(final Company company) {
-		this.company = company;
-	}
 }

@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.URL;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Application extends DomainEntity {
@@ -19,8 +21,9 @@ public class Application extends DomainEntity {
 	private String		status;
 	private Date		moment;
 	private Date		submitMoment;
+	private String		explanation;
+	private String		link;
 
-	private Answer		answer;
 	private Position	position;
 	private Hacker		hacker;
 	private Problem		problem;
@@ -53,14 +56,21 @@ public class Application extends DomainEntity {
 		this.submitMoment = submitMoment;
 	}
 
-	@Valid
-	@OneToOne(optional = true)
-	public Answer getAnswer() {
-		return this.answer;
+	public String getExplanation() {
+		return this.explanation;
 	}
 
-	public void setAnswer(final Answer answer) {
-		this.answer = answer;
+	public void setExplanation(final String explanation) {
+		this.explanation = explanation;
+	}
+
+	@URL
+	public String getLink() {
+		return this.link;
+	}
+
+	public void setLink(final String link) {
+		this.link = link;
 	}
 
 	@Valid

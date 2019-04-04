@@ -55,6 +55,7 @@
 		<!-- ========================================================================================================= -->
 		
 		<security:authorize access="hasRole('COMPANY')">
+			<!-- APPLICATIONS -->
 			<li><a class="fNiv"><spring:message	code="master.page.applications" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -66,7 +67,36 @@
 				</ul>
 			</li>
 			
+			<!-- POSITION -->
+			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="position/company/create.do"><spring:message code="master.page.position.create" /></a></li>
+					<li><a href="position/company/myPositions.do"><spring:message code="master.page.position.myPositions" /></a></li>										
+				</ul>
+			</li>
+			
 		</security:authorize>
+		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================  HACKER  ================================================ -->
+		<!-- ========================================================================================================= -->
+		
+		<security:authorize access="hasRole('HACKER')">
+			<li><a class="fNiv"><spring:message	code="master.page.applications" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="application/hacker/create.do"><spring:message code="master.page.application.create" /></a></li>
+					<li><a href="application/hacker/listPending.do"><spring:message code="master.page.application.listPendig" /></a></li>
+					<li><a href="application/hacker/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
+					<li><a href="application/hacker/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
+					<li><a href="application/hacker/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
+					
+				</ul>
+			</li>
+			
+		</security:authorize>
+		
 		
 		
 		<security:authorize access="isAnonymous()">

@@ -18,10 +18,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
+import services.ActorService;
 import services.HackerService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
@@ -32,6 +34,9 @@ import forms.ActorForm;
 @Controller
 @RequestMapping("/hacker")
 public class HackerController extends AbstractController {
+
+	@Autowired
+	private ActorService		actorService;
 
 	@Autowired
 	private HackerService		hackerService;
@@ -60,7 +65,24 @@ public class HackerController extends AbstractController {
 		return result;
 	}
 
-	// DISPLAY -----------------------------------------------------------
+	// DISPLAY TABLA -----------------------------------------------------------
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView displayTabla(@RequestParam final int hackerId) {
+		final ModelAndView result;
+		final Hacker hacker = this.hackerService.findOne(hackerId);
+		if (hacker != null) {
+			result = new ModelAndView("hacker/display");
+			result.addObject("hacker", hacker);
+			result.addObject("displayButtons", true);
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
+
+		return result;
+
+	}
+
+	// DISPLAY PRINCIPAL -----------------------------------------------------------
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display() {

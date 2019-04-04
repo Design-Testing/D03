@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
-import security.Authority;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
-import domain.Problem;
+import forms.PositionForm;
 
 @Service
 @Transactional
@@ -29,10 +30,15 @@ public class PositionService {
 	@Autowired
 	private CompanyService		companyService;
 
+	@Autowired
+	private ProblemService		problemService;
+
+	@Autowired
+	private Validator			validator;
+
 
 	public Position create() {
 		final Position position = new Position();
-		position.setProblems(new ArrayList<Problem>());
 		final Company company = this.companyService.findByPrincipal();
 		position.setCompany(company);
 		return position;
@@ -98,7 +104,6 @@ public class PositionService {
 	public Collection<Position> findAllByPrincipal() {
 		Collection<Position> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
-		final Boolean isCompany = this.actorService.checkAuthority(principal, Authority.COMPANY);
 		res = this.positionRepository.findAllPositionByCompanyId(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
@@ -139,18 +144,39 @@ public class PositionService {
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(position.getProblems().size() >= 2, "Position must have 2 or more Problems associated.");
+		Assert.isTrue(this.problemService.findProblemsByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
 		result = this.save(position);
 		return result;
 	}
-
 	public Position toCancelMode(final int positionId) {
 		final Position position = this.findOne(positionId);
 		final Position result;
-		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posición en CANCELLED MODE debe de estar en FINAL MODE.");
+		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posiciï¿½n en CANCELLED MODE debe de estar en FINAL MODE.");
 		position.setMode("CANCELLED");
 		result = this.positionRepository.save(position);
+		return result;
+	}
+
+	public Position reconstruct(final PositionForm positionForm, final BindingResult binding) {
+		Position result;
+
+		Assert.isTrue(positionForm.getId() != 0);
+
+		result = this.findOne(positionForm.getId());
+
+		result.setId(positionForm.getId());
+		result.setVersion(positionForm.getVersion());
+		result.setTitle(positionForm.getTitle());
+		result.setDescription(positionForm.getDescription());
+		result.setProfile(positionForm.getProfile());
+		result.setDeadline(positionForm.getDeadline());
+		result.setSkills(positionForm.getSkills());
+		result.setTechnologies(positionForm.getTechnologies());
+		result.setSalary(positionForm.getSalary());
+
+		this.validator.validate(result, binding);
+
 		return result;
 	}
 
