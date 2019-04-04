@@ -153,49 +153,49 @@ public class ApplicationService {
 
 	public Collection<Application> findAllSubmittedByCompany() {
 		final Company principal = this.companyService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllSubmittedByCompany(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllSubmittedByCompany(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllAcceptedByCompany() {
 		final Company principal = this.companyService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllAcceptedByCompany(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllAcceptedByCompany(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllRejectedByCompany() {
 		final Company principal = this.companyService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllRejectedByCompany(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllRejectedByCompany(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllPendingByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllPendingByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllPendingByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllSubmittedByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllSubmittedByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllSubmittedByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllAcceptedByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllAcceptedByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllAcceptedByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
 
 	public Collection<Application> findAllRejectedByHacker() {
 		final Hacker principal = this.hackerService.findByPrincipal();
-		final Collection<Application> res = this.applicationRepository.findAllRejectedByHacker(principal.getId());
+		final Collection<Application> res = this.applicationRepository.findAllRejectedByHacker(principal.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}

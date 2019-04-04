@@ -28,13 +28,11 @@ public class ProblemCompanyController extends AbstractController {
 
 	//Listar, mostrar, crear, actualizar y borrar.
 	@Autowired
-	private ProblemService					problemService;
+	private ProblemService	problemService;
 	@Autowired
-	private PositionService					positionService;
+	private PositionService	positionService;
 	@Autowired
-	private CompanyService					companyService;
-	@Autowired
-	private ConfigurationParametersService	configurationParametersService;
+	private CompanyService	companyService;
 
 
 	//Create
@@ -61,8 +59,6 @@ public class ProblemCompanyController extends AbstractController {
 			res = new ModelAndView("problem/display");
 			res.addObject("problem", problem);
 
-			final String banner = this.configurationParametersService.find().getBanner();
-			res.addObject("banner", banner);
 		} else
 			res = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -76,7 +72,7 @@ public class ProblemCompanyController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView res;
 		final Company company = this.companyService.findByPrincipal();
-		final Collection<Problem> problems = this.problemService.findProblemByCompany(company.getId());
+		final Collection<Problem> problems = this.problemService.findProblemByCompany();
 
 		res = new ModelAndView("problem/list");
 		res.addObject("company", company);
@@ -145,8 +141,7 @@ public class ProblemCompanyController extends AbstractController {
 	public ModelAndView finalMode(@RequestParam final int problemId) {
 		final ModelAndView result;
 		final Problem problem = this.problemService.findOne(problemId);
-		final Company company = this.companyService.findByPrincipal();
-		final Collection<Problem> problems = this.problemService.findProblemByCompany(company.getId());
+		final Collection<Problem> problems = this.problemService.findProblemByCompany();
 		Assert.isTrue(problems.contains(problem));
 		if (problem.getMode() == "DRAFT") {
 			this.problemService.toFinalMode(problemId);

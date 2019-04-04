@@ -68,7 +68,7 @@ public class ProblemService {
 			position.getProblems().add(problem);
 			problem.setMode("DRAFT");
 		} else {
-			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que está en FINAL MODE");
+			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que estï¿½ en FINAL MODE");
 			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
 		}
 		res = this.problemRepository.save(problem);
@@ -93,7 +93,6 @@ public class ProblemService {
 		Assert.isTrue(problem.getMode().equals("DRAFT"), "To set final mode, parade must be in draft mode");
 		problem.setMode("FINAL");
 		result = this.problemRepository.save(problem);
-		//		this.messageService.processionPublished(problem);
 		return result;
 	}
 
@@ -111,9 +110,10 @@ public class ProblemService {
 		return res;
 	}
 
-	public Collection<Problem> findProblemByCompany(final int companyId) {
+	public Collection<Problem> findProblemByCompany() {
+		final Company company = this.companyService.findByPrincipal();
 		Collection<Problem> res = new ArrayList<>();
-		res = this.problemRepository.findProblemByCompany(companyId);
+		res = this.problemRepository.findProblemsByCompany(company.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
 	}
