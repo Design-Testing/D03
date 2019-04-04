@@ -24,13 +24,15 @@ public class ProblemService {
 
 	@Autowired
 	private CompanyService		companyService;
+
 	@Autowired
 	private MessageService		messageService;
+
 	@Autowired
 	private PositionService		positionService;
 
 	@Autowired
-	private MessageService		messageService;
+	private ActorService		actorService;
 
 
 	//Metodos CRUD
@@ -65,11 +67,14 @@ public class ProblemService {
 		this.actorService.checkAuthority(company, Authority.COMPANY);
 		if (problem.getId() == 0) {
 			final Position position = this.positionService.findOne(positionId);
-			position.getProblems().add(problem);
+			problem.setPosition(position);
 			problem.setMode("DRAFT");
 		} else {
+			final Position position = this.positionService.findOne(positionId);
 			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que estï¿½ en FINAL MODE");
 			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
+			Assert.isTrue(problem.getPosition().equals(position), "Ese problema no pertenece a esa posición.");
+
 		}
 		res = this.problemRepository.save(problem);
 		return res;

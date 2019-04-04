@@ -120,7 +120,7 @@ public class ProblemCompanyController extends AbstractController {
 			result = this.createEditModelAndView(problem);
 		else
 			try {
-				this.problemService.save(problem);
+				this.problemService.save(problem, problem.getPosition().getId());
 				result = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(problem, "problem.commit.error");
