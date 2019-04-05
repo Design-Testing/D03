@@ -52,7 +52,7 @@ public class CompanyController extends AbstractController {
 		final ModelAndView res;
 		final Collection<Company> companies = this.companyService.findAll();
 
-		res = new ModelAndView("problem/list");
+		res = new ModelAndView("company/list");
 		res.addObject("companies", companies);
 
 		return res;
@@ -64,7 +64,7 @@ public class CompanyController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
 		final ActorForm company = new ActorForm();
-		result = new ModelAndView("hacker/edit");
+		result = new ModelAndView("company/edit");
 		result.addObject("actorForm", company);
 		return result;
 	}
@@ -78,7 +78,7 @@ public class CompanyController extends AbstractController {
 		if (company != null) {
 			result = new ModelAndView("company/display");
 			result.addObject("company", company);
-			result.addObject("displayButtons", true);
+			result.addObject("displayButtons", false);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -180,7 +180,7 @@ public class CompanyController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final ActorForm actorForm, final String messageCode) {
 		final ModelAndView result;
 
-		result = new ModelAndView("hacker/edit");
+		result = new ModelAndView("company/edit");
 		result.addObject("actorForm", actorForm);
 
 		result.addObject("message", messageCode);

@@ -67,7 +67,7 @@ public class HackerController extends AbstractController {
 
 	// DISPLAY TABLA -----------------------------------------------------------
 
-	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	@RequestMapping(value = "/displayTabla", method = RequestMethod.GET)
 	public ModelAndView displayTabla(@RequestParam final int hackerId) {
 		final ModelAndView result;
 		final Hacker hacker = this.hackerService.findOne(hackerId);
