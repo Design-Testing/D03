@@ -86,7 +86,8 @@
 			<li><a class="fNiv"><spring:message	code="master.page.applications" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="application/hacker/listPending.do"><spring:message code="master.page.application.listPending" /></a></li>
+					<li><a href="application/hacker/create.do"><spring:message code="master.page.application.create" /></a></li>
+					<li><a href="application/hacker/listPending.do"><spring:message code="master.page.application.listPendig" /></a></li>
 					<li><a href="application/hacker/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
 					<li><a href="application/hacker/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
 					<li><a href="application/hacker/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
@@ -96,15 +97,10 @@
 			
 		</security:authorize>
 		
-		<!-- ========================================================================================================= -->
-		<!-- ========================================  ANONYMOUS  ================================================ -->
-		<!-- ========================================================================================================= -->
-				
+		
 		
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
-			<li><a class="fNiv" href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
-			<li><a class="fNiv" href="position/list.do"><spring:message code="master.page.position.list" /></a></li>
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
