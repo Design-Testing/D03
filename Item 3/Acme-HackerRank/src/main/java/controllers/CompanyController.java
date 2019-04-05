@@ -63,9 +63,9 @@ public class CompanyController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
-		final ActorForm company = new ActorForm();
+		final CompanyForm company = new CompanyForm();
 		result = new ModelAndView("company/edit");
-		result.addObject("actorForm", company);
+		result.addObject("companyForm", company);
 		return result;
 	}
 
@@ -169,19 +169,19 @@ public class CompanyController extends AbstractController {
 
 	// ANCILLARY METHODS  ---------------------------------------------------------------		
 
-	protected ModelAndView createEditModelAndView(final ActorForm actorForm) {
+	protected ModelAndView createEditModelAndView(final CompanyForm companyForm) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(actorForm, null);
+		result = this.createEditModelAndView(companyForm, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final ActorForm actorForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final CompanyForm companyForm, final String messageCode) {
 		final ModelAndView result;
 
 		result = new ModelAndView("company/edit");
-		result.addObject("actorForm", actorForm);
+		result.addObject("companyForm", companyForm);
 
 		result.addObject("message", messageCode);
 

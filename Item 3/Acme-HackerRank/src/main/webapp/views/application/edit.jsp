@@ -9,17 +9,13 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<form:form action="position/company/edit.do" modelAttribute="position" method="POST">
+<form:form action="application/hacker/edit.do" modelAttribute="application"  method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 
-	<acme:textbox code="position.title" path="title" />
-	<acme:textbox code="position.description" path="description" />
-	<acme:textbox code="position.deadline" path="deadline" />
-	<acme:textbox code="position.profile" path="profile" />
-	<acme:textbox code="position.skills" path="skills" />
-	<acme:textbox code="position.technologies" path="technologies" />
-	<acme:numberbox code="position.salary" path="salary" min="0" />
+	<acme:textarea code="application.explanation" path="explanation" />
+	<acme:textbox code="application.link" path="link" />
 
-	<acme:submit code="position.submit" name="save"/>
+
+	<acme:submit code="application.submit" name="save"/>
 </form:form>

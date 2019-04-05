@@ -10,9 +10,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<jstl:if test="${not empty rol}">
+	<jstl:set var="rolURL" value="/${rol}" />
+</jstl:if>
+
+<jstl:set var="chooseList" value="/list" />
+	<jstl:if test="${not empty listPositions}">
+		<jstl:set var="chooseList" value="${rolURL}/${listPositions}" />
+	</jstl:if>
 
 <display:table name="positions" id="row"
-		requestURI="position/company/myPositions.do" pagesize="5"
+		requestURI="position${chooseList}.do" pagesize="5"
 		class="displaytag">
 
 	<display:column property="ticker" titleKey="position.ticker" />
@@ -20,6 +28,10 @@
 	<display:column property="title" titleKey="position.title" />
 		
 	<acme:dataTableColumn property="deadline" code="position.deadline"/>
+	
+	<display:column>
+		<acme:button url="position/display.do?positionId=${row.id}" name="display" code="position.display"/>
+	</display:column>
 		
 	<security:authorize access="hasRole('COMPANY')">
 	<display:column>
@@ -30,8 +42,5 @@
 	</display:column>
 	</security:authorize>
 
-	<display:column>
-		<acme:button url="position/company/display.do?positionId=${row.id}" name="display" code="position.display"/>
-	</display:column>
-
+	
 </display:table>

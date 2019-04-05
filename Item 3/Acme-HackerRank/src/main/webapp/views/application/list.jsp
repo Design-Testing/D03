@@ -15,19 +15,21 @@
 </jstl:if>
 
 <jstl:set var="chooseList" value="/list" />
-	<jstl:if test="${not empty listParades}">
-		<jstl:set var="chooseList" value="${rolURL}/${listParades}" />
+	<jstl:if test="${not empty listApplications}">
+		<jstl:set var="chooseList" value="${rolURL}/${listApplications}" />
 	</jstl:if>
 
 <display:table name="applications" id="row"
 		requestURI="application${chooseList}.do" pagesize="5"
 		class="displaytag">
 
-	<display:column property="position" titleKey="application.position"/>
+	<display:column property="position.title" titleKey="application.position"/>
 
 	<display:column property="hacker" titleKey="application.hacker" />
 		
 	<display:column property="status" titleKey="application.status" />
+	
+	<display:column property="problem.title" titleKey="application.problem" />
 	
 	<security:authorize access="hasRole('COMPANY')">
 	<display:column>
@@ -54,11 +56,17 @@
 			</display:column>
 	</security:authorize>
 	
+	<security:authorize access="hasRole('COMPANY')">	
 	<display:column>
-		<a href="application/company/display.do?applicationId=${row.id}"> <spring:message
-				code="application.display" />
-		</a>
+		<acme:button url="application/company/display.do?applicationId=${row.id}" name="display" code="application.display" />
 	</display:column>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('HACKER')">	
+	<display:column>
+		<acme:button url="application/hacker/display.do?applicationId=${row.id}" name="display" code="application.display" />
+	</display:column>
+	</security:authorize>
 
 
 </display:table>

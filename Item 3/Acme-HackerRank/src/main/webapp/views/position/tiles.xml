@@ -18,12 +18,12 @@
 
 	<definition name="position/display" extends="master.page">	
 		<put-attribute name="title" value="Position: Display" />
-		<put-attribute name="body" value="/views/position/edit.jsp" />
+		<put-attribute name="body" value="/views/position/display.jsp" />
 	</definition>
 	
 	<definition name="position/list" extends="master.page">	
 		<put-attribute name="title" value="Position: List" />
-		<put-attribute name="body" value="/views/position/edit.jsp" />
+		<put-attribute name="body" value="/views/position/list.jsp" />
 	</definition>
 	
 	<definition name="position/edit" extends="master.page">	

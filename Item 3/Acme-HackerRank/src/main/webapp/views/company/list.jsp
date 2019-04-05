@@ -22,9 +22,7 @@
 
 	
 	<display:column>
-		<a href="company/display.do?companyId=${row.id}"> <spring:message
-				code="company.display" />
-		</a>
+	<acme:button url="company/display.do?companyId=${row.id}" name="display" code="company.display"/>
 	</display:column>
 
 

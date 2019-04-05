@@ -46,6 +46,34 @@ public class ApplicationCompanyController extends AbstractController {
 		result = new ModelAndView("application/display");
 		result.addObject("company", company);
 		result.addObject("application", application);
+		result.addObject("rol", "company");
+
+		return result;
+	}
+
+	// LIST --------------------------------------------------------
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		final ModelAndView result;
+		final Collection<Application> applications;
+
+		applications = this.applicationService.findAll();
+
+		String listApplications;
+		String rol;
+
+		listApplications = "list";
+		rol = "company";
+
+		result = new ModelAndView("application/list");
+		result.addObject("applications", applications);
+
+		result.addObject("lang", this.lang);
+		result.addObject("requetURI", "application/company/list.do");
+		result.addObject("listApplications", listApplications);
+		result.addObject("principalID", this.companyService.findByPrincipal().getId());
+		result.addObject("rol", rol);
 
 		return result;
 	}

@@ -51,10 +51,11 @@ public class PositionController extends AbstractController {
 		final ModelAndView result;
 		final Collection<Position> positions;
 
-		positions = this.positionService.findAll();
+		positions = this.positionService.findAllFinalMode();
 
 		result = new ModelAndView("position/list");
 		result.addObject("positions", positions);
+		result.addObject("listPositions", "list");
 		result.addObject("lang", this.lang);
 		result.addObject("requetURI", "position/list.do");
 		return result;

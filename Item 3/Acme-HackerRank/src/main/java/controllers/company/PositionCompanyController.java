@@ -86,6 +86,8 @@ public class PositionCompanyController extends AbstractController {
 		result = new ModelAndView("position/list");
 		result.addObject("positions", positions);
 		result.addObject("lang", this.lang);
+		result.addObject("rol", "company");
+		result.addObject("listPositions", "myPositions");
 		result.addObject("requetURI", "position/company/myPositions.do");
 		result.addObject("principalID", this.companyService.findByPrincipal().getId());
 
@@ -148,10 +150,10 @@ public class PositionCompanyController extends AbstractController {
 	// SAVE --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Position position, final BindingResult binding) {
+	public ModelAndView save(@Valid final PositionForm positionForm, final BindingResult binding) {
 		ModelAndView result;
 
-		// final Parade parade = this.paradeService.reconstruct(pform, binding);
+		final Position position = this.positionService.reconstruct(positionForm, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(position);

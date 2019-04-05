@@ -41,7 +41,7 @@
 			value="${application.moment}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
-
+<br>
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
 		<spring:message code="application.submitMoment" />: <fmt:formatDate
@@ -52,5 +52,44 @@
 			value="${application.submitMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
+<br><br>
+<jstl:if test="${not empty rol}">
+	<jstl:set var="rolURL" value="/${rol}" />
+</jstl:if>
+
+<security:authorize access="hasRole('HACKER')">
+
+<jstl:if test="${application.status eq 'PENDING'}">
+<acme:button url="application${rolURL}/listPending.do" name="back"
+	code="application.list.button" />
+</jstl:if>
+</security:authorize>
+
+<security:authorize access="hasRole('COMPANY')">
+
+<jstl:if test="${application.status eq 'PENDING'}">
+<acme:button url="application${rolURL}/list.do" name="back"
+	code="application.list.button" />
+</jstl:if>
+</security:authorize>
+
+<security:authorize access="hasAnyRole('COMPANY','HACKER')">
+
+<jstl:if test="${application.status eq 'ACCEPTED'}">
+<acme:button url="application${rolURL}/listAccepted.do" name="back"
+	code="application.list.button" />
+</jstl:if>
+
+<jstl:if test="${application.status eq 'REJECTED'}">
+<acme:button url="application${rolURL}/listRejected.do" name="back"
+	code="application.list.button" />
+</jstl:if>
+
+<jstl:if test="${application.status eq 'SUBMITTED'}">
+<acme:button url="application${rolURL}/listSubmitted.do" name="back"
+	code="application.list.button" />
+</jstl:if>
+</security:authorize>
+
 
 

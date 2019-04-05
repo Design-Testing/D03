@@ -35,7 +35,7 @@
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="problem/list.do"><spring:message code="master.page.problem" /></a></li>					
+					<li><a href="problem/company/list.do"><spring:message code="master.page.problem" /></a></li>					
 				</ul>
 			</li>
 		</security:authorize>
@@ -93,6 +93,8 @@
 					
 				</ul>
 			</li>
+			<li><a class="fNiv" href="position/list.do"><spring:message code="master.page.position.list" /></a></li>
+			
 			
 		</security:authorize>
 		
@@ -105,6 +107,9 @@
 			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
 			<li><a class="fNiv" href="position/list.do"><spring:message code="master.page.position.list" /></a></li>
+			<li><a class="fNiv" href="company/create.do"><spring:message code="master.page.company.register" /></a></li>
+			<li><a class="fNiv" href="hacker/create.do"><spring:message code="master.page.hacker.register" /></a></li>
+			
 		</security:authorize>
 		
 		<security:authorize access="isAuthenticated()">
