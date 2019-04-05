@@ -54,15 +54,7 @@ public class PositionServiceTest extends AbstractTest {
 			}, {
 				"company1", "Title", null, "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, ConstraintViolationException.class
 			}, {
-				"company1", "Title", "Description", "", "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, ConstraintViolationException.class
-			}, {
-				"company1", "Title", "Description", null, "Profile", new ArrayList<String>(), new ArrayList<String>(), 15000.0, ConstraintViolationException.class
-			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "", new ArrayList<String>(), new ArrayList<String>(), 15000.0, ConstraintViolationException.class
-			}, {
-				"company1", "Title", "Description", "2019-12-12 20:00", null, new ArrayList<String>(), new ArrayList<String>(), 15000.0, ConstraintViolationException.class
-			}, {
-				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", null, new ArrayList<String>(), 15000.0, ConstraintViolationException.class
 			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), null, 15000.0, ConstraintViolationException.class
 			}, {
@@ -188,7 +180,7 @@ public class PositionServiceTest extends AbstractTest {
 				"company1", 2, null
 			}, {
 				//Error To CANCELLED from DRAFT
-				"company1", 3, IllegalArgumentException.class
+				"company2", 3, IllegalArgumentException.class
 			}, {
 				//Error To FINAL because problems<2
 				"company1", 4, IllegalArgumentException.class
@@ -209,17 +201,15 @@ public class PositionServiceTest extends AbstractTest {
 				final Integer id = this.getEntityId("position1");
 				pos = this.positionService.toFinalMode(id);
 			} else if (option == 2) {
-				final Integer id = this.getEntityId("position1");
-				final Position fin = this.positionService.toFinalMode(id);
-				pos = this.positionService.toCancelMode(fin.getId());
+				final Integer id = this.getEntityId("position3");
+				pos = this.positionService.toCancelMode(id);
 			} else if (option == 3) {
-				final Integer id = this.getEntityId("position1");
+				final Integer id = this.getEntityId("position2");
 				pos = this.positionService.toCancelMode(id);
 			} else if (option == 4) {
-				final Integer id = this.getEntityId("position2");
+				final Integer id = this.getEntityId("position3");
 				pos = this.positionService.toFinalMode(id);
 			}
-			this.positionService.save(pos);
 			this.positionService.flush();
 			this.unauthenticate();
 		} catch (final Throwable oops) {
@@ -229,4 +219,46 @@ public class PositionServiceTest extends AbstractTest {
 		super.checkExceptions(expected, caught);
 
 	}
+
+	@Test
+	public void driverDelete() {
+
+		final Object testingData[][] = {
+			//			{
+			//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
+			//				//			B: Test Positivo: Brotherhood borra LegalRecord 
+			//				//			C: 100% Recorre 78 de las 78 lineas posibles
+			//				//			D: cobertura de datos=1/3
+			//				"company1", null
+			//			}, 
+			{
+				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
+				//			B: Test Negativo: Member intenta borrar LegalRecord 
+				//			C: 10,25% Recorre 8 de las 78 lineas posibles
+				//			D: cobertura de datos=1/3
+				"hacker1", IllegalArgumentException.class
+			},
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateDelete((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
+
+	private void templateDelete(final String actor, final Class<?> expected) {
+		Class<?> caught = null;
+		try {
+			this.authenticate(actor);
+			final Integer id = this.getEntityId("position1");
+			final Position pos = this.positionService.findOne(id);
+			this.positionService.delete(pos);
+			this.positionService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		super.checkExceptions(expected, caught);
+
+	}
+
 }

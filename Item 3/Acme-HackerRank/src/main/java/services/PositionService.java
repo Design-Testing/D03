@@ -91,7 +91,6 @@ public class PositionService {
 		result = this.positionRepository.save(position);
 		return result;
 	}
-
 	public void delete(final Position position) {
 		Assert.notNull(position);
 		Assert.isTrue(position.getId() != 0);
@@ -118,22 +117,22 @@ public class PositionService {
 		final String word = companyName.substring(0, 4).toUpperCase();
 		final String ticker = word + '-' + n1 + n2 + n3 + n4;
 		res = ticker;
-
-		if (this.hasDuplicate(res))
+		final Collection<Position> pos = this.positionRepository.getPositionWithTicker(ticker);
+		if (pos.isEmpty())
 			this.generateTicker(companyName);
 		return res;
 	}
 
-	private boolean hasDuplicate(final String ticker) {
-		boolean res = true;
-		try {
-			if (this.positionRepository.getPositionWithTicker(ticker).isEmpty())
-				res = false;
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
+	//	private boolean hasDuplicate(final String ticker) {
+	//		boolean res = true;
+	//		try {
+	//			if (this.positionRepository.getPositionWithTicker(ticker).isEmpty())
+	//				res = false;
+	//		} catch (final Exception e) {
+	//			e.printStackTrace();
+	//		}
+	//		return res;
+	//	}
 
 	//	public Collection<Position> findPositions(final String key) {
 	//		final Collection<Position> res = this.positionRepository.findPositions(key);
@@ -142,16 +141,24 @@ public class PositionService {
 	//	}
 
 	public Position toFinalMode(final int positionId) {
+		final Company principal = this.companyService.findByPrincipal();
 		final Position position = this.findOne(positionId);
+		Assert.notNull(position);
 		final Position result;
+		Assert.isTrue(position.getCompany().equals(principal));
+		Assert.isTrue(position.getMode().equals("DRAFT"), "This position can't be modified");
 		Assert.isTrue(this.problemService.findProblemsByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		position.setMode("FINAL");
-		result = this.save(position);
+		result = this.positionRepository.save(position);
 		return result;
 	}
+
 	public Position toCancelMode(final int positionId) {
+		final Company principal = this.companyService.findByPrincipal();
 		final Position position = this.findOne(positionId);
+		Assert.notNull(position);
 		final Position result;
+		Assert.isTrue(position.getCompany().equals(principal));
 		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posici�n en CANCELLED MODE debe de estar en FINAL MODE.");
 		position.setMode("CANCELLED");
 		result = this.positionRepository.save(position);

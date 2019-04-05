@@ -408,11 +408,34 @@
 		</property>
 		<property name="technologies">
 			<list>
-				<value>Technology1 for position 1</value>
+				<value>Technology1 for position 2</value>
 			</list>
 		</property>
 		<!-- Relations -->
 		<property name="company" ref="company2" />
+	</bean>
+	
+	<bean id="position3" class="domain.Position">
+		<property name="title" value="Position 3" />
+		<property name="description" value="Description position 3" />
+		<property name="deadline" value="2019/05/24 00:00" />
+		<property name="ticker" value="COMM-1237" />
+		<property name="profile" value="Profile for position 3" />
+		<property name="salary" value="1650.0" />
+		<property name="mode" value="FINAL" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 3</value>
+				<value>Skill2 for position 3</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 3</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
 	</bean>
 	
 	<!-- =================================================================== 
