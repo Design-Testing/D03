@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
-import security.Authority;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
@@ -24,9 +23,6 @@ public class ProblemService {
 
 	@Autowired
 	private CompanyService		companyService;
-
-	@Autowired
-	private MessageService		messageService;
 
 	@Autowired
 	private PositionService		positionService;
@@ -64,13 +60,12 @@ public class ProblemService {
 		Assert.isTrue(positionId != 0);
 		final Problem res;
 		final Company company = this.companyService.findByPrincipal();
-		this.actorService.checkAuthority(company, Authority.COMPANY);
+		final Position position = this.positionService.findOne(positionId);
+		Assert.isTrue(this.companyService.findCompanyByPosition(position.getId()).equals(company));
 		if (problem.getId() == 0) {
-			final Position position = this.positionService.findOne(positionId);
 			problem.setPosition(position);
 			problem.setMode("DRAFT");
 		} else {
-			final Position position = this.positionService.findOne(positionId);
 			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que estï¿½ en FINAL MODE");
 			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
 			Assert.isTrue(problem.getPosition().equals(position), "Ese problema no pertenece a esa posición.");
@@ -79,7 +74,6 @@ public class ProblemService {
 		res = this.problemRepository.save(problem);
 		return res;
 	}
-
 	public void delete(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(problem.getId() != 0);
@@ -92,6 +86,7 @@ public class ProblemService {
 
 	public Problem toFinalMode(final int problemId) {
 		final Problem problem = this.findOne(problemId);
+		Assert.notNull(problem);
 		final Problem result;
 		final Company company = this.companyService.findByPrincipal();
 		Assert.isTrue(problem.getCompany() == company, "Actor who want to edit parade mode to FINAL is not his owner");
@@ -121,6 +116,10 @@ public class ProblemService {
 		res = this.problemRepository.findProblemsByCompany(company.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
+	}
+
+	public void flush() {
+		this.problemRepository.flush();
 	}
 
 }
