@@ -26,20 +26,40 @@
 	<display:column property="ticker" titleKey="position.ticker" />
 
 	<display:column property="title" titleKey="position.title" />
+	
+	<display:column property="mode" titleKey="position.mode" />
 		
 	<acme:dataTableColumn property="deadline" code="position.deadline"/>
 	
 	<display:column>
+	<jstl:choose>
+	<jstl:when test="${rol eq 'company' }">
+		<acme:button url="position/company/display.do?positionId=${row.id}" name="display" code="position.display"/>
+	</jstl:when>
+	<jstl:otherwise>
 		<acme:button url="position/display.do?positionId=${row.id}" name="display" code="position.display"/>
+	</jstl:otherwise>
+	</jstl:choose>
 	</display:column>
+	
 		
 	<security:authorize access="hasRole('COMPANY')">
-	<display:column>
-		<acme:button url="position/company/delete.do?positionId=${row.id}" name="delete" code="position.delete"/>
-	</display:column>
+		<jstl:if test="${row.mode eq 'DRAFT'}">
 	<display:column>
 		<acme:button url="position/company/edit.do?positionId=${row.id}" name="edit" code="position.edit"/>
 	</display:column>
+	<display:column>
+		<acme:button url="position/company/finalMode.do?positionId=${row.id}" name="edit" code="position.finalMode"/>
+	</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${row.mode eq 'FINAL'}">
+	<display:column>
+		<acme:button url="position/company/cancelledMode.do?positionId=${row.id}" name="edit" code="position.cancelledMode"/>
+	</display:column>
+	</jstl:if>
+	
+	
 	</security:authorize>
 
 	

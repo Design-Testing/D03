@@ -82,7 +82,6 @@ public class ApplicationService {
 
 		if (isHacker) {
 			if (application.getId() == 0) {
-				Assert.isTrue(isHacker);
 				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
 				List<Problem> problems = new ArrayList<>();
 				problems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
@@ -98,16 +97,22 @@ public class ApplicationService {
 
 			} else {
 				Assert.isTrue(application.getStatus() == "PENDING", "No puede actualizar una solicitud que no esté en estado PENDING.");
+				System.out.println("Pasa el 1 assert");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
+				System.out.println("Pasa el 2 assert");
 				application.setStatus("SUBMITTED");
+				System.out.println(application.getStatus());
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
 				application.setSubmitMoment(submitMoment);
+				System.out.println(application.getSubmitMoment());
 			}
 		} else { //COMPANY
 			Assert.isTrue(application.getPosition().getCompany() == this.companyService.findByPrincipal(), "No puede actualizar una solicitud que no le pertenece.");
 			Assert.isTrue(application.getStatus() == "SUBMITTED");
 		}
+		System.out.println("Justo antes de guardar");
 		result = this.applicationRepository.save(application);
+		System.out.println("Application guardada: " + result.getStatus() + result.getSubmitMoment());
 		return result;
 	}
 	public void delete(final Application application) {

@@ -474,19 +474,26 @@
 	</bean>
 	
 	<bean id="application2" class="domain.Application">
-		<property name="status" value="PENDING"/>
+		<property name="status" value="SUBMITTED"/>
 		<property name="moment" value="2018/03/15 15:21"/>
 		<property name="hacker" ref="hacker1"/>
 		<property name="position" ref="position1"/>
 		<property name="problem" ref="problem2"/>
+		<property name="explanation" value="Explanation application 2"/>
+		<property name="link" value="http://www.linkAnswer2.com"/>
+		<property name="submitMoment" value="2018/03/16 15:29"></property>
+		
 	</bean>	
 	
 		<bean id="application3" class="domain.Application">
-		<property name="status" value="PENDING"/>
+		<property name="status" value="SUBMITTED"/>
 		<property name="moment" value="2018/03/16 15:22"/>
 		<property name="hacker" ref="hacker1"/>
 		<property name="position" ref="position2"/>
 		<property name="problem" ref="problem3"/>
+		<property name="explanation" value="Explanation application 3"/>
+		<property name="link" value="http://www.linkAnswer3.com"/>
+		<property name="submitMoment" value="2018/03/16 15:30"></property>
 	</bean>
 
 	

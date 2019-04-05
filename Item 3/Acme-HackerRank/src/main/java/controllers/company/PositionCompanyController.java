@@ -62,10 +62,11 @@ public class PositionCompanyController extends AbstractController {
 		position = this.positionService.findOne(positionId);
 		company = this.companyService.findByPrincipal();
 
-		if (position != null && position.getMode().equals("FINAL")) {
+		if (position != null) {
 			result = new ModelAndView("position/display");
 			result.addObject("position", position);
 			result.addObject("company", company);
+			result.addObject("rol", "company");
 			result.addObject("lang", this.lang);
 
 		} else
@@ -101,9 +102,10 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
-		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2))
-			result = new ModelAndView("redirect:position/error");
-		else {
+		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2)) {
+			result = new ModelAndView("redirect:/position/error");
+			result.addObject("ok", "Error al pasar a final mode la posición.");
+		} else {
 			this.positionService.toFinalMode(positionId);
 			result = this.myPositions();
 		}
@@ -119,7 +121,7 @@ public class PositionCompanyController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 
 		if (position == null || !position.getMode().equals("FINAL"))
-			result = new ModelAndView("redirect:position/error");
+			result = new ModelAndView("redirect:/position/error");
 		else {
 			this.positionService.toCancelMode(positionId);
 			result = this.myPositions();
@@ -160,9 +162,9 @@ public class PositionCompanyController extends AbstractController {
 		else
 			try {
 				this.positionService.save(position);
-				result = new ModelAndView("redirect:list.do");
+				result = new ModelAndView("redirect:myPositions.do");
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:position/error");
+				result = new ModelAndView("redirect:/position/error");
 			}
 
 		return result;
@@ -170,15 +172,15 @@ public class PositionCompanyController extends AbstractController {
 
 	// DELETE --------------------------------------------------------
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Position position, final BindingResult binding) {
 		ModelAndView result;
 
 		try {
 			this.positionService.delete(position);
-			result = new ModelAndView("redirect:list.do");
+			result = new ModelAndView("redirect:myPositions.do");
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:position/error");
+			result = new ModelAndView("redirect:/position/error");
 		}
 
 		return result;

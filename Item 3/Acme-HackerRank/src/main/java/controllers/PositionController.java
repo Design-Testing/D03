@@ -33,7 +33,7 @@ public class PositionController extends AbstractController {
 
 		position = this.positionService.findOne(positionId);
 
-		if (position != null && position.getMode().equals("FINAL")) {
+		if (position != null) {
 			result = new ModelAndView("position/display");
 			result.addObject("position", position);
 			result.addObject("lang", this.lang);

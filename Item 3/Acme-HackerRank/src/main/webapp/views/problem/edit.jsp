@@ -28,7 +28,7 @@
 	<h5 style="color: red;"><spring:message code="collection.attachments"/></h5>
 
 	<input type="submit" name="save"
-		value="<spring:message code="parade.save" />" />
+		value="<spring:message code="problem.save" />" />
 
 	<acme:button url="problem/company/list.do" name="cancel"
 		code="problem.cancel" />

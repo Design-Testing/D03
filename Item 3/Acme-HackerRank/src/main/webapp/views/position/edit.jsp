@@ -20,6 +20,9 @@
 	<acme:textbox code="position.skills" path="skills" />
 	<acme:textbox code="position.technologies" path="technologies" />
 	<acme:numberbox code="position.salary" path="salary" min="0" />
-
+<br>
 	<acme:submit code="position.submit" name="save"/>
+	<acme:button url="position/company/delete.do?positionId=${row.id}" name="delete" code="position.delete"/>
+	<acme:button url="position/company/myPositions.do" name="back" code="position.back"/>
+
 </form:form>
