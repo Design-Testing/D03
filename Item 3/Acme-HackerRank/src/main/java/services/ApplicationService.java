@@ -45,6 +45,9 @@ public class ApplicationService {
 	@Autowired
 	private Validator				validator;
 
+	@Autowired
+	private PositionService			positionService;
+
 
 	public Application create() {
 		final Application application = new Application();
@@ -85,6 +88,7 @@ public class ApplicationService {
 				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
 				List<Problem> problems = new ArrayList<>();
 				problems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
+				System.out.println(problems);
 				final Integer numRandom = (int) (Math.random() * (problems.size() - 1));
 				final Problem assigned = problems.get(numRandom);
 				application.setProblem(assigned);
@@ -94,12 +98,12 @@ public class ApplicationService {
 				final Date moment = new Date(System.currentTimeMillis() - 1);
 				application.setMoment(moment);
 				application.setSubmitMoment(null);
+				application.setHacker(this.hackerService.findByPrincipal());
+				application.setPosition(this.positionService.findOne(positionId));
 
 			} else {
 				Assert.isTrue(application.getStatus() == "PENDING", "No puede actualizar una solicitud que no esté en estado PENDING.");
-				System.out.println("Pasa el 1 assert");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
-				System.out.println("Pasa el 2 assert");
 				application.setStatus("SUBMITTED");
 				System.out.println(application.getStatus());
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
@@ -110,9 +114,7 @@ public class ApplicationService {
 			Assert.isTrue(application.getPosition().getCompany() == this.companyService.findByPrincipal(), "No puede actualizar una solicitud que no le pertenece.");
 			Assert.isTrue(application.getStatus() == "SUBMITTED");
 		}
-		System.out.println("Justo antes de guardar");
 		result = this.applicationRepository.save(application);
-		System.out.println("Application guardada: " + result.getStatus() + result.getSubmitMoment());
 		return result;
 	}
 	public void delete(final Application application) {

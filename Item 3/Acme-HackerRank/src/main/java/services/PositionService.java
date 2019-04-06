@@ -166,9 +166,10 @@ public class PositionService {
 	public Position reconstruct(final PositionForm positionForm, final BindingResult binding) {
 		Position result;
 
-		Assert.isTrue(positionForm.getId() != 0);
-
-		result = this.findOne(positionForm.getId());
+		if (positionForm.getId() == 0)
+			result = this.create();
+		else
+			result = this.findOne(positionForm.getId());
 
 		result.setId(positionForm.getId());
 		result.setVersion(positionForm.getVersion());
@@ -181,6 +182,9 @@ public class PositionService {
 		result.setSalary(positionForm.getSalary());
 
 		this.validator.validate(result, binding);
+
+		//		if (binding.hasErrors())
+		//			throw new ValidationException();
 
 		return result;
 	}

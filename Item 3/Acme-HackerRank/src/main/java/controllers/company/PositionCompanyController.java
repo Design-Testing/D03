@@ -172,9 +172,10 @@ public class PositionCompanyController extends AbstractController {
 
 	// DELETE --------------------------------------------------------
 
-	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Position position, final BindingResult binding) {
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int positionId) {
 		ModelAndView result;
+		final Position position = this.positionService.findOne(positionId);
 
 		try {
 			this.positionService.delete(position);

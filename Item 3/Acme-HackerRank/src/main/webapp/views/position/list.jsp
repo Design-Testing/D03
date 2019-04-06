@@ -41,13 +41,23 @@
 	</jstl:otherwise>
 	</jstl:choose>
 	</display:column>
-	
+		
+	<security:authorize access="hasRole('HACKER')">
+	<display:column>
+		<acme:button url="application/hacker/create.do?positionId=${row.id}" name="apply" code="position.application"/>
+	</display:column>
+	</security:authorize>
 		
 	<security:authorize access="hasRole('COMPANY')">
 		<jstl:if test="${row.mode eq 'DRAFT'}">
 	<display:column>
 		<acme:button url="position/company/edit.do?positionId=${row.id}" name="edit" code="position.edit"/>
 	</display:column>
+	
+	<display:column>
+		<acme:button url="position/company/delete.do?positionId=${row.id}" name="delete" code="position.delete"/>
+	</display:column>
+	
 	<display:column>
 		<acme:button url="position/company/finalMode.do?positionId=${row.id}" name="edit" code="position.finalMode"/>
 	</display:column>
@@ -58,7 +68,6 @@
 		<acme:button url="position/company/cancelledMode.do?positionId=${row.id}" name="edit" code="position.cancelledMode"/>
 	</display:column>
 	</jstl:if>
-	
 	
 	</security:authorize>
 

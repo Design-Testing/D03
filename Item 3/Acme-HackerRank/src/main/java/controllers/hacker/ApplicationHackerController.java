@@ -19,6 +19,7 @@ import services.ApplicationService;
 import services.HackerService;
 import services.PositionService;
 import controllers.AbstractController;
+import controllers.PositionController;
 import domain.Application;
 import domain.Hacker;
 import domain.Position;
@@ -37,6 +38,9 @@ public class ApplicationHackerController extends AbstractController {
 	@Autowired
 	private PositionService		positionService;
 
+	@Autowired
+	private PositionController	positionController;
+
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
@@ -49,7 +53,7 @@ public class ApplicationHackerController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 
 		final Application application = this.applicationService.apply(positionId);
-		result = this.listPending();
+		result = this.positionController.myPositions();
 
 		result.addObject("application", application);
 		result.addObject("hacker", hacker);
@@ -216,9 +220,9 @@ public class ApplicationHackerController extends AbstractController {
 		else
 			try {
 				this.applicationService.save(application, application.getPosition().getId());
-				result = new ModelAndView("redirect:list.do");
+				result = this.listSubmitted();
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:application/error");
+				result = new ModelAndView("redirect:/application/error");
 			}
 
 		return result;
