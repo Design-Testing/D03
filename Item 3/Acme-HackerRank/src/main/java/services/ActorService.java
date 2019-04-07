@@ -161,26 +161,26 @@ public class ActorService {
 
 	// =========================================== Admin =================================================
 
-	//	public void banActor(final Actor a) {
-	//		Assert.notNull(a);
-	//		Assert.isTrue(a.getId() != 0);
-	//
-	//		this.administratorService.findByPrincipal();
-	//
-	//		final UserAccount user = a.getUserAccount();
-	//		final Collection<Authority> auths = user.getAuthorities();
-	//		final Authority auth = new Authority();
-	//
-	//		auth.setAuthority(Authority.BANNED);
-	//		auths.add(auth);
-	//		user.setAuthorities(auths);
-	//
-	//		Assert.isTrue(a.getSpammer() || (a.getScore() < -0.5), "Para banear un actor este debe ser spammer o tener una puntuación menor que -0.5");
-	//		this.userAccountService.save(user);
-	//
-	//		this.update(a);
-	//	}
+	public void banActor(final Actor a) {
+		Assert.notNull(a);
+		Assert.isTrue(a.getId() != 0);
 
+		this.administratorService.findByPrincipal();
+
+		final UserAccount user = a.getUserAccount();
+		final Collection<Authority> auths = user.getAuthorities();
+		final Authority auth = new Authority();
+
+		auth.setAuthority(Authority.BANNED);
+		auths.add(auth);
+		user.setAuthorities(auths);
+
+		// TODO
+		Assert.isTrue(a.getSpammer() /* || (a.getScore() < -0.5) */, "Para banear un actor este debe ser spammer o tener una puntuación menor que -0.5");
+		this.userAccountService.save(user);
+
+		this.update(a);
+	}
 	public void unbanActor(final Actor a) {
 		Assert.notNull(a);
 		Assert.isTrue(a.getId() != 0);

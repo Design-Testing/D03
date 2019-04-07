@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
 import security.UserAccount;
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -53,6 +54,7 @@ public class Actor extends DomainEntity {
 	}
 
 	@ElementCollection
+	@EachNotBlank
 	public Collection<String> getSurname() {
 		return this.surname;
 	}
