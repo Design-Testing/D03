@@ -10,7 +10,7 @@ import domain.Curricula;
 @Repository
 public interface CurriculaRepository extends JpaRepository<Curricula, Integer> {
 
-	/** The average, minimum, maximum and standard deviation of the number of positions per company */
+	/** The average, minimum, maximum and standard deviation of the number of curricula per hacker */
 	@Query("select avg(1.0+ (select count(p) from Curricula p where p.hacker.id=c.id) -1.0), min(1.0+ (select count(p) from Curricula p where p.hacker.id=c.id) -1.0), max(1.0+ (select count(p) from Curricula p where p.hacker.id=c.id) -1.0), stddev(1.0+ (select count(p) from Curricula p where p.hacker.id=c.id) -1.0) from Hacker c")
 	Double[] getStatisticsOfCurriculaPerHacker();
 }
