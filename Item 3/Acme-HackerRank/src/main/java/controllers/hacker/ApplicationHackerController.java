@@ -199,7 +199,7 @@ public class ApplicationHackerController extends AbstractController {
 
 		final Hacker hacker = this.hackerService.findByPrincipal();
 
-		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker))
+		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker) && application.getExplanation() == null && application.getLink() == null)
 			result = this.createEditModelAndView(application);
 		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
@@ -222,7 +222,7 @@ public class ApplicationHackerController extends AbstractController {
 				this.applicationService.save(application, application.getPosition().getId());
 				result = this.listSubmitted();
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/application/error");
+				result = new ModelAndView("redirect:/misc/403.jsp");
 			}
 
 		return result;

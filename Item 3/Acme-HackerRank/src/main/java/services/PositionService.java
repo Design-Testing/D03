@@ -39,8 +39,6 @@ public class PositionService {
 
 	public Position create() {
 		final Position position = new Position();
-		final Company company = this.companyService.findByPrincipal();
-		position.setCompany(company);
 		return position;
 	}
 
@@ -85,8 +83,9 @@ public class PositionService {
 			Assert.isTrue(position.getMode().equals("DRAFT"), "No puede modificar una posición que ya no esta en DRAFT MODE.");
 		} else {
 			position.setMode("DRAFT");
-			final String ticker = this.generateTicker(position.getCompany().getCommercialName());
+			final String ticker = this.generateTicker(principal.getCommercialName());
 			position.setTicker(ticker);
+			position.setCompany(principal);
 		}
 		result = this.positionRepository.save(position);
 		return result;
@@ -166,9 +165,12 @@ public class PositionService {
 	public Position reconstruct(final PositionForm positionForm, final BindingResult binding) {
 		Position result;
 
-		if (positionForm.getId() == 0)
+		if (positionForm.getId() == 0) {
 			result = this.create();
-		else
+			result.setTicker(this.generateTicker(this.companyService.findByPrincipal().getCommercialName()));
+			result.setCompany(this.companyService.findByPrincipal());
+			result.setMode("DRAFT");
+		} else
 			result = this.findOne(positionForm.getId());
 
 		result.setId(positionForm.getId());

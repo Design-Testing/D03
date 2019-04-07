@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,27 +89,25 @@ public class ApplicationService {
 				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
 				List<Problem> problems = new ArrayList<>();
 				problems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
-				System.out.println(problems);
 				final Integer numRandom = (int) (Math.random() * (problems.size() - 1));
 				final Problem assigned = problems.get(numRandom);
 				application.setProblem(assigned);
 				application.setStatus("PENDING");
-				application.setExplanation(null);
-				application.setLink(null);
 				final Date moment = new Date(System.currentTimeMillis() - 1);
 				application.setMoment(moment);
-				application.setSubmitMoment(null);
 				application.setHacker(this.hackerService.findByPrincipal());
 				application.setPosition(this.positionService.findOne(positionId));
-
+				//				application.setSubmitMoment(null);
+				//				application.setExplanation(null);
+				//				application.setLink(null);
 			} else {
-				Assert.isTrue(application.getStatus() == "PENDING", "No puede actualizar una solicitud que no esté en estado PENDING.");
+				Assert.isTrue(application.getStatus().equals("PENDING"), "No puede actualizar una solicitud que no esté en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
+				Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicación de su solución.");
+				Assert.isTrue(application.getLink() != "", "Debe adjuntar un link de su solución.");
 				application.setStatus("SUBMITTED");
-				System.out.println(application.getStatus());
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
 				application.setSubmitMoment(submitMoment);
-				System.out.println(application.getSubmitMoment());
 			}
 		} else { //COMPANY
 			Assert.isTrue(application.getPosition().getCompany() == this.companyService.findByPrincipal(), "No puede actualizar una solicitud que no le pertenece.");
@@ -220,6 +219,9 @@ public class ApplicationService {
 		result.setLink(applicationForm.getLink());
 
 		this.validator.validate(result, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
 
 		return result;
 	}

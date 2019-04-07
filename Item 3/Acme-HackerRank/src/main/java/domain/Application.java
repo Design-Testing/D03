@@ -14,7 +14,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -54,7 +53,7 @@ public class Application extends DomainEntity {
 
 	@Past
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	//	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
 	public Date getSubmitMoment() {
 		return this.submitMoment;
 	}
@@ -71,7 +70,6 @@ public class Application extends DomainEntity {
 		this.explanation = explanation;
 	}
 
-	@URL
 	public String getLink() {
 		return this.link;
 	}

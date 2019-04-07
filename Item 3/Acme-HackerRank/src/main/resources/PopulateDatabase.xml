@@ -415,6 +415,75 @@
 		<property name="company" ref="company2" />
 	</bean>
 	
+	<bean id="position3" class="domain.Position">
+		<property name="title" value="Position 3" />
+		<property name="description" value="Description position 3" />
+		<property name="deadline" value="2020/04/24 00:00" />
+		<property name="ticker" value="COMM-1236" />
+		<property name="profile" value="Profile for position 3" />
+		<property name="salary" value="1750.0" />
+		<property name="mode" value="DRAFT" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 3</value>
+				<value>Skill2 for position 3</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 3</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
+	</bean>
+	
+	<bean id="position4" class="domain.Position">
+		<property name="title" value="Position 4" />
+		<property name="description" value="Description position 4" />
+		<property name="deadline" value="2020/04/24 00:00" />
+		<property name="ticker" value="COMM-1237" />
+		<property name="profile" value="Profile for position 4" />
+		<property name="salary" value="2000.0" />
+		<property name="mode" value="FINAL" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 4</value>
+				<value>Skill2 for position 4</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 4</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
+	</bean>
+	
+	<bean id="position5" class="domain.Position">
+		<property name="title" value="Position 5" />
+		<property name="description" value="Description position 5" />
+		<property name="deadline" value="2020/04/24 00:00" />
+		<property name="ticker" value="COMM-1238" />
+		<property name="profile" value="Profile for position 5" />
+		<property name="salary" value="1750.0" />
+		<property name="mode" value="DRAFT" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 5</value>
+				<value>Skill2 for position 5</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 5</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
+	</bean>
+	
 	<!-- =================================================================== 
 					======= Problem ========= 
 		=================================================================== -->
@@ -461,6 +530,34 @@
 		<property name="position" ref="position2"/>
 	</bean>
 	
+	<bean id="problem4" class="domain.Problem">
+		<property name="title" value="Problem 4"/>
+		<property name="statement" value="Statement of problem 4"/>
+		<property name="hint" value="Hint of problem 4"/>
+		<property name="attachments">
+			<list>
+				<value>Attachment1 of problem 4</value>
+			</list>
+		</property>
+		<property name="mode" value="FINAL" />
+		<property name="company" ref="company1" />
+		<property name="position" ref="position4"/>
+	</bean>
+	
+	<bean id="problem5" class="domain.Problem">
+		<property name="title" value="Problem 5"/>
+		<property name="statement" value="Statement of problem 5"/>
+		<property name="hint" value="Hint of problem 5"/>
+		<property name="attachments">
+			<list>
+				<value>Attachment1 of problem 5</value>
+			</list>
+		</property>
+		<property name="mode" value="FINAL" />
+		<property name="company" ref="company1" />
+		<property name="position" ref="position4"/>
+	</bean>
+	
 	<!-- =================================================================== 
 					======= Application ========= 
 		=================================================================== -->
@@ -474,14 +571,11 @@
 	</bean>
 	
 	<bean id="application2" class="domain.Application">
-		<property name="status" value="SUBMITTED"/>
+		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/03/15 15:21"/>
 		<property name="hacker" ref="hacker1"/>
 		<property name="position" ref="position1"/>
 		<property name="problem" ref="problem2"/>
-		<property name="explanation" value="Explanation application 2"/>
-		<property name="link" value="http://www.linkAnswer2.com"/>
-		<property name="submitMoment" value="2018/03/16 15:29"></property>
 		
 	</bean>	
 	
@@ -493,10 +587,24 @@
 		<property name="problem" ref="problem3"/>
 		<property name="explanation" value="Explanation application 3"/>
 		<property name="link" value="http://www.linkAnswer3.com"/>
-		<property name="submitMoment" value="2018/03/16 15:30"></property>
+		<property name="submitMoment" value="2018/03/16 15:30"/>
 	</bean>
 
+	<bean id="application4" class="domain.Application">
+		<property name="status" value="PENDING"/>
+		<property name="moment" value="2018/03/15 15:31"/>
+		<property name="hacker" ref="hacker1"/>
+		<property name="position" ref="position1"/>
+		<property name="problem" ref="problem4"/>
+	</bean>	
 	
+	<bean id="application5" class="domain.Application">
+		<property name="status" value="PENDING"/>
+		<property name="moment" value="2018/03/15 15:41"/>
+		<property name="hacker" ref="hacker1"/>
+		<property name="position" ref="position1"/>
+		<property name="problem" ref="problem5"/>
+	</bean>	
 	
 </beans>
 
