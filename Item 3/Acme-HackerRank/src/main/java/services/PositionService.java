@@ -82,7 +82,7 @@ public class PositionService {
 		final Position result;
 		if (position.getId() != 0) {
 			Assert.isTrue(position.getCompany().equals(principal));
-			Assert.isTrue(position.getMode().equals("DRAFT"), "This position can't be modified");
+			Assert.isTrue(position.getMode().equals("DRAFT"), "No puede modificar una posición que ya no esta en DRAFT MODE.");
 		} else {
 			position.setMode("DRAFT");
 			final String ticker = this.generateTicker(position.getCompany().getCommercialName());
@@ -143,15 +143,20 @@ public class PositionService {
 
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
+		final Company company = this.companyService.findByPrincipal();
 		final Position result;
+		Assert.isTrue(position.getCompany().equals(company));
 		Assert.isTrue(this.problemService.findProblemsByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
+		Assert.isTrue(position.getMode().equals("DRAFT"), "Para poner una position en FINAL MODE debe de estar anteriormente en DRAFT MODE.");
 		position.setMode("FINAL");
-		result = this.save(position);
+		result = this.positionRepository.save(position);
 		return result;
 	}
 	public Position toCancelMode(final int positionId) {
 		final Position position = this.findOne(positionId);
+		final Company company = this.companyService.findByPrincipal();
 		final Position result;
+		Assert.isTrue(position.getCompany().equals(company));
 		Assert.isTrue(position.getMode().equals("FINAL"), "Para poner una posiciï¿½n en CANCELLED MODE debe de estar en FINAL MODE.");
 		position.setMode("CANCELLED");
 		result = this.positionRepository.save(position);

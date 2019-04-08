@@ -23,17 +23,18 @@
 
 <script>
 function generatePDF(){
-	alert('<spring:message code="display.member.document.alert"/>')
+	alert('<spring:message code="display.hacker.document.alert"/>')
 	var doc = new jsPDF()
 	doc.text('<spring:message code="display.document.title"/>', 20, 10)
 	doc.text('', 10, 20)
-	doc.text('<spring:message code="actor.name"/> : <jstl:out value="${member.name}"/>', 10, 30)
-	doc.text('<spring:message code="actor.middleName"/> : <jstl:out value="${member.middleName}"/>', 10, 40)
-	doc.text('<spring:message code="actor.surname"/> : <jstl:out value="${member.surname}"/>', 10, 50)
-	doc.text('<spring:message code="actor.photo"/> : <jstl:out value="${member.photo}"/>', 10, 60)
-	doc.text('<spring:message code="actor.phone"/> : <jstl:out value="${member.phone}"/>', 10, 70)
-	doc.text('<spring:message code="actor.email"/> : <jstl:out value="${member.email}"/>', 10, 80)
-	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${member.address}"/>', 10, 90)
+	doc.text('<acme:display code="hacker.name" value="${hacker.name}"/>', 10, 30)
+	doc.text('<acme:display code="hacker.surname" value="${hacker.surname}"/>', 10, 40)
+	doc.text('<img src="${hacker.photo}" alt="<spring:message code="hacker.alt.image"/>" width="20%" height="20%"/>', 10, 50)
+	doc.text('<acme:display code="hacker.email" value="${hacker.email}"/>', 10, 60)
+	doc.text('<acme:display code="hacker.phone" value="${hacker.phone}"/>', 10, 70)
+	doc.text('<acme:display code="hacker.address" value="${hacker.address}"/>', 10, 80)
+	doc.text('<acme:display code="hacker.vat" value="${hacker.vat}"/>', 10, 90)
+	doc.text('<acme:display code="hacker.creditCard" value="${hacker.creditCard}"/>', 10, 100)
 	doc.save('<spring:message code="display.document.fileName"/>.pdf')
 }
 function deletePersonalData(){
@@ -45,24 +46,23 @@ function deletePersonalData(){
 </script>
 
 
-<acme:display code="actor.name" value="${hacker.name}"/>
-<spring:message code="actor.photo"/>:<br>
+<acme:display code="hacker.name" value="${hacker.name}"/>
+<acme:display code="hacker.surname" value="${hacker.surname}"/>
+<spring:message code="hacker.photo"/>:<br>
 <img src="${hacker.photo}" alt="<spring:message code="hacker.alt.image"/>" width="20%" height="20%"/>
 <br>
-<acme:display code="actor.middleName" value="${hacker.middleName}"/>
-<acme:display code="actor.surname" value="${hacker.surname}"/>
-<acme:display code="actor.email" value="${hacker.email}"/>
-<acme:display code="actor.phone" value="${hacker.phone}"/>
-<acme:display code="actor.email" value="${hacker.email}"/>
-<acme:display code="actor.address" value="${hacker.address}"/>
-<acme:display code="actor.score" value="${hacker.score}"/>
+<acme:display code="hacker.email" value="${hacker.email}"/>
+<acme:display code="hacker.phone" value="${hacker.phone}"/>
+<acme:display code="hacker.address" value="${hacker.address}"/>
+<acme:display code="hacker.vat" value="${hacker.vat}"/>
+<acme:display code="hacker.creditCard" value="${hacker.creditCard}"/>
 
 <jstl:choose>
 	<jstl:when test="${hacker.spammer}">
-		<spring:message code="actor.spammer"/>
+		<spring:message code="hacker.spammer"/>
 	</jstl:when>
 	<jstl:otherwise>
-		<spring:message code="actor.spammer.no"/>
+		<spring:message code="hacker.spammer.no"/>
 	</jstl:otherwise>
 </jstl:choose>
 

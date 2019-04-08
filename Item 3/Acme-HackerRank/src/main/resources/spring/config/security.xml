@@ -41,19 +41,24 @@
 
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" />
 		
+		<security:intercept-url pattern="/position/list.do" access="permitAll" />
+		<security:intercept-url pattern="/position/display.do" access="permitAll" />
+		<security:intercept-url pattern="/company/list.do" access="permitAll" />
+		<security:intercept-url pattern="/company/display.do" access="permitAll" />
+		<security:intercept-url pattern="/company/create.do" access="permitAll" />
+		<security:intercept-url pattern="/hacker/create.do" access="permitAll" />
+		
 		<!-- PROBLEM -->
 		
-		 <security:intercept-url pattern="/problem/edit.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
-		 <security:intercept-url pattern="/problem/finalMode.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
-		 <security:intercept-url pattern="/problem/create.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
-		 <security:intercept-url pattern="/problem/delete.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
-		 <security:intercept-url pattern="/problem/display.do" access="hasAnyRole('ADMIN', 'COMPANY')" />
+		<security:intercept-url pattern="/problem/company/edit.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/finalMode.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/create.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/delete.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/problem/company/display.do" access="hasRole('COMPANY')" />
 		 
-		 <security:intercept-url pattern="/problem/company/**" access="hasAnyRole('ADMIN', 'COMPANY')" />
-		 <security:intercept-url pattern="/company/**" access="hasAnyRole('ADMIN', 'COMPANY')" />
-
-		<security:intercept-url pattern="/welcome/index.do" access="permitAll" /> 
-		
+ 		<security:intercept-url pattern="/company/display2.do" access="hasRole('COMPANY')" />
+ 		<security:intercept-url pattern="/company/edit.do" access="hasRole('COMPANY')" />
+		 
 		<security:intercept-url pattern="/application/company/**" access="hasRole('COMPANY')" /> 
 		<security:intercept-url pattern="/application/hacker/**" access="hasRole('HACKER')" /> 
 		

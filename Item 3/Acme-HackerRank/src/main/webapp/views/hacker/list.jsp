@@ -22,7 +22,7 @@
 
 	
 	<display:column>
-		<a href="hacker/display.do?hackerId=${row.id}"> <spring:message
+		<a href="hacker/displayTabla.do?hackerId=${row.id}"> <spring:message
 				code="hacker.display" />
 		</a>
 	</display:column>

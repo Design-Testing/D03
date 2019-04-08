@@ -1,5 +1,5 @@
 
-package controllers.application;
+package controllers.hacker;
 
 import java.util.Collection;
 
@@ -22,6 +22,7 @@ import controllers.AbstractController;
 import domain.Application;
 import domain.Hacker;
 import domain.Position;
+import forms.ApplicationForm;
 
 @Controller
 @RequestMapping("/application/hacker")
@@ -70,6 +71,7 @@ public class ApplicationHackerController extends AbstractController {
 		result = new ModelAndView("application/display");
 		result.addObject("hacker", hacker);
 		result.addObject("application", application);
+		result.addObject("rol", "hacker");
 
 		return result;
 	}
@@ -204,10 +206,10 @@ public class ApplicationHackerController extends AbstractController {
 	// SAVE --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Application application, final BindingResult binding) {
+	public ModelAndView save(@Valid final ApplicationForm applicationForm, final BindingResult binding) {
 		ModelAndView result;
 
-		// final Parade parade = this.paradeService.reconstruct(pform, binding);
+		final Application application = this.applicationService.reconstruct(applicationForm, binding);
 
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(application);
@@ -237,10 +239,22 @@ public class ApplicationHackerController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("application/edit");
-		result.addObject("application", application); // this.constructPruned(parade));
+		result.addObject("application", this.constructPruned(application)); // this.constructPruned(parade));
 
 		result.addObject("message", messageCode);
 
 		return result;
 	}
+
+	public ApplicationForm constructPruned(final Application application) {
+		final ApplicationForm pruned = new ApplicationForm();
+
+		pruned.setId(application.getId());
+		pruned.setVersion(application.getVersion());
+		pruned.setExplanation(application.getExplanation());
+		pruned.setLink(application.getLink());
+
+		return pruned;
+	}
+
 }

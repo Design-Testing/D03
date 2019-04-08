@@ -29,6 +29,10 @@
 	<!-- POSITION -->
 	<bean class="converters.PositionToStringConverter"/>
 	<bean class="converters.StringToPositionConverter"/>
+	
+	<!-- PROBLEM -->
+	<bean class="converters.ProblemToStringConverter"/>
+	<bean class="converters.StringToProblemConverter"/>
 		
 	</util:list>
 	

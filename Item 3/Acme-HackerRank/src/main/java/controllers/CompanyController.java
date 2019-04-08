@@ -52,7 +52,7 @@ public class CompanyController extends AbstractController {
 		final ModelAndView res;
 		final Collection<Company> companies = this.companyService.findAll();
 
-		res = new ModelAndView("problem/list");
+		res = new ModelAndView("company/list");
 		res.addObject("companies", companies);
 
 		return res;
@@ -63,9 +63,9 @@ public class CompanyController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
-		final ActorForm company = new ActorForm();
-		result = new ModelAndView("hacker/edit");
-		result.addObject("actorForm", company);
+		final CompanyForm company = new CompanyForm();
+		result = new ModelAndView("company/edit");
+		result.addObject("companyForm", company);
 		return result;
 	}
 
@@ -78,7 +78,7 @@ public class CompanyController extends AbstractController {
 		if (company != null) {
 			result = new ModelAndView("company/display");
 			result.addObject("company", company);
-			result.addObject("displayButtons", true);
+			result.addObject("displayButtons", false);
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -169,19 +169,19 @@ public class CompanyController extends AbstractController {
 
 	// ANCILLARY METHODS  ---------------------------------------------------------------		
 
-	protected ModelAndView createEditModelAndView(final ActorForm actorForm) {
+	protected ModelAndView createEditModelAndView(final CompanyForm companyForm) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(actorForm, null);
+		result = this.createEditModelAndView(companyForm, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final ActorForm actorForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final CompanyForm companyForm, final String messageCode) {
 		final ModelAndView result;
 
-		result = new ModelAndView("hacker/edit");
-		result.addObject("actorForm", actorForm);
+		result = new ModelAndView("company/edit");
+		result.addObject("companyForm", companyForm);
 
 		result.addObject("message", messageCode);
 

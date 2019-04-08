@@ -377,7 +377,7 @@
 		<property name="ticker" value="COMM-1234" />
 		<property name="profile" value="Profile for position 1" />
 		<property name="salary" value="1500.0" />
-		<property name="mode" value="FINAL" />
+		<property name="mode" value="DRAFT" />
 		<property name="skills">
 			<list>
 				<value>Skill1 for position 1</value>
@@ -468,24 +468,35 @@
 	<bean id="application1" class="domain.Application">
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/03/16 15:20"/>
-		<property name="submitMoment" value="2018/03/16 15:25"/>
-		<property name="explanation" value="Explanation Answer 1"/>
-		<property name="link" value="http://www.linkAnswer1.com"/>
-		<property name="position" ref="position1"/>
 		<property name="hacker" ref="hacker1"/>
+		<property name="position" ref="position1"/>
 		<property name="problem" ref="problem1"/>
 	</bean>
 	
 	<bean id="application2" class="domain.Application">
-		<property name="status" value="PENDING"/>
-		<property name="moment" value="2018/03/15 15:20"/>
-		<property name="submitMoment" value="2018/03/15 15:25"/>
-		<property name="explanation" value="Explanation Answer 2"/>
-		<property name="link" value="http://www.linkAnswer2.com"/>
-		<property name="position" ref="position2"/>
-		<property name="hacker" ref="hacker2"/>
+		<property name="status" value="SUBMITTED"/>
+		<property name="moment" value="2018/03/15 15:21"/>
+		<property name="hacker" ref="hacker1"/>
+		<property name="position" ref="position1"/>
 		<property name="problem" ref="problem2"/>
+		<property name="explanation" value="Explanation application 2"/>
+		<property name="link" value="http://www.linkAnswer2.com"/>
+		<property name="submitMoment" value="2018/03/16 15:29"></property>
+		
 	</bean>	
+	
+		<bean id="application3" class="domain.Application">
+		<property name="status" value="SUBMITTED"/>
+		<property name="moment" value="2018/03/16 15:22"/>
+		<property name="hacker" ref="hacker1"/>
+		<property name="position" ref="position2"/>
+		<property name="problem" ref="problem3"/>
+		<property name="explanation" value="Explanation application 3"/>
+		<property name="link" value="http://www.linkAnswer3.com"/>
+		<property name="submitMoment" value="2018/03/16 15:30"></property>
+	</bean>
 
+	
+	
 </beans>
 

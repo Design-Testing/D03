@@ -34,6 +34,7 @@
 			value="${position.deadline}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
+<br>
 
 <acme:display code="position.ticker" value="${position.ticker}"/>
 
@@ -48,8 +49,10 @@
 <acme:display code="position.mode" value="${position.mode}"/>
 
 <acme:display code="position.company" value="${position.company.name}"/>
+<br>
+<spring:message code="position.problem"/>
 
-<jstl:if test="${position.status eq 'DEFAULT'}">
+<jstl:if test="${position.mode eq 'DRAFT'}">
 <acme:button url="problem/company/create.do?positionId=${position.id}" name="create" code="position.create" />
 </jstl:if>
 
@@ -67,6 +70,13 @@
 	</display:column>
         
 </display:table>
-
-
+<br><br>
+<jstl:choose>
+	<jstl:when test="${rol eq 'company' }">
+		<acme:button url="position/company/myPositions.do" name="back" code="position.back"/>
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:button url="position/list.do" name="back" code="position.back"/>
+	</jstl:otherwise>
+</jstl:choose>
 

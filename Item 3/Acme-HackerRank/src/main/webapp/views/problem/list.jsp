@@ -11,11 +11,6 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-	<br />
-	<input type="button" name="create"
-    value="<spring:message code="problem.create" />"
-    onclick="relativeRedir('problem/create.do')" />
-    <br />
 <div id="problems">
         <ul style="list-style-type: disc">
             <li><b><spring:message code="problems"/></b>
@@ -42,24 +37,24 @@
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="problem.edit" />"
-                onclick="relativeRedir('problem/edit.do?problemId=${row.id}')" />
+                onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}')" />
 	</display:column>
 	<display:column>
             <input type="button" name="toFinalMode"
                 value="<spring:message code="problem.finalMode" />"
-                onclick="relativeRedir('problem/finalMode.do?problemId=${row.id}')" />
+                onclick="relativeRedir('problem/company/finalMode.do?problemId=${row.id}')" />
 	</display:column>
 	</jstl:if>
 	<display:column>
 			<input type="button" name="delete"
                 value="<spring:message code="problem.delete" />"
-                onclick="relativeRedir('problem/delete.do?problemId=${row.id}')" />
+                onclick="relativeRedir('problem/company/delete.do?problemId=${row.id}')" />
 	</display:column>
 	
 	<display:column>
 			<input type="button" name="display"
                 value="<spring:message code="problem.display" />"
-                onclick="relativeRedir('problem/display.do?problemId=${row.id}')" />
+                onclick="relativeRedir('problem/company/display.do?problemId=${row.id}')" />
 	</display:column>
         
 	</display:table>
