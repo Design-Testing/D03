@@ -21,6 +21,7 @@ import domain.Actor;
 import domain.Application;
 import domain.Company;
 import domain.Hacker;
+import domain.Position;
 import domain.Problem;
 import forms.ApplicationForm;
 
@@ -50,8 +51,20 @@ public class ApplicationService {
 	private PositionService			positionService;
 
 
-	public Application create() {
+	public Application create(final int positionId) {
 		final Application application = new Application();
+		final Hacker hacker = this.hackerService.findByPrincipal();
+		final Position position = this.positionService.findOne(positionId);
+
+		//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
+		final Problem assigned = this.problemAssign(positionId, hacker);
+		application.setProblem(assigned);
+		application.setStatus("PENDING");
+		final Date moment = new Date(System.currentTimeMillis() - 1);
+		application.setMoment(moment);
+		application.setHacker(hacker);
+		application.setPosition(position);
+
 		return application;
 	}
 
@@ -85,22 +98,7 @@ public class ApplicationService {
 		final Boolean isHacker = this.actorService.checkAuthority(principal, Authority.HACKER);
 
 		if (isHacker) {
-			if (application.getId() == 0) {
-				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
-				List<Problem> problems = new ArrayList<>();
-				problems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
-				final Integer numRandom = (int) (Math.random() * (problems.size() - 1));
-				final Problem assigned = problems.get(numRandom);
-				application.setProblem(assigned);
-				application.setStatus("PENDING");
-				final Date moment = new Date(System.currentTimeMillis() - 1);
-				application.setMoment(moment);
-				application.setHacker(this.hackerService.findByPrincipal());
-				application.setPosition(this.positionService.findOne(positionId));
-				//				application.setSubmitMoment(null);
-				//				application.setExplanation(null);
-				//				application.setLink(null);
-			} else {
+			if (application.getId() != 0) {
 				Assert.isTrue(application.getStatus().equals("PENDING"), "No puede actualizar una solicitud que no esté en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
 				Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicación de su solución.");
@@ -150,10 +148,11 @@ public class ApplicationService {
 	}
 
 	public Application apply(final int positionId) {
+		Assert.isTrue(positionId != 0);
 		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), Authority.HACKER));
-		final Application application = this.create();
-
-		final Application retreived = this.save(application, positionId);
+		final Application application = this.create(positionId);
+		Assert.notNull(application);
+		final Application retreived = this.applicationRepository.save(application);
 		return retreived;
 	}
 
@@ -206,6 +205,12 @@ public class ApplicationService {
 		return res;
 	}
 
+	public Collection<Application> findApplicationByPosition(final Integer positionId) {
+		Collection<Application> res;
+		res = this.applicationRepository.findApplicationsByPosition(positionId);
+		return res;
+	}
+
 	public Application reconstruct(final ApplicationForm applicationForm, final BindingResult binding) {
 		Application result;
 
@@ -224,6 +229,19 @@ public class ApplicationService {
 			throw new ValidationException();
 
 		return result;
+	}
+
+	public Problem problemAssign(final int positionId, final Hacker hacker) {
+		final List<Problem> allProblems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
+		final List<Problem> problems = (List<Problem>) this.problemService.findProblemsByPositionAndHacker(positionId, hacker.getUserAccount().getId());
+
+		allProblems.removeAll(problems);
+
+		final Integer numRandom = (int) (Math.random() * (allProblems.size() - 1));
+		final Problem assigned = allProblems.get(numRandom);
+
+		return assigned;
+
 	}
 
 }

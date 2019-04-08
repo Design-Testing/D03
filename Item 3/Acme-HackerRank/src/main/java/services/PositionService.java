@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,10 @@ import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
 import domain.Actor;
+import domain.Application;
 import domain.Company;
 import domain.Position;
+import domain.Problem;
 import forms.PositionForm;
 
 @Service
@@ -34,11 +37,19 @@ public class PositionService {
 	private ProblemService		problemService;
 
 	@Autowired
+	private ApplicationService	applicationService;
+
+	@Autowired
 	private Validator			validator;
 
 
 	public Position create() {
 		final Position position = new Position();
+		position.setMode("DRAFT");
+		final Company principal = this.companyService.findByPrincipal();
+		final String ticker = this.generateTicker(principal.getCommercialName());
+		position.setTicker(ticker);
+
 		return position;
 	}
 
@@ -81,12 +92,8 @@ public class PositionService {
 		if (position.getId() != 0) {
 			Assert.isTrue(position.getCompany().equals(principal));
 			Assert.isTrue(position.getMode().equals("DRAFT"), "No puede modificar una posición que ya no esta en DRAFT MODE.");
-		} else {
-			position.setMode("DRAFT");
-			final String ticker = this.generateTicker(principal.getCommercialName());
-			position.setTicker(ticker);
+		} else
 			position.setCompany(principal);
-		}
 		result = this.positionRepository.save(position);
 		return result;
 	}
@@ -97,9 +104,27 @@ public class PositionService {
 		final Position retrieved = this.findOne(position.getId());
 		final Company principal = this.companyService.findByPrincipal();
 		Assert.isTrue(retrieved.getCompany().equals(principal));
+		final List<Problem> problems = (List<Problem>) this.problemService.findProblemsByPosition(position.getId());
+		final List<Application> applications = (List<Application>) this.applicationService.findApplicationByPosition(position.getId());
+
+		/* Se borran todas la applications de esa position */
+		if (!applications.isEmpty())
+			for (final Application a : applications) {
+				applications.remove(a);
+				this.applicationService.delete(a);
+			}
+
+		/* Se borran todos los problemas de esa position */
+		if (!problems.isEmpty())
+			for (final Problem p : problems) {
+				problems.remove(p);
+				this.problemService.delete(p);
+			}
+
+		Assert.isTrue(problems.isEmpty(), "No se han borrado todos los problemas.");
+		Assert.isTrue(applications.isEmpty(), "No se han borrado todas las applications.");
 		this.positionRepository.delete(position);
 	}
-
 	public Collection<Position> findAllByPrincipal() {
 		Collection<Position> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
@@ -118,19 +143,9 @@ public class PositionService {
 		final String ticker = word + '-' + n1 + n2 + n3 + n4;
 		res = ticker;
 
-		if (this.hasDuplicate(res))
+		final Collection<Position> pos = this.positionRepository.getPositionWithTicker(ticker);
+		if (!pos.isEmpty())
 			this.generateTicker(companyName);
-		return res;
-	}
-
-	private boolean hasDuplicate(final String ticker) {
-		boolean res = true;
-		try {
-			if (this.positionRepository.getPositionWithTicker(ticker).isEmpty())
-				res = false;
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
 		return res;
 	}
 
@@ -142,6 +157,7 @@ public class PositionService {
 
 	public Position toFinalMode(final int positionId) {
 		final Position position = this.findOne(positionId);
+		Assert.notNull(position);
 		final Company company = this.companyService.findByPrincipal();
 		final Position result;
 		Assert.isTrue(position.getCompany().equals(company));
@@ -153,6 +169,7 @@ public class PositionService {
 	}
 	public Position toCancelMode(final int positionId) {
 		final Position position = this.findOne(positionId);
+		Assert.notNull(position);
 		final Company company = this.companyService.findByPrincipal();
 		final Position result;
 		Assert.isTrue(position.getCompany().equals(company));
@@ -165,12 +182,9 @@ public class PositionService {
 	public Position reconstruct(final PositionForm positionForm, final BindingResult binding) {
 		Position result;
 
-		if (positionForm.getId() == 0) {
+		if (positionForm.getId() == 0)
 			result = this.create();
-			result.setTicker(this.generateTicker(this.companyService.findByPrincipal().getCommercialName()));
-			result.setCompany(this.companyService.findByPrincipal());
-			result.setMode("DRAFT");
-		} else
+		else
 			result = this.findOne(positionForm.getId());
 
 		result.setId(positionForm.getId());

@@ -222,7 +222,7 @@ public class ApplicationHackerController extends AbstractController {
 				this.applicationService.save(application, application.getPosition().getId());
 				result = this.listSubmitted();
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/misc/403.jsp");
+				result = new ModelAndView("application/error");
 			}
 
 		return result;

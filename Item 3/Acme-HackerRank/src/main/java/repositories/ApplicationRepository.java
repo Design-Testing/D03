@@ -36,4 +36,8 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 
 	@Query("select a from Application a where a.status='PENDING' AND a.hacker.userAccount.id=?1")
 	Collection<Application> findAllPendingByHacker(int hackerUAId);
+
+	@Query("select a from Application a where a.position.id=?1")
+	Collection<Application> findApplicationsByPosition(int positionId);
+
 }

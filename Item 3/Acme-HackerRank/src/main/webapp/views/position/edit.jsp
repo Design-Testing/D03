@@ -13,6 +13,7 @@
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 
+
 	<acme:textbox code="position.title" path="title" />
 	<acme:textbox code="position.description" path="description" />
 	<acme:textbox code="position.deadline" path="deadline" />

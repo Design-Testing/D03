@@ -59,11 +59,11 @@
 <display:table pagesize="5" class="displaytag" keepStatus="true"
                name="problems" requestURI="problem/company/list.do" id="row">
 	
-    <display:column property="problem.title" title="${problem.title}" sortable="true"/>
+    <display:column property="title" titleKey="${problem.title}" sortable="true"/>
 
-    <display:column property="problem.statement" title="${problem.statement}" sortable="true"/>
+    <display:column property="statement" titleKey="${problem.statement}" sortable="true"/>
 
-    <display:column property="problem.hint" title="${problem.hint}" sortable="true"/>
+    <display:column property="hint" titleKey="${problem.hint}" sortable="true"/>
 
 	<display:column>
 			<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>

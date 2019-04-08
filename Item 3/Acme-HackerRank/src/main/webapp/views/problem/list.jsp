@@ -22,17 +22,17 @@
     <!-- Attributes -->
 	
     <spring:message var="title" code="problem.title"/>
-    <display:column property="title" title="${title}" sortable="true"/>
+    <display:column property="title" sortable="true"/>
     <spring:message var="statement" code="problem.statement"/>
-    <display:column property="statement" title="${statement}" sortable="true"/>
+    <display:column property="statement" sortable="true"/>
     <spring:message var="hint" code="problem.hint"/>
-    <display:column property="hint" title="${hint}" sortable="true"/>
+    <display:column property="hint" sortable="true"/>
     <spring:message var="attachments" code="problem.attachments"/>
-    <display:column property="attachments" title="${attachments}" sortable="true"/>
+    <display:column property="attachments" sortable="true"/>
     <spring:message var="mode" code="problem.mode"/>
-    <display:column property="mode" title="${mode}" sortable="true"/>
+    <display:column property="mode" sortable="true"/>
     <spring:message var="company" code="problem.company"/>
-    <display:column property="company" title="${company.title}" sortable="true"/>
+    <display:column property="company" sortable="true"/>
     <jstl:if test="${problem.mode eq DRAFT}">
 	<display:column>
             <input type="button" name="edit"

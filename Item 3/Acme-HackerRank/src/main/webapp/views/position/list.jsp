@@ -49,25 +49,28 @@
 	</security:authorize>
 		
 	<security:authorize access="hasRole('COMPANY')">
+	<display:column>
 		<jstl:if test="${row.mode eq 'DRAFT'}">
-	<display:column>
 		<acme:button url="position/company/edit.do?positionId=${row.id}" name="edit" code="position.edit"/>
+		</jstl:if>
 	</display:column>
 	
 	<display:column>
+		<jstl:if test="${row.mode eq 'DRAFT'}">
 		<acme:button url="position/company/delete.do?positionId=${row.id}" name="delete" code="position.delete"/>
+		</jstl:if>
 	</display:column>
 	
 	<display:column>
+	<jstl:choose>
+	<jstl:when test="${row.mode eq 'DRAFT'}">
 		<acme:button url="position/company/finalMode.do?positionId=${row.id}" name="edit" code="position.finalMode"/>
-	</display:column>
-	</jstl:if>
-	
-	<jstl:if test="${row.mode eq 'FINAL'}">
-	<display:column>
+	</jstl:when>
+	<jstl:otherwise>
 		<acme:button url="position/company/cancelledMode.do?positionId=${row.id}" name="edit" code="position.cancelledMode"/>
+	</jstl:otherwise>
+	</jstl:choose>
 	</display:column>
-	</jstl:if>
 	
 	</security:authorize>
 

@@ -123,4 +123,10 @@ public class ProblemService {
 		return res;
 	}
 
+	public Collection<Problem> findProblemsByPositionAndHacker(final Integer positionId, final Integer hackerUAId) {
+		Collection<Problem> res = new ArrayList<>();
+		res = this.problemRepository.findProblemsByPositionAndHacker(positionId, hackerUAId);
+		return res;
+	}
+
 }
