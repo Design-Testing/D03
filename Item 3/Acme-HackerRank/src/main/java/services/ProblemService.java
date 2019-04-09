@@ -129,4 +129,8 @@ public class ProblemService {
 		return res;
 	}
 
+	public void deleteInBatch(final Collection<Problem> problems) {
+		this.problemRepository.deleteInBatch(problems);
+	}
+
 }

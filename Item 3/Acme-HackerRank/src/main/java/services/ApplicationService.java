@@ -57,6 +57,7 @@ public class ApplicationService {
 		final Position position = this.positionService.findOne(positionId);
 
 		//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
+		Assert.isTrue(!this.problemsFree(positionId, hacker).isEmpty(), "Ya tiene solicitudes a todos los problemas posibles.");
 		final Problem assigned = this.problemAssign(positionId, hacker);
 		application.setProblem(assigned);
 		application.setStatus("PENDING");
@@ -232,16 +233,26 @@ public class ApplicationService {
 	}
 
 	public Problem problemAssign(final int positionId, final Hacker hacker) {
+
+		final List<Problem> free = (List<Problem>) this.problemsFree(positionId, hacker);
+		final Integer numRandom = (int) (Math.random() * (free.size() - 1));
+		final Problem assigned = free.get(numRandom);
+
+		return assigned;
+
+	}
+
+	public Collection<Problem> problemsFree(final int positionId, final Hacker hacker) {
 		final List<Problem> allProblems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
 		final List<Problem> problems = (List<Problem>) this.problemService.findProblemsByPositionAndHacker(positionId, hacker.getUserAccount().getId());
 
 		allProblems.removeAll(problems);
 
-		final Integer numRandom = (int) (Math.random() * (allProblems.size() - 1));
-		final Problem assigned = allProblems.get(numRandom);
+		return allProblems;
+	}
 
-		return assigned;
-
+	public void deleteInBatch(final Collection<Application> applications) {
+		this.applicationRepository.deleteInBatch(applications);
 	}
 
 }

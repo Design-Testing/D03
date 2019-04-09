@@ -377,7 +377,7 @@
 		<property name="ticker" value="COMM-1234" />
 		<property name="profile" value="Profile for position 1" />
 		<property name="salary" value="1500.0" />
-		<property name="mode" value="DRAFT" />
+		<property name="mode" value="FINAL" />
 		<property name="skills">
 			<list>
 				<value>Skill1 for position 1</value>
@@ -594,17 +594,10 @@
 		<property name="status" value="PENDING"/>
 		<property name="moment" value="2018/03/15 15:31"/>
 		<property name="hacker" ref="hacker1"/>
-		<property name="position" ref="position1"/>
+		<property name="position" ref="position4"/>
 		<property name="problem" ref="problem4"/>
 	</bean>	
-	
-	<bean id="application5" class="domain.Application">
-		<property name="status" value="PENDING"/>
-		<property name="moment" value="2018/03/15 15:41"/>
-		<property name="hacker" ref="hacker1"/>
-		<property name="position" ref="position1"/>
-		<property name="problem" ref="problem5"/>
-	</bean>	
+
 	
 </beans>
 

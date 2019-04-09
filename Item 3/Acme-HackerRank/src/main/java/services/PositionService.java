@@ -109,20 +109,12 @@ public class PositionService {
 
 		/* Se borran todas la applications de esa position */
 		if (!applications.isEmpty())
-			for (final Application a : applications) {
-				applications.remove(a);
-				this.applicationService.delete(a);
-			}
+			this.applicationService.deleteInBatch(applications);
 
 		/* Se borran todos los problemas de esa position */
 		if (!problems.isEmpty())
-			for (final Problem p : problems) {
-				problems.remove(p);
-				this.problemService.delete(p);
-			}
+			this.problemService.deleteInBatch(problems);
 
-		Assert.isTrue(problems.isEmpty(), "No se han borrado todos los problemas.");
-		Assert.isTrue(applications.isEmpty(), "No se han borrado todas las applications.");
 		this.positionRepository.delete(position);
 	}
 	public Collection<Position> findAllByPrincipal() {

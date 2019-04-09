@@ -52,12 +52,17 @@ public class ApplicationHackerController extends AbstractController {
 		final Hacker hacker = this.hackerService.findByPrincipal();
 		final Position position = this.positionService.findOne(positionId);
 
-		final Application application = this.applicationService.apply(positionId);
-		result = this.positionController.myPositions();
+		try {
+			final Application application = this.applicationService.apply(positionId);
+			result = this.listPending();
 
-		result.addObject("application", application);
-		result.addObject("hacker", hacker);
-		result.addObject("position", position);
+			result.addObject("application", application);
+			result.addObject("hacker", hacker);
+			result.addObject("position", position);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("application/error");
+		}
 
 		return result;
 	}
