@@ -59,11 +59,10 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 		final Position position;
 		final Company company;
-		Collection<Problem> problems;
 
 		position = this.positionService.findOne(positionId);
 		company = this.companyService.findByPrincipal();
-		problems = this.problemService.findProblemsByPosition(positionId);
+		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
 
 		if (position != null) {
 			result = new ModelAndView("position/display");
@@ -108,7 +107,7 @@ public class PositionCompanyController extends AbstractController {
 
 		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2)) {
 			result = new ModelAndView("position/error");
-			result.addObject("ok", "Error al pasar a final mode la posición.");
+			result.addObject("ok", "Error al pasar a final mode la posiciï¿½n.");
 		} else {
 			this.positionService.toFinalMode(positionId);
 			result = this.myPositions();

@@ -29,14 +29,13 @@
 
 
 
-<form:form modelAttribute="actorForm" action="company/edit.do" method="POST">
+<form:form modelAttribute="companyForm" action="company/edit.do" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<acme:textbox code="company.edit.userAccountuser" path="userAccountuser" />
 	<acme:password code="company.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="company.edit.name" path="name" />
-	<acme:textbox code="company.edit.middleName" path="middleName" />
 	<acme:textbox code="company.edit.surname" path="surname" />
 	<acme:textbox code="company.edit.photo" path="photo" />
 	<acme:textbox code="company.edit.email" path="email" />

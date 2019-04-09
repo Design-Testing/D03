@@ -100,10 +100,10 @@ public class ApplicationService {
 
 		if (isHacker) {
 			if (application.getId() != 0) {
-				Assert.isTrue(application.getStatus().equals("PENDING"), "No puede actualizar una solicitud que no esté en estado PENDING.");
+				Assert.isTrue(application.getStatus().equals("PENDING"), "No puede actualizar una solicitud que no estï¿½ en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
-				Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicación de su solución.");
-				Assert.isTrue(application.getLink() != "", "Debe adjuntar un link de su solución.");
+				Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicaciï¿½n de su soluciï¿½n.");
+				Assert.isTrue(application.getLink() != "", "Debe adjuntar un link de su soluciï¿½n.");
 				application.setStatus("SUBMITTED");
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
 				application.setSubmitMoment(submitMoment);
@@ -210,6 +210,16 @@ public class ApplicationService {
 		Collection<Application> res;
 		res = this.applicationRepository.findApplicationsByPosition(positionId);
 		return res;
+	}
+
+	public Collection<Application> findAllByProblem(final int problemId) {
+		final Collection<Application> res = this.applicationRepository.findAllByProblem(problemId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public void deleteInBatch(final Collection<Application> applications) {
+		this.applicationRepository.deleteInBatch(applications);
 	}
 
 	public Application reconstruct(final ApplicationForm applicationForm, final BindingResult binding) {

@@ -11,6 +11,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
+
 <div id="problems">
         <ul style="list-style-type: disc">
             <li><b><spring:message code="problems"/></b>
@@ -33,22 +34,26 @@
     <display:column property="mode" sortable="true"/>
     <spring:message var="company" code="problem.company"/>
     <display:column property="company" sortable="true"/>
-    <jstl:if test="${problem.mode eq DRAFT}">
+    
 	<display:column>
+	<jstl:if test="${row.mode eq 'DRAFT'}">
             <input type="button" name="edit"
                 value="<spring:message code="problem.edit" />"
-                onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}')" />
+                onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}&positionId=${row.position.id}')" />
+	</jstl:if>
 	</display:column>
 	<display:column>
+	<jstl:if test="${row.mode eq 'DRAFT'}">
             <input type="button" name="toFinalMode"
                 value="<spring:message code="problem.finalMode" />"
                 onclick="relativeRedir('problem/company/finalMode.do?problemId=${row.id}')" />
-	</display:column>
 	</jstl:if>
+	</display:column>
+	
 	<display:column>
 			<input type="button" name="delete"
                 value="<spring:message code="problem.delete" />"
-                onclick="relativeRedir('problem/company/delete.do?problemId=${row.id}')" />
+                onclick="relativeRedir('problem/company/delete.do?problemId=${row.id}&positionId=${row.position.id}')" />
 	</display:column>
 	
 	<display:column>

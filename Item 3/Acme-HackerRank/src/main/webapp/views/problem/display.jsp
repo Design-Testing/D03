@@ -19,7 +19,7 @@
 <br>
 <acme:display code="problem.attachments" value="${problem.attachments}" />
 
-<acme:button url="problem/company/list.do" name="cancel"
+<acme:button url="position/company/display.do?positionId=${problem.position.id}" name="cancel"
 		code="problem.cancel" />
 
 <br />
