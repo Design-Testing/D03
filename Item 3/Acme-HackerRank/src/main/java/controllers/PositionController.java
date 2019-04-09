@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.PositionService;
+import services.ProblemService;
 import domain.Position;
+import domain.Problem;
 
 @Controller
 @RequestMapping("/position")
@@ -20,6 +22,9 @@ public class PositionController extends AbstractController {
 
 	@Autowired
 	private PositionService	positionService;
+
+	@Autowired
+	private ProblemService	problemService;
 
 	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
 
@@ -32,18 +37,19 @@ public class PositionController extends AbstractController {
 		final Position position;
 
 		position = this.positionService.findOne(positionId);
+		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
 
 		if (position != null) {
 			result = new ModelAndView("position/display");
 			result.addObject("position", position);
 			result.addObject("lang", this.lang);
+			result.addObject("problems", problems);
 
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
-
 	// LIST --------------------------------------------------------
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)

@@ -21,6 +21,7 @@ import services.ProblemService;
 import controllers.AbstractController;
 import domain.Company;
 import domain.Position;
+import domain.Problem;
 import forms.PositionForm;
 
 @Controller
@@ -61,6 +62,7 @@ public class PositionCompanyController extends AbstractController {
 
 		position = this.positionService.findOne(positionId);
 		company = this.companyService.findByPrincipal();
+		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
 
 		if (position != null) {
 			result = new ModelAndView("position/display");
@@ -68,6 +70,7 @@ public class PositionCompanyController extends AbstractController {
 			result.addObject("company", company);
 			result.addObject("rol", "company");
 			result.addObject("lang", this.lang);
+			result.addObject("problems", problems);
 
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");

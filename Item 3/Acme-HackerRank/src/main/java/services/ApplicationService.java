@@ -205,6 +205,16 @@ public class ApplicationService {
 		return res;
 	}
 
+	public Collection<Application> findAllByProblem(final int problemId) {
+		final Collection<Application> res = this.applicationRepository.findAllByProblem(problemId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public void deleteInBatch(final Collection<Application> applications) {
+		this.applicationRepository.deleteInBatch(applications);
+	}
+
 	public Application reconstruct(final ApplicationForm applicationForm, final BindingResult binding) {
 		Application result;
 

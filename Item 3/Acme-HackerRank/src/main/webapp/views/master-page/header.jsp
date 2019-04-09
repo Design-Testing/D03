@@ -35,7 +35,6 @@
 			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="problem/company/list.do"><spring:message code="master.page.problem" /></a></li>					
 				</ul>
 			</li>
 		</security:authorize>
@@ -63,7 +62,7 @@
 					<li><a href="application/company/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
 					<li><a href="application/company/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
 					<li><a href="application/company/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
-					
+					<li><a href="problem/list.do"><spring:message code="master.page.problem" /></a></li>
 				</ul>
 			</li>
 			
