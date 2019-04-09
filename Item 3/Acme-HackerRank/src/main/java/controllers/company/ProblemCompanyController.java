@@ -3,6 +3,7 @@ package controllers.company;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,16 @@ import domain.Problem;
 public class ProblemCompanyController extends AbstractController {
 
 	@Autowired
-	private ProblemService	problemService;
+	private ProblemService				problemService;
 
 	@Autowired
-	private PositionService	positionService;
+	private PositionService				positionService;
 
 	@Autowired
-	private CompanyService	companyService;
+	private CompanyService				companyService;
+
+	@Autowired
+	private PositionCompanyController	positionCompanyController;
 
 
 	//Create
@@ -45,7 +49,7 @@ public class ProblemCompanyController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 		if (position.getMode().equals("DRAFT")) {
 			problem = this.problemService.create();
-			result = this.createEditModelAndView(problem);
+			result = this.createEditModelAndView(problem, positionId);
 			result.addObject("problem", problem);
 			result.addObject("positionId", positionId);
 		} else {
@@ -80,7 +84,7 @@ public class ProblemCompanyController extends AbstractController {
 	//List
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(@RequestParam final int positionId) {
 		final ModelAndView res;
 		final Company company = this.companyService.findByPrincipal();
 		final Collection<Problem> problems = this.problemService.findProblemByCompany();
@@ -94,7 +98,7 @@ public class ProblemCompanyController extends AbstractController {
 	// EDIT 
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int problemId) {
+	public ModelAndView edit(@RequestParam final int problemId, @RequestParam final int positionId) {
 		ModelAndView result;
 		Problem problem;
 
@@ -103,7 +107,7 @@ public class ProblemCompanyController extends AbstractController {
 		final Company company = this.companyService.findByPrincipal();
 
 		if ((problem.getMode().equals("DRAFT") && problem.getCompany().equals(company)))
-			result = this.createEditModelAndView(problem);
+			result = this.createEditModelAndView(problem, positionId);
 		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -113,37 +117,24 @@ public class ProblemCompanyController extends AbstractController {
 	// SAVE --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final Problem problem, final BindingResult binding) {
+	public ModelAndView save(@Valid final Problem problem, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
+		String paramPositionId;
+
+		paramPositionId = request.getParameter("positionId");
+		final Integer positionId = paramPositionId.isEmpty() ? null : Integer.parseInt(paramPositionId);
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(problem);
+			result = this.createEditModelAndView(problem, positionId);
 		else
 			try {
-				this.problemService.save(problem, problem.getPosition().getId());
-				result = new ModelAndView("redirect:list.do");
+				this.problemService.save(problem, positionId);
+				result = this.positionCompanyController.display(positionId);
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(problem, "problem.commit.error");
+				result = this.createEditModelAndView(problem, "problem.commit.error", positionId);
 			}
 
 		return result;
-	}
-
-	//DELETE
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Problem problem, final BindingResult binding) {
-		ModelAndView result;
-
-		try {
-			this.problemService.delete(problem);
-			result = new ModelAndView("redirect:list.do");
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(problem, "problem.commit.error");
-		}
-
-		return result;
-
 	}
 
 	// TO FINAL MODE 
@@ -154,29 +145,47 @@ public class ProblemCompanyController extends AbstractController {
 		final Problem problem = this.problemService.findOne(problemId);
 		final Collection<Problem> problems = this.problemService.findProblemByCompany();
 		Assert.isTrue(problems.contains(problem));
-		if (problem.getMode() == "DRAFT") {
+		if (problem.getMode().equals("DRAFT")) {
 			this.problemService.toFinalMode(problemId);
-			result = new ModelAndView("redirect:list.do");
+			result = this.positionCompanyController.display(problem.getPosition().getId());
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Problem problem) {
+	//DELETE
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int problemId, final HttpServletRequest request) {
+		ModelAndView result;
+		String paramPositionId;
+
+		paramPositionId = request.getParameter("positionId");
+		final Integer positionId = paramPositionId.isEmpty() ? null : Integer.parseInt(paramPositionId);
+
+		final Problem problem = this.problemService.findOne(problemId);
+		this.problemService.delete(problem);
+		result = this.positionCompanyController.display(positionId);
+		result.addObject("problem", problem);
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Problem problem, @RequestParam final int positionId) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(problem, null);
+		result = this.createEditModelAndView(problem, null, positionId);
 
 		return result;
 	}
 	// Edition ---------------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Problem problem, final String message) {
+	protected ModelAndView createEditModelAndView(final Problem problem, final String message, @RequestParam final int positionId) {
 		ModelAndView result;
 
 		result = new ModelAndView("problem/edit");
 		result.addObject("problem", problem);
 		result.addObject("message", message);
+		result.addObject("positionId", positionId);
 
 		return result;
 

@@ -59,15 +59,37 @@
 <display:table pagesize="5" class="displaytag" keepStatus="true"
                name="problems" requestURI="problem/company/list.do" id="row">
 	
-    <display:column property="problem.title" title="${problem.title}" sortable="true"/>
+    <display:column property="title" titleKey="problem.title" sortable="true"/>
 
-    <display:column property="problem.statement" title="${problem.statement}" sortable="true"/>
+    <display:column property="statement" titleKey="problem.statement" sortable="true"/>
 
-    <display:column property="problem.hint" title="${problem.hint}" sortable="true"/>
+    <display:column property="hint" titleKey="problem.hint" sortable="true"/>
 
+	<display:column>
+	<jstl:if test="${row.mode eq 'DRAFT'}">
+            <input type="button" name="edit"
+                value="<spring:message code="problem.edit" />"
+                onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}&positionId=${row.position.id}')" />
+	</jstl:if>
+	</display:column>
+	<display:column>
+	<jstl:if test="${row.mode eq 'DRAFT'}">
+            <input type="button" name="toFinalMode"
+                value="<spring:message code="problem.finalMode" />"
+                onclick="relativeRedir('problem/company/finalMode.do?problemId=${row.id}')" />
+	</jstl:if>
+	</display:column>
+	
 	<display:column>
 			<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
 	</display:column>
+	
+	<display:column>
+			<input type="button" name="delete"
+                value="<spring:message code="problem.delete" />"
+                onclick="relativeRedir('problem/company/delete.do?problemId=${row.id}&positionId=${row.position.id}')" />
+	</display:column>
+	
         
 </display:table>
 <br><br>

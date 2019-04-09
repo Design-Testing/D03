@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
 import security.Authority;
+import domain.Application;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
@@ -26,10 +27,10 @@ public class ProblemService {
 	private CompanyService		companyService;
 
 	@Autowired
-	private MessageService		messageService;
+	private PositionService		positionService;
 
 	@Autowired
-	private PositionService		positionService;
+	private ApplicationService	applicationService;
 
 	@Autowired
 	private ActorService		actorService;
@@ -68,6 +69,7 @@ public class ProblemService {
 		if (problem.getId() == 0) {
 			final Position position = this.positionService.findOne(positionId);
 			problem.setPosition(position);
+			problem.setCompany(company);
 			problem.setMode("DRAFT");
 		} else {
 			final Position position = this.positionService.findOne(positionId);
@@ -86,7 +88,9 @@ public class ProblemService {
 		final Problem retrieved = this.findOne(problem.getId());
 		Assert.isTrue(retrieved.equals(problem));
 		Assert.isTrue(this.problemRepository.exists(problem.getId()));
-		this.problemRepository.delete(problem.getId());
+		final Collection<Application> applications = this.applicationService.findAllByProblem(retrieved.getId());
+		this.applicationService.deleteInBatch(applications);
+		this.problemRepository.delete(retrieved.getId());
 
 	}
 
