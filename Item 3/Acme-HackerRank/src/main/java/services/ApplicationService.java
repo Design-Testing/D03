@@ -261,8 +261,4 @@ public class ApplicationService {
 		return allProblems;
 	}
 
-	public void deleteInBatch(final Collection<Application> applications) {
-		this.applicationRepository.deleteInBatch(applications);
-	}
-
 }
