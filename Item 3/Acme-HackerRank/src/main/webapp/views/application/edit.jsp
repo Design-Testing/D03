@@ -16,6 +16,8 @@
 	<acme:textarea code="application.explanation" path="explanation" />
 	<acme:textbox code="application.link" path="link" />
 
-
+<br>
 	<acme:submit code="application.submit" name="save"/>
+	
+	<acme:button url="application/hacker/listPending.do" name="back" code="application.back"/>
 </form:form>
