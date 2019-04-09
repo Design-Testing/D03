@@ -65,6 +65,8 @@
 
     <display:column property="hint" titleKey="problem.hint" sortable="true"/>
 
+
+	<security:authorize access="hasRole('COMPANY')">	
 	<display:column>
 	<jstl:if test="${row.mode eq 'DRAFT'}">
             <input type="button" name="edit"
@@ -80,15 +82,18 @@
 	</jstl:if>
 	</display:column>
 	
-	<display:column>
-			<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
-	</display:column>
 	
 	<display:column>
 			<input type="button" name="delete"
                 value="<spring:message code="problem.delete" />"
                 onclick="relativeRedir('problem/company/delete.do?problemId=${row.id}&positionId=${row.position.id}')" />
 	</display:column>
+	
+	<display:column>
+			<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
+	</display:column>
+	
+	</security:authorize>
 	
         
 </display:table>
