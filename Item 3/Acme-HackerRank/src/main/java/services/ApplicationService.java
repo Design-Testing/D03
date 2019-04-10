@@ -261,4 +261,8 @@ public class ApplicationService {
 		return allProblems;
 	}
 
+	public void flush() {
+		this.applicationRepository.flush();
+	}
+
 }

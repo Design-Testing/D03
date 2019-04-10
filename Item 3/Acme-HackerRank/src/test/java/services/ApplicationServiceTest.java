@@ -1,12 +1,16 @@
 
 package services;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
+import domain.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -14,183 +18,208 @@ import utilities.AbstractTest;
 })
 @Transactional
 public class ApplicationServiceTest extends AbstractTest {
-	//
-	//	// Services
-	//	@Autowired
-	//	private LegalRecordService	legalRecordService;
-	//
-	//	@Autowired
-	//	private BrotherhoodService	brotherhoodService;
-	//
-	//
-	//	@Test
-	//	public void driverCreateSave1() {
-	//		final Collection<String> lawsVacio = new ArrayList<String>();
-	//		final Collection<String> laws = new ArrayList<String>();
-	//		laws.add("LawTest1");
-	//		laws.add("LawTest2");
-	//		final Object testingData[][] = {
-	//			{
-	//				//			A: Acme Hacker Rank Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Positivo: Brotherhood crea LegalRecord con coleccion de laws vacia
-	//				//			C: 100% Recorre 49 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood1", "LegalTest", "descriptionTest", "Legal Record Test", 0.21, lawsVacio, null
-	//			}, {
-	//				//			A: Acme Hacker Rank Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Un member intenta crear una LegalRecord
-	//				//			C: 32,65% Recorre 16 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"member1", "LegalTest", "descriptionTest", "Legal Record Test", 0.21, null, IllegalArgumentException.class
-	//			}, {
-	//				//			A: Acme Hacker Rank Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Positivo: Brotherhood crea LegalRecord con coleccion de laws con datos
-	//				//			C: 100% Recorre 49 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood1", "LegalTest", "descriptionTest", "Legal Record Test", 0.21, laws, null
-	//			},
-	//		};
-	//
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Double) testingData[i][4], (Collection<String>) testingData[i][5], (Class<?>) testingData[i][6]);
-	//	}
-	//
-	//	@Test
-	//	public void driverCreateSave2() {
-	//		final Object testingData[][] = {
-	//			{
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood edita LegalRecord con title vacio
-	//				//			C: 97,95% Recorre 48 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood1", "", "descriptionTest", "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood edita LegalRecord con title null
-	//				//			C: 97,95% Recorre 48 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood1", null, "descriptionTest", "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood crea LegalRecord con description vacia
-	//				//			C: 97,95% Recorre 48 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood1", "LegalTest", "", "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood crea LegalRecord con description null
-	//				//			C: 97,95% Recorre 48 de las 49 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood1", "LegalTest", null, "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			},
-	//		};
-	//
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Double) testingData[i][4], (Collection<String>) testingData[i][5], (Class<?>) testingData[i][6]);
-	//	}
-	//	protected void templateCreateSave(final String user, final String title, final String description, final String legalName, final Double vat, final Collection<String> laws, final Class<?> expected) {
-	//
-	//		Class<?> caught = null;
-	//
-	//		try {
-	//			this.authenticate(user);
-	//			final LegalRecord lRec = this.legalRecordService.create();
-	//			lRec.setTitle(title);
-	//			lRec.setDescription(description);
-	//			lRec.setLegalName(legalName);
-	//			lRec.setVat(vat);
-	//			if (laws != null)
-	//				lRec.setLaws(laws);
-	//			final LegalRecord lRecSaved = this.legalRecordService.save(lRec);
-	//			Assert.isTrue(lRecSaved.getId() != 0);
-	//			this.legalRecordService.flush();
-	//			this.unauthenticate();
-	//		} catch (final Throwable oops) {
-	//			caught = oops.getClass();
-	//		}
-	//
-	//		super.checkExceptions(expected, caught);
-	//	}
-	//
-	//	@Test
-	//	public void driverEdit() {
-	//		final Collection<String> lawsVacio = new ArrayList<String>();
-	//		final Collection<String> laws = new ArrayList<String>();
-	//		laws.add("LawTest1");
-	//		laws.add("LawTest2");
-	//		final Object testingData[][] = {
-	//			{
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Positivo: Brotherhood edita LegalRecord con laws vacio
-	//				//			C: 100% Recorre 65 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood2", "LegalTest", "descriptionTest", "Legal Record Test", 0.21, lawsVacio, null
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Positivo: Brotherhood edita LegalRecord con laws con datos
-	//				//			C: 100% Recorre 65 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood2", "LegalTest", "descriptionTest", "Legal Record Test", 0.21, laws, null
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Un member intenta editar LegalRecord
-	//				//			C: 12,3% Recorre 8 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"member1", "LegalTest", "descriptionTest", "Legal Record Test", 0.21, null, IllegalArgumentException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood edita LegalRecord con title vacio
-	//				//			C: 98,4% Recorre 64 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood2", "", "descriptionTest", "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood edita LegalRecord con title null
-	//				//			C: 98,4% Recorre 64 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood2", null, "descriptionTest", "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood edita LegalRecord con description vacio
-	//				//			C: 98,4% Recorre 64 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood2", "LegalTest", "", "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Brotherhood edita LegalRecord con description null
-	//				//			C: 98,4% Recorre 64 de las 65 lineas posibles
-	//				//			D: cobertura de datos=6/405
-	//				"brotherhood2", "LegalTest", null, "Legal Record Test", 0.21, null, ConstraintViolationException.class
-	//			},
-	//		};
-	//
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Double) testingData[i][4], (Collection<String>) testingData[i][5], (Class<?>) testingData[i][6]);
-	//	}
-	//
-	//	private void templateEdit(final String user, final String title, final String description, final String legalName, final Double vat, final Collection<String> laws, final Class<?> expected) {
-	//		Class<?> caught = null;
-	//		try {
-	//			this.authenticate(user);
-	//			final Brotherhood principal = this.brotherhoodService.findByPrincipal();
-	//			final ArrayList<LegalRecord> lRecs = new ArrayList<LegalRecord>(principal.getHistory().getLegalRecords());
-	//			final LegalRecord lR = lRecs.get(0);
-	//			lR.setTitle(title);
-	//			lR.setDescription(description);
-	//			lR.setLegalName(legalName);
-	//			lR.setVat(vat);
-	//			if (laws != null)
-	//				lR.setLaws(laws);
-	//			this.legalRecordService.save(lR);
-	//			this.legalRecordService.flush();
-	//			this.unauthenticate();
-	//		} catch (final Throwable oops) {
-	//			caught = oops.getClass();
-	//		}
-	//
-	//		super.checkExceptions(expected, caught);
-	//
-	//	}
+
+	// Services
+	@Autowired
+	private ApplicationService	applicationService;
+
+
+	@Test
+	public void driverCreateSave() {
+		final Object testingData[][] = {
+			{
+				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
+				//			them, creating them, and updating them.
+				//			B: Test Positivo: Hacker crea una nueva solicitud a una position
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "position4", null
+			}, {
+				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
+				//			them, creating them, and updating them.
+				//			B: Test Negativo: Hacker crea una nueva solicitud a una position que esta en DRAFT MODE
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "position3", IllegalArgumentException.class
+			}, {
+				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
+				//			them, creating them, and updating them.
+				//			B: Test Negativo: Hacker crea una nueva solicitud a una position en la que ese hacker ya tiene
+				//			solicitudes a todos los problemas posibles.
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "position1", IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+	protected void templateCreateSave(final String hacker, final String position, final Class<?> expected) {
+
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(hacker);
+
+			final Integer positionId = this.getEntityId(position);
+			final Application saved = this.applicationService.apply(positionId);
+
+			Assert.isTrue(saved.getId() != 0);
+			this.applicationService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+
+		}
+		super.checkExceptions(expected, caught);
+	}
+
+	@Test
+	public void driverEdit() {
+		final Object testingData[][] = {
+			{
+				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
+				//			them, creating them, and UPDATING them.
+				//			B: Test Positivo: 
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "position4", null
+			}, {
+				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
+				//			them, creating them, and UPDATING them.
+				//			B: Test Negativo: 
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "position3", IllegalArgumentException.class
+			}, {
+				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
+				//			them, creating them, and UPDATING them.
+				//			B: Test Negativo: 
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "position1", IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Class<?>) testingData[i][2]);
+	}
+	protected void templateEdit(final String hacker, final String application, final String position, final String explanation, final String link, final Class<?> expected) {
+
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(hacker);
+
+			final Integer applicationId = this.getEntityId(application);
+			final Application saved = this.applicationService.save(application, positionId)
+
+			Assert.isTrue(saved.getId() != 0);
+			this.applicationService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+
+		}
+		super.checkExceptions(expected, caught);
+	}
+	@Test
+	public void driverAcceptApplication() {
+		final Object testingData[][] = {
+			{
+				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
+				//			them grouped by status, showing them, and UPDATING them.
+				//			B: Test Positivo: Company acepta una application
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"company2", "application3", null
+			}, {
+				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
+				//			them grouped by status, showing them, and UPDATING them.
+				//			B: Test Negativo: Company acepta una application que no le pertenece
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"company1", "application3", IllegalArgumentException.class
+			}, {
+				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
+				//			them grouped by status, showing them, and UPDATING them.
+				//			B: Test Negativo: Company acepta una application con estado PENDING
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"company1", "application1", IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateAcceptApplication((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
+	private void templateAcceptApplication(final String company, final String application, final Class<?> expected) {
+		Class<?> caught = null;
+		try {
+			this.authenticate(company);
+			final Integer applicationId = this.getEntityId(application);
+
+			this.applicationService.acceptApplication(applicationId);
+			this.applicationService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		super.checkExceptions(expected, caught);
+
+	}
+
+	@Test
+	public void driverRejectApplication() {
+		final Object testingData[][] = {
+			{
+				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
+				//			them grouped by status, showing them, and UPDATING them.
+				//			B: Test Positivo: Company rechaza una application
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"company2", "application3", null
+			}, {
+				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
+				//			them grouped by status, showing them, and UPDATING them.
+				//			B: Test Negativo: Company acepta una application que no le pertenece
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"company1", "application3", IllegalArgumentException.class
+			}, {
+				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
+				//			them grouped by status, showing them, and UPDATING them.
+				//			B: Test Positivo: Company acepta una application con estado PENDING
+				//			C: 97,95% Recorre 48 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"company1", "application1", IllegalArgumentException.class
+			}
+		};
+
+		for (int i = 0; i < testingData.length; i++)
+			this.templateRejectApplication((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+	}
+
+	private void templateRejectApplication(final String company, final String application, final Class<?> expected) {
+		Class<?> caught = null;
+		try {
+			this.authenticate(company);
+			final Integer applicationId = this.getEntityId(application);
+
+			this.applicationService.rejectApplication(applicationId);
+			this.applicationService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		super.checkExceptions(expected, caught);
+
+	}
+
 	//
 	//	@Test
 	//	public void driverDelete() {
