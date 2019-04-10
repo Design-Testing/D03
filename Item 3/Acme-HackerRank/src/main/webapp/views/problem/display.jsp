@@ -24,7 +24,7 @@
 	<acme:button url="problem/company/delete.do?problemId=${problem.id}&positionId=${position.id}" name="delete" code="problem.delete"/>	
 </jstl:if>
 
-<acme:button url="position/company/display.do?positionId=${problem.position.id}" name="cancel"
-		code="problem.cancel" />
+<acme:button url="position/company/display.do?positionId=${problem.position.id}" name="back"
+		code="problem.back" />
 
 <br />

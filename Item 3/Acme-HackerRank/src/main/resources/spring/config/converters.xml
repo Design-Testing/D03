@@ -41,6 +41,10 @@
 	<!-- ACTOR -->
 	<bean class="converters.ActorToStringConverter"/>
 	<bean class="converters.StringToActorConverter"/>
+	
+	<!-- CONFIGURATION PARAMETERS -->
+	<bean class="converters.ConfigurationParametersToStringConverter"/>
+	<bean class="converters.StringToConfigurationParametersConverter"/>
 		
 	</util:list>
 	

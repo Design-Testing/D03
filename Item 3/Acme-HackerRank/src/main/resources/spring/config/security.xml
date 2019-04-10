@@ -40,7 +40,6 @@
 		<security:intercept-url pattern="/security/loginFailure.do" access="permitAll" /> 
 
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" />
-		
 		<security:intercept-url pattern="/position/list.do" access="permitAll" />
 		<security:intercept-url pattern="/position/display.do" access="permitAll" />
 		<security:intercept-url pattern="/company/list.do" access="permitAll" />
@@ -48,31 +47,35 @@
 		<security:intercept-url pattern="/company/display.do" access="permitAll" />
 		<security:intercept-url pattern="/company/create.do" access="permitAll" />
 		<security:intercept-url pattern="/hacker/create.do" access="permitAll" />
+		<security:intercept-url pattern="/misc/403.jsp" access="permitAll" />
 		
 		<!-- PROBLEM -->
+		<security:intercept-url pattern="/problem/company/**" access="hasRole('COMPANY')" /> 
 		
-		<security:intercept-url pattern="/problem/company/edit.do" access="hasRole('COMPANY')" />
-		<security:intercept-url pattern="/problem/company/finalMode.do" access="hasRole('COMPANY')" />
-		<security:intercept-url pattern="/problem/company/create.do" access="hasRole('COMPANY')" />
-		<security:intercept-url pattern="/problem/company/delete.do" access="hasRole('COMPANY')" />
-		<security:intercept-url pattern="/problem/company/display.do" access="hasRole('COMPANY')" />
-		 
- 		<security:intercept-url pattern="/company/display2.do" access="hasRole('COMPANY')" />
- 		<security:intercept-url pattern="/company/edit.do" access="hasRole('COMPANY')" />
-		 
+		
+		<!-- APPLICATION -->
 		<security:intercept-url pattern="/application/company/**" access="hasRole('COMPANY')" /> 
 		<security:intercept-url pattern="/application/hacker/**" access="hasRole('HACKER')" /> 
 		
-		<security:intercept-url pattern="/position/company/**" access="hasRole('COMPANY')" /> 
+		<!-- POSITION -->
+ 		<security:intercept-url pattern="/position/list.do" access="permitAll" />
+		<security:intercept-url pattern="/position/display.do" access="permitAll" />
+ 		<security:intercept-url pattern="/position/company/**" access="hasRole('COMPANY')" /> 
+ 		
+		<!-- COMPANY -->
+		<security:intercept-url pattern="/company/list.do" access="permitAll" />
+		<security:intercept-url pattern="/company/display.do" access="permitAll" />
+		<security:intercept-url pattern="/company/create.do" access="permitAll" />
+		<security:intercept-url pattern="/company/edit.do" access="permitAll" />
+		<security:intercept-url pattern="/company/display2.do" access="hasRole('COMPANY')" />
 		
-		<security:intercept-url pattern="/problem/company/**" access="hasRole('COMPANY')" /> 
+		<!-- HACKER -->
+		<security:intercept-url pattern="/hacker/create.do" access="permitAll" />
 		
-		<security:intercept-url pattern="/administrator/action-1.do" access="hasRole('ADMIN')" /> 
-		<security:intercept-url pattern="/administrator/action-2.do" access="hasRole('ADMIN')" /> 
+		<!-- CONFIGURATION PARAMETERS -->
+		<security:intercept-url pattern="/configurationParameters/administrator/**.do" access="hasRole('ADMIN')" />
 
-		<security:intercept-url pattern="/customer/action-1.do" access="hasRole('CUSTOMER')" /> 
-		<security:intercept-url pattern="/customer/action-2.do" access="hasRole('CUSTOMER')" /> 
-
+		<!-- IS AUTHENTICATED -->
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-3.do" access="isAuthenticated()" /> 
