@@ -56,8 +56,6 @@ public class PositionServiceTest extends AbstractTest {
 			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "", new ArrayList<String>(), new ArrayList<String>(), 15000.0, ConstraintViolationException.class
 			}, {
-				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), null, 15000.0, ConstraintViolationException.class
-			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), -1.0, ConstraintViolationException.class
 			}, {
 				"company1", "Title", "Description", "2019-12-12 20:00", "Profile", new ArrayList<String>(), new ArrayList<String>(), null, ConstraintViolationException.class
@@ -78,6 +76,8 @@ public class PositionServiceTest extends AbstractTest {
 		try {
 			this.authenticate(user);
 			final Position pos = this.positionService.create();
+			skills.add("skill");
+			technologies.add("Tech");
 			pos.setTitle(title);
 			pos.setDescription(description);
 			final Date dead = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).parse(deadline);
