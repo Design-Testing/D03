@@ -1,5 +1,5 @@
 
-package Services;
+package services;
 
 import javax.validation.ConstraintViolationException;
 
@@ -11,8 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import services.PositionService;
-import services.ProblemService;
 import utilities.AbstractTest;
 import domain.Problem;
 
@@ -25,9 +23,6 @@ public class ProblemServiceTest extends AbstractTest {
 
 	@Autowired
 	private ProblemService	problemService;
-
-	@Autowired
-	private PositionService	positionService;
 
 
 	@Test
@@ -99,6 +94,8 @@ public class ProblemServiceTest extends AbstractTest {
 				"company1", "Title", null, "hint for problem", "problem1", "position1", ConstraintViolationException.class
 			}, {
 				"company1", "Title", "Statement for problem", "hint for problem", "problem3", "position2", IllegalArgumentException.class
+			}, {
+				"company1", "Title", "Statement for problem", "hint for problem", "problem2", "position2", IllegalArgumentException.class
 			},
 		};
 
