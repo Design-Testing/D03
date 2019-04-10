@@ -74,19 +74,15 @@
                 onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}&positionId=${row.position.id}')" />
 	</jstl:if>
 	</display:column>
+	
 	<display:column>
 	<jstl:if test="${row.mode eq 'DRAFT'}">
-            <input type="button" name="toFinalMode"
-                value="<spring:message code="problem.finalMode" />"
-                onclick="relativeRedir('problem/company/finalMode.do?problemId=${row.id}')" />
+		<acme:button url="problem/company/finalMode.do?problemId=${row.id}" name="finalMode" code="problem.finalMode"/>
 	</jstl:if>
 	</display:column>
 	
-	
 	<display:column>
-			<input type="button" name="delete"
-                value="<spring:message code="problem.delete" />"
-                onclick="relativeRedir('problem/company/delete.do?problemId=${row.id}&positionId=${row.position.id}')" />
+		<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
 	</display:column>
 	
 	<display:column>
