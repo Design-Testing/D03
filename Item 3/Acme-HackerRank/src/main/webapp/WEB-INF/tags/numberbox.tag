@@ -27,6 +27,7 @@
 
 <%@ attribute name="readonly" required="false" %>
 <%@ attribute name="min" required="true" %>
+<%@ attribute name="max" required="false" %>
 
 <jstl:if test="${readonly == null}">
 	<jstl:set var="readonly" value="false" />
