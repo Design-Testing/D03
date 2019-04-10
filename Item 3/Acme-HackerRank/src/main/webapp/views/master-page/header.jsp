@@ -20,34 +20,18 @@
 <div>
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
+		
+		<!-- ========================================================================================================= -->
+		<!-- ========================================  ADMINNISTRATOR  ================================================ -->
+		<!-- ========================================================================================================= -->
+		
 		<security:authorize access="hasRole('ADMIN')">
-			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
+			<li><a class="fNiv"><spring:message	code="master.page.configurationParameters" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="administrator/action-1.do"><spring:message code="master.page.administrator.action.1" /></a></li>
-					<li><a href="administrator/action-2.do"><spring:message code="master.page.administrator.action.2" /></a></li>
-					<li><a href="problem/list.do"><spring:message code="master.page.problem" /></a></li>					
+					<li><a href="configurationParameters/administrator/edit.do"><spring:message code="master.page.configurationParameters.edit" /></a></li>
 				</ul>
-			</li>
-		</security:authorize>
-		
-				<security:authorize access="hasRole('COMPANY')">
-			<li><a class="fNiv"><spring:message	code="master.page.administrator" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="problem/company/list.do"><spring:message code="master.page.problem" /></a></li>					
-				</ul>
-			</li>
-		</security:authorize>
-		
-		<security:authorize access="hasRole('CUSTOMER')">
-			<li><a class="fNiv"><spring:message	code="master.page.customer" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="customer/action-1.do"><spring:message code="master.page.customer.action.1" /></a></li>
-					<li><a href="customer/action-2.do"><spring:message code="master.page.customer.action.2" /></a></li>					
-				</ul>
-			</li>
+			</li>	
 		</security:authorize>
 		
 		<!-- ========================================================================================================= -->
@@ -63,7 +47,6 @@
 					<li><a href="application/company/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
 					<li><a href="application/company/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
 					<li><a href="application/company/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
-					
 				</ul>
 			</li>
 			

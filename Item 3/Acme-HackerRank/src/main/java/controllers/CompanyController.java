@@ -19,6 +19,7 @@ import security.Authority;
 import security.UserAccount;
 import services.ActorService;
 import services.CompanyService;
+import services.ConfigurationParametersService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
 import domain.Actor;
@@ -31,13 +32,15 @@ import forms.CompanyForm;
 public class CompanyController extends AbstractController {
 
 	@Autowired
-	private CompanyService		companyService;
+	private CompanyService					companyService;
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 	@Autowired
-	private RegisterService		registerService;
+	private RegisterService					registerService;
 	@Autowired
-	private UserAccountService	userAccountService;
+	private UserAccountService				userAccountService;
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -112,6 +115,8 @@ public class CompanyController extends AbstractController {
 		final ActorForm actor = this.registerService.inyect(company);
 		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
+		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
+		System.out.println(this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
@@ -126,13 +131,14 @@ public class CompanyController extends AbstractController {
 			result.addObject("errors", binding.getAllErrors());
 			companyForm.setTermsAndCondicions(false);
 			result.addObject("companyForm", companyForm);
+			System.out.println(this.configurationParametersService.find().getCreditCardMake());
 		} else
 			try {
 				final UserAccount ua = this.userAccountService.reconstruct(companyForm, Authority.COMPANY);
 				company = this.companyService.reconstruct(companyForm, binding);
 				company.setUserAccount(ua);
 				this.registerService.saveCompany(company, binding);
-				result.addObject("alert", "hacker.edit.correct");
+				result.addObject("alert", "company.edit.correct");
 				result.addObject("companyForm", companyForm);
 			} catch (final ValidationException oops) {
 				result = this.createEditModelAndView(companyForm, null);
@@ -183,6 +189,9 @@ public class CompanyController extends AbstractController {
 
 		result = new ModelAndView("company/edit");
 		result.addObject("companyForm", companyForm);
+		result.addObject("creditCard", companyForm.getCreditCard());
+		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
+		System.out.println(this.configurationParametersService.find().getCreditCardMake());
 
 		result.addObject("message", messageCode);
 

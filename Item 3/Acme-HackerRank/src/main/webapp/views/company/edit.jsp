@@ -29,24 +29,32 @@
 
 
 
-<form:form modelAttribute="actorForm" action="company/edit.do" method="POST">
+<form:form modelAttribute="companyForm" action="company/edit.do" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<acme:textbox code="company.edit.userAccountuser" path="userAccountuser" />
 	<acme:password code="company.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="company.edit.name" path="name" />
-	<acme:textbox code="company.edit.middleName" path="middleName" />
 	<acme:textbox code="company.edit.surname" path="surname" />
 	<acme:textbox code="company.edit.photo" path="photo" />
 	<acme:textbox code="company.edit.email" path="email" />
 	<acme:textbox code="company.edit.phone" path="phone" />
 	<acme:textbox code="company.edit.address" path="address" />
 	<acme:textbox code="company.edit.commercialName" path="commercialName" />
+	<br>
+	<spring:message code="company.edit.creditCard"/>
+	<br>
+	<acme:textbox code="company.edit.holder" path="creditCard.holderName" />
+	<acme:select items="${makes}" itemLabel="makes" code="company.edit.make" path="creditCard.make"/>
+	<acme:textbox code="company.edit.number" path="creditCard.number" />
+	<acme:textbox code="company.edit.expirationMonth" path="creditCard.expirationMonth" />
+	<acme:textbox code="company.edit.expirationYear" path="creditCard.expirationYear" />
+	<acme:textbox code="company.edit.cvv" path="creditCard.cvv" />
 	
 
 	<jstl:choose>
-	    <jstl:when test="${actorForm.termsAndCondicions == true}">
+	    <jstl:when test="${companyForm.termsAndCondicions == true}">
 	        <form:hidden path="termsAndCondicions"/>
 	    </jstl:when>    
 	    <jstl:otherwise>
@@ -54,6 +62,8 @@
 			<br>
 	    </jstl:otherwise>
 	</jstl:choose>
-
-	<acme:submit code="company.edit.submit" name="save"/>
+	
+	<input type="submit" name="save"
+		value="<spring:message code="company.edit.submit" />" />
+	
 </form:form>

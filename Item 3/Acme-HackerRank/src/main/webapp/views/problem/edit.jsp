@@ -18,8 +18,10 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	<form:hidden path="mode" />
-	<form:hidden path="company" />
+	<form:hidden path="mode" value="DRAFT"/>
+	<form:hidden path="company"/>
+	<form:hidden path="position"/>
+	<input type="hidden" name="positionId" value="${positionId}"/>
 
 	<acme:textbox code="problem.title" path="title" />
 	<acme:textbox code="problem.statement" path="statement" />
@@ -30,7 +32,7 @@
 	<input type="submit" name="save"
 		value="<spring:message code="problem.save" />" />
 
-	<acme:button url="problem/company/list.do" name="cancel"
+	<acme:button url="position/company/display.do?positionId=${problem.position.id}" name="cancel"
 		code="problem.cancel" />
 
 </form:form>

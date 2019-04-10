@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.UserAccount;
 import services.ActorService;
+import services.ConfigurationParametersService;
 import services.HackerService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
@@ -39,16 +40,19 @@ import forms.ActorForm;
 public class HackerController extends AbstractController {
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private HackerService		hackerService;
+	private HackerService					hackerService;
 
 	@Autowired
-	private RegisterService		registerService;
+	private RegisterService					registerService;
 
 	@Autowired
-	private UserAccountService	userAccountService;
+	private UserAccountService				userAccountService;
+
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -112,6 +116,7 @@ public class HackerController extends AbstractController {
 		final ActorForm actor = this.registerService.inyect(hacker);
 		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
+		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
@@ -183,7 +188,7 @@ public class HackerController extends AbstractController {
 
 		result = new ModelAndView("hacker/edit");
 		result.addObject("actorForm", actorForm);
-
+		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
 		result.addObject("message", messageCode);
 
 		return result;

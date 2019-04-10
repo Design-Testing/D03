@@ -21,6 +21,7 @@ import services.ProblemService;
 import controllers.AbstractController;
 import domain.Company;
 import domain.Position;
+import domain.Problem;
 import forms.PositionForm;
 
 @Controller
@@ -61,6 +62,7 @@ public class PositionCompanyController extends AbstractController {
 
 		position = this.positionService.findOne(positionId);
 		company = this.companyService.findByPrincipal();
+		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
 
 		if (position != null) {
 			result = new ModelAndView("position/display");
@@ -68,13 +70,13 @@ public class PositionCompanyController extends AbstractController {
 			result.addObject("company", company);
 			result.addObject("rol", "company");
 			result.addObject("lang", this.lang);
+			result.addObject("problems", problems);
 
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
-
 	// LIST --------------------------------------------------------
 
 	@RequestMapping(value = "/myPositions", method = RequestMethod.GET)
@@ -99,16 +101,19 @@ public class PositionCompanyController extends AbstractController {
 
 	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
 	public ModelAndView finalMode(@RequestParam final int positionId) {
-		final ModelAndView result;
+		ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
 		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2)) {
-			result = new ModelAndView("redirect:/position/error");
-			result.addObject("ok", "Error al pasar a final mode la posición.");
-		} else {
-			this.positionService.toFinalMode(positionId);
-			result = this.myPositions();
-		}
+			result = new ModelAndView("position/error");
+			result.addObject("ok", "Error al pasar a final mode la posiciï¿½n.");
+		} else
+			try {
+				this.positionService.toFinalMode(positionId);
+				result = this.myPositions();
+			} catch (final Throwable oops) {
+				result = new ModelAndView("position/error");
+			}
 
 		return result;
 	}
@@ -121,7 +126,7 @@ public class PositionCompanyController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 
 		if (position == null || !position.getMode().equals("FINAL"))
-			result = new ModelAndView("redirect:/position/error");
+			result = new ModelAndView("position/error");
 		else {
 			this.positionService.toCancelMode(positionId);
 			result = this.myPositions();
@@ -162,9 +167,9 @@ public class PositionCompanyController extends AbstractController {
 		else
 			try {
 				this.positionService.save(position);
-				result = new ModelAndView("redirect:myPositions.do");
+				result = this.myPositions();
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/position/error");
+				result = new ModelAndView("position/error");
 			}
 
 		return result;
@@ -172,16 +177,17 @@ public class PositionCompanyController extends AbstractController {
 
 	// DELETE --------------------------------------------------------
 
-	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Position position, final BindingResult binding) {
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int positionId) {
 		ModelAndView result;
+		final Position position = this.positionService.findOne(positionId);
 
-		try {
-			this.positionService.delete(position);
-			result = new ModelAndView("redirect:myPositions.do");
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/position/error");
-		}
+		//		try {
+		this.positionService.delete(position);
+		result = this.myPositions();
+		//		} catch (final Throwable oops) {
+		//			result = new ModelAndView("redirect:/position/error");
+		//		}
 
 		return result;
 
@@ -202,7 +208,7 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("position/edit");
-		result.addObject("position", this.constructPruned(position));
+		result.addObject("position", this.constructPruned(position)); //this.constructPruned(position)
 
 		result.addObject("message", messageCode);
 

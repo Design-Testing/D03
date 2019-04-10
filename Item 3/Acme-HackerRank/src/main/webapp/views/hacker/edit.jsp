@@ -37,12 +37,31 @@
 	<acme:password code="hacker.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="hacker.edit.name" path="name" />
-	<acme:textbox code="hacker.edit.middleName" path="middleName" />
 	<acme:textbox code="hacker.edit.surname" path="surname" />
 	<acme:textbox code="hacker.edit.photo" path="photo" />
 	<acme:textbox code="hacker.edit.email" path="email" />
 	<acme:textbox code="hacker.edit.phone" path="phone" />
 	<acme:textbox code="hacker.edit.address" path="address" />
+	<acme:numberbox code="hacker.edit.vat" path="vat" min="0" max="1"/>
+	
+	
+	<!-- CREDIT CARD -->
+	
+	<acme:textbox code="hacker.creditCard.holderName" path="creditCard.holderName"/>
+
+	<form:label path="creditCard.make">
+		<spring:message code="hacker.creditCard.brandName" />
+	</form:label>	
+	<form:select  path="creditCard.make">
+		<form:option items="${makes}"/>
+	</form:select>
+	<form:errors path="creditCard.make" cssClass="error" />
+	
+	<acme:textbox code="hacker.creditCard.number" path="creditCard.number"/>
+	<acme:textbox code="hacker.creditCard.expirationMonth" path="creditCard.expirationMonth" placeholder="09"/>
+	<acme:textbox code="hacker.creditCard.expirationYear" path="creditCard.expirationYear" placeholder="21"/>
+	<acme:textbox code="hacker.creditCard.cvv" path="creditCard.cvv"/>
+	
 
 	<jstl:choose>
 	    <jstl:when test="${actorForm.termsAndCondicions == true}">

@@ -22,6 +22,10 @@
 	<bean class="converters.HackerToStringConverter"/>
 	<bean class="converters.StringToHackerConverter"/>
 	
+	<!-- COMPANY -->
+	<bean class="converters.CompanyToStringConverter"/>
+	<bean class="converters.StringToCompanyConverter"/>
+	
 	<!-- APPLICATION -->
 	<bean class="converters.ApplicationToStringConverter"/>
 	<bean class="converters.StringToApplicationConverter"/>
@@ -33,6 +37,14 @@
 	<!-- PROBLEM -->
 	<bean class="converters.ProblemToStringConverter"/>
 	<bean class="converters.StringToProblemConverter"/>
+	
+	<!-- ACTOR -->
+	<bean class="converters.ActorToStringConverter"/>
+	<bean class="converters.StringToActorConverter"/>
+	
+	<!-- CONFIGURATION PARAMETERS -->
+	<bean class="converters.ConfigurationParametersToStringConverter"/>
+	<bean class="converters.StringToConfigurationParametersConverter"/>
 		
 	</util:list>
 	

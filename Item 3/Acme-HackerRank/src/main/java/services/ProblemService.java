@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import repositories.ProblemRepository;
 import security.Authority;
+import domain.Application;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
@@ -26,10 +27,10 @@ public class ProblemService {
 	private CompanyService		companyService;
 
 	@Autowired
-	private MessageService		messageService;
+	private PositionService		positionService;
 
 	@Autowired
-	private PositionService		positionService;
+	private ApplicationService	applicationService;
 
 	@Autowired
 	private ActorService		actorService;
@@ -68,6 +69,7 @@ public class ProblemService {
 		if (problem.getId() == 0) {
 			final Position position = this.positionService.findOne(positionId);
 			problem.setPosition(position);
+			problem.setCompany(company);
 			problem.setMode("DRAFT");
 		} else {
 			final Position position = this.positionService.findOne(positionId);
@@ -83,10 +85,14 @@ public class ProblemService {
 	public void delete(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(problem.getId() != 0);
+		final Company company = this.companyService.findByPrincipal();
+		Assert.isTrue(company.equals(problem.getCompany()), "No puedes borrar un problema que no le pertenezca.");
 		final Problem retrieved = this.findOne(problem.getId());
 		Assert.isTrue(retrieved.equals(problem));
 		Assert.isTrue(this.problemRepository.exists(problem.getId()));
-		this.problemRepository.delete(problem.getId());
+		final Collection<Application> applications = this.applicationService.findAllByProblem(retrieved.getId());
+		Assert.isTrue(applications.isEmpty(), "No puedes borrar este problema, ya que tiene solicitudes asociadas.");
+		this.problemRepository.delete(retrieved.getId());
 
 	}
 
@@ -121,6 +127,16 @@ public class ProblemService {
 		res = this.problemRepository.findProblemsByCompany(company.getUserAccount().getId());
 		Assert.notNull(res);
 		return res;
+	}
+
+	public Collection<Problem> findProblemsByPositionAndHacker(final Integer positionId, final Integer hackerUAId) {
+		Collection<Problem> res = new ArrayList<>();
+		res = this.problemRepository.findProblemsByPositionAndHacker(positionId, hackerUAId);
+		return res;
+	}
+
+	public void deleteInBatch(final Collection<Problem> problems) {
+		this.problemRepository.deleteInBatch(problems);
 	}
 
 }

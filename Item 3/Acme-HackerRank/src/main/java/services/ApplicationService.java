@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import domain.Actor;
 import domain.Application;
 import domain.Company;
 import domain.Hacker;
+import domain.Position;
 import domain.Problem;
 import forms.ApplicationForm;
 
@@ -45,9 +47,25 @@ public class ApplicationService {
 	@Autowired
 	private Validator				validator;
 
+	@Autowired
+	private PositionService			positionService;
 
-	public Application create() {
+
+	public Application create(final int positionId) {
 		final Application application = new Application();
+		final Hacker hacker = this.hackerService.findByPrincipal();
+		final Position position = this.positionService.findOne(positionId);
+
+		//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
+		Assert.isTrue(!this.problemsFree(positionId, hacker).isEmpty(), "Ya tiene solicitudes a todos los problemas posibles.");
+		final Problem assigned = this.problemAssign(positionId, hacker);
+		application.setProblem(assigned);
+		application.setStatus("PENDING");
+		final Date moment = new Date(System.currentTimeMillis() - 1);
+		application.setMoment(moment);
+		application.setHacker(hacker);
+		application.setPosition(position);
+
 		return application;
 	}
 
@@ -81,38 +99,20 @@ public class ApplicationService {
 		final Boolean isHacker = this.actorService.checkAuthority(principal, Authority.HACKER);
 
 		if (isHacker) {
-			if (application.getId() == 0) {
-				//Se asigna un problema aleatorio del conjunto de problemas que posee esa position.
-				List<Problem> problems = new ArrayList<>();
-				problems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
-				final Integer numRandom = (int) (Math.random() * (problems.size() - 1));
-				final Problem assigned = problems.get(numRandom);
-				application.setProblem(assigned);
-				application.setStatus("PENDING");
-				application.setExplanation(null);
-				application.setLink(null);
-				final Date moment = new Date(System.currentTimeMillis() - 1);
-				application.setMoment(moment);
-				application.setSubmitMoment(null);
-
-			} else {
-				Assert.isTrue(application.getStatus() == "PENDING", "No puede actualizar una solicitud que no esté en estado PENDING.");
-				System.out.println("Pasa el 1 assert");
+			if (application.getId() != 0) {
+				Assert.isTrue(application.getStatus().equals("PENDING"), "No puede actualizar una solicitud que no estï¿½ en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
-				System.out.println("Pasa el 2 assert");
+				Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicaciï¿½n de su soluciï¿½n.");
+				Assert.isTrue(application.getLink() != "", "Debe adjuntar un link de su soluciï¿½n.");
 				application.setStatus("SUBMITTED");
-				System.out.println(application.getStatus());
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
 				application.setSubmitMoment(submitMoment);
-				System.out.println(application.getSubmitMoment());
 			}
 		} else { //COMPANY
 			Assert.isTrue(application.getPosition().getCompany() == this.companyService.findByPrincipal(), "No puede actualizar una solicitud que no le pertenece.");
 			Assert.isTrue(application.getStatus() == "SUBMITTED");
 		}
-		System.out.println("Justo antes de guardar");
 		result = this.applicationRepository.save(application);
-		System.out.println("Application guardada: " + result.getStatus() + result.getSubmitMoment());
 		return result;
 	}
 	public void delete(final Application application) {
@@ -149,10 +149,11 @@ public class ApplicationService {
 	}
 
 	public Application apply(final int positionId) {
+		Assert.isTrue(positionId != 0);
 		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), Authority.HACKER));
-		final Application application = this.create();
-
-		final Application retreived = this.save(application, positionId);
+		final Application application = this.create(positionId);
+		Assert.notNull(application);
+		final Application retreived = this.applicationRepository.save(application);
 		return retreived;
 	}
 
@@ -205,6 +206,22 @@ public class ApplicationService {
 		return res;
 	}
 
+	public Collection<Application> findApplicationByPosition(final Integer positionId) {
+		Collection<Application> res;
+		res = this.applicationRepository.findApplicationsByPosition(positionId);
+		return res;
+	}
+
+	public Collection<Application> findAllByProblem(final int problemId) {
+		final Collection<Application> res = this.applicationRepository.findAllByProblem(problemId);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public void deleteInBatch(final Collection<Application> applications) {
+		this.applicationRepository.deleteInBatch(applications);
+	}
+
 	public Application reconstruct(final ApplicationForm applicationForm, final BindingResult binding) {
 		Application result;
 
@@ -219,7 +236,29 @@ public class ApplicationService {
 
 		this.validator.validate(result, binding);
 
+		if (binding.hasErrors())
+			throw new ValidationException();
+
 		return result;
+	}
+
+	public Problem problemAssign(final int positionId, final Hacker hacker) {
+
+		final List<Problem> free = (List<Problem>) this.problemsFree(positionId, hacker);
+		final Integer numRandom = (int) (Math.random() * (free.size() - 1));
+		final Problem assigned = free.get(numRandom);
+
+		return assigned;
+
+	}
+
+	public Collection<Problem> problemsFree(final int positionId, final Hacker hacker) {
+		final List<Problem> allProblems = (List<Problem>) this.problemService.findProblemsByPosition(positionId);
+		final List<Problem> problems = (List<Problem>) this.problemService.findProblemsByPositionAndHacker(positionId, hacker.getUserAccount().getId());
+
+		allProblems.removeAll(problems);
+
+		return allProblems;
 	}
 
 }

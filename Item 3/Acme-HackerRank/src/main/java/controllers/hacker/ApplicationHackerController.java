@@ -19,6 +19,7 @@ import services.ApplicationService;
 import services.HackerService;
 import services.PositionService;
 import controllers.AbstractController;
+import controllers.PositionController;
 import domain.Application;
 import domain.Hacker;
 import domain.Position;
@@ -37,6 +38,9 @@ public class ApplicationHackerController extends AbstractController {
 	@Autowired
 	private PositionService		positionService;
 
+	@Autowired
+	private PositionController	positionController;
+
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
@@ -48,12 +52,17 @@ public class ApplicationHackerController extends AbstractController {
 		final Hacker hacker = this.hackerService.findByPrincipal();
 		final Position position = this.positionService.findOne(positionId);
 
-		final Application application = this.applicationService.apply(positionId);
-		result = this.listPending();
+		try {
+			final Application application = this.applicationService.apply(positionId);
+			result = this.listPending();
 
-		result.addObject("application", application);
-		result.addObject("hacker", hacker);
-		result.addObject("position", position);
+			result.addObject("application", application);
+			result.addObject("hacker", hacker);
+			result.addObject("position", position);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("application/error");
+		}
 
 		return result;
 	}
@@ -195,7 +204,7 @@ public class ApplicationHackerController extends AbstractController {
 
 		final Hacker hacker = this.hackerService.findByPrincipal();
 
-		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker))
+		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker) && application.getExplanation() == null && application.getLink() == null)
 			result = this.createEditModelAndView(application);
 		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
@@ -216,9 +225,9 @@ public class ApplicationHackerController extends AbstractController {
 		else
 			try {
 				this.applicationService.save(application, application.getPosition().getId());
-				result = new ModelAndView("redirect:list.do");
+				result = this.listSubmitted();
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:application/error");
+				result = new ModelAndView("application/error");
 			}
 
 		return result;

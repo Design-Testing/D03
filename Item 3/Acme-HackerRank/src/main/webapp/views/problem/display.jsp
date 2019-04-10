@@ -15,11 +15,16 @@
 <acme:display code="problem.title" value="${problem.title}" />
 <acme:display code="problem.statement" value="${problem.statement}" />
 <acme:display code="problem.hint" value="${problem.hint}" />
-<acme:modeChoose mode="${problem.mode}"/>
+<spring:message code="problem.mode"/>:
+ <acme:modeChoose mode="${problem.mode}"/>
 <br>
 <acme:display code="problem.attachments" value="${problem.attachments}" />
+<br>
+<jstl:if test="${empty applications}">
+	<acme:button url="problem/company/delete.do?problemId=${problem.id}&positionId=${position.id}" name="delete" code="problem.delete"/>	
+</jstl:if>
 
-<acme:button url="problem/company/list.do" name="cancel"
-		code="problem.cancel" />
+<acme:button url="position/company/display.do?positionId=${problem.position.id}" name="back"
+		code="problem.back" />
 
 <br />
