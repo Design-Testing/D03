@@ -155,6 +155,9 @@ public class PositionService {
 		Assert.isTrue(position.getCompany().equals(company));
 		Assert.isTrue(this.problemService.findProblemsByPosition(positionId).size() >= 2, "Position must have 2 or more Problems associated.");
 		Assert.isTrue(position.getMode().equals("DRAFT"), "Para poner una position en FINAL MODE debe de estar anteriormente en DRAFT MODE.");
+		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
+		for (final Problem p : problems)
+			Assert.isTrue(p.getMode().equals("FINAL"), "Los problemas de esta posicion deben estar en modo FINAL");
 		position.setMode("FINAL");
 		result = this.positionRepository.save(position);
 		return result;

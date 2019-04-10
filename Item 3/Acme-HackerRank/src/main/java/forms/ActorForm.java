@@ -82,7 +82,6 @@ public class ActorForm extends DomainEntity {
 		this.name = name;
 	}
 
-	@SafeHtml
 	@ElementCollection
 	public Collection<String> getSurname() {
 		return this.surname;

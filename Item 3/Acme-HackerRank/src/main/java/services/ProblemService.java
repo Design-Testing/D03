@@ -85,11 +85,13 @@ public class ProblemService {
 	public void delete(final Problem problem) {
 		Assert.notNull(problem);
 		Assert.isTrue(problem.getId() != 0);
+		final Company company = this.companyService.findByPrincipal();
+		Assert.isTrue(company.equals(problem.getCompany()), "No puedes borrar un problema que no le pertenezca.");
 		final Problem retrieved = this.findOne(problem.getId());
 		Assert.isTrue(retrieved.equals(problem));
 		Assert.isTrue(this.problemRepository.exists(problem.getId()));
 		final Collection<Application> applications = this.applicationService.findAllByProblem(retrieved.getId());
-		this.applicationService.deleteInBatch(applications);
+		Assert.isTrue(applications.isEmpty(), "No puedes borrar este problema, ya que tiene solicitudes asociadas.");
 		this.problemRepository.delete(retrieved.getId());
 
 	}
