@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ApplicationService;
 import services.CompanyService;
 import services.PositionService;
 import services.ProblemService;
 import controllers.AbstractController;
+import domain.Application;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
@@ -38,6 +40,9 @@ public class ProblemCompanyController extends AbstractController {
 
 	@Autowired
 	private PositionCompanyController	positionCompanyController;
+
+	@Autowired
+	private ApplicationService			applicationService;
 
 
 	//Create
@@ -68,11 +73,14 @@ public class ProblemCompanyController extends AbstractController {
 		ModelAndView res;
 
 		final Problem problem = this.problemService.findOne(problemId);
+		final Collection<Application> applications = this.applicationService.findAllByProblem(problemId);
 
 		if (problem != null) {
 
 			res = new ModelAndView("problem/display");
 			res.addObject("problem", problem);
+			res.addObject("applications", applications);
+			res.addObject("position", problem.getPosition());
 
 		} else
 			res = new ModelAndView("redirect:/misc/403.jsp");

@@ -77,7 +77,6 @@ public class PositionCompanyController extends AbstractController {
 
 		return result;
 	}
-
 	// LIST --------------------------------------------------------
 
 	@RequestMapping(value = "/myPositions", method = RequestMethod.GET)
@@ -102,16 +101,19 @@ public class PositionCompanyController extends AbstractController {
 
 	@RequestMapping(value = "/finalMode", method = RequestMethod.GET)
 	public ModelAndView finalMode(@RequestParam final int positionId) {
-		final ModelAndView result;
+		ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
 		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2)) {
 			result = new ModelAndView("position/error");
 			result.addObject("ok", "Error al pasar a final mode la posici�n.");
-		} else {
-			this.positionService.toFinalMode(positionId);
-			result = this.myPositions();
-		}
+		} else
+			try {
+				this.positionService.toFinalMode(positionId);
+				result = this.myPositions();
+			} catch (final Throwable oops) {
+				result = new ModelAndView("position/error");
+			}
 
 		return result;
 	}
