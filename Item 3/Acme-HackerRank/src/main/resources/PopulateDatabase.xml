@@ -169,6 +169,7 @@
 		<property name="vat" value="0.21"/>
 		<property name="creditCard" ref="creditCard4" />
 		<property name="userAccount" ref="userAccountHacker1"/>
+		<property name="finder" ref="finder1"/>
 		
 	</bean>
 	
@@ -187,6 +188,7 @@
 		<property name="vat" value="0.21" />
 		<property name="creditCard" ref="creditCard5" />
 		<property name="userAccount" ref="userAccountHacker2"/>
+		<property name="finder" ref="finder2"/>
 	</bean>
 
 	<!-- =================================================================== 
@@ -422,7 +424,7 @@
 		<property name="ticker" value="COMM-1236" />
 		<property name="profile" value="Profile for position 3" />
 		<property name="salary" value="1750.0" />
-		<property name="mode" value="DRAFT" />
+		<property name="mode" value="FINAL" />
 		<property name="skills">
 			<list>
 				<value>Skill1 for position 3</value>
@@ -484,6 +486,29 @@
 		<property name="company" ref="company1" />
 	</bean>
 	
+	<bean id="position6" class="domain.Position">
+		<property name="title" value="Position 6" />
+		<property name="description" value="Description position 6" />
+		<property name="deadline" value="2020/04/24 00:00" />
+		<property name="ticker" value="COMM-1789" />
+		<property name="profile" value="Profile for position 6" />
+		<property name="salary" value="1750.0" />
+		<property name="mode" value="DRAFT" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 6</value>
+				<value>Skill2 for position 6</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 6</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
+	</bean>
+	
 	<!-- =================================================================== 
 					======= Problem ========= 
 		=================================================================== -->
@@ -498,7 +523,7 @@
 				<value>Attachment2 of problem 1</value>
 			</list>
 		</property>
-		<property name="mode" value="DRAFT" />
+		<property name="mode" value="FINAL" />
 		<property name="company" ref="company1" />
 		<property name="position" ref="position1"/>
 	</bean>
@@ -558,6 +583,34 @@
 		<property name="position" ref="position4"/>
 	</bean>
 	
+	<bean id="problem6" class="domain.Problem">
+		<property name="title" value="Problem 6"/>
+		<property name="statement" value="Statement of problem 6"/>
+		<property name="hint" value="Hint of problem 6"/>
+		<property name="attachments">
+			<list>
+				<value>Attachment1 of problem 6</value>
+			</list>
+		</property>
+		<property name="mode" value="FINAL" />
+		<property name="company" ref="company1" />
+		<property name="position" ref="position6"/>
+	</bean>
+	
+	<bean id="problem7" class="domain.Problem">
+		<property name="title" value="Problem 7"/>
+		<property name="statement" value="Statement of problem 7"/>
+		<property name="hint" value="Hint of problem 7"/>
+		<property name="attachments">
+			<list>
+				<value>Attachment1 of problem 7</value>
+			</list>
+		</property>
+		<property name="mode" value="FINAL" />
+		<property name="company" ref="company1" />
+		<property name="position" ref="position6"/>
+	</bean>
+	
 	<!-- =================================================================== 
 					======= Application ========= 
 		=================================================================== -->
@@ -583,8 +636,8 @@
 		<property name="status" value="SUBMITTED"/>
 		<property name="moment" value="2018/03/16 15:22"/>
 		<property name="hacker" ref="hacker1"/>
-		<property name="position" ref="position2"/>
-		<property name="problem" ref="problem3"/>
+		<property name="position" ref="position4"/>
+		<property name="problem" ref="problem5"/>
 		<property name="explanation" value="Explanation application 3"/>
 		<property name="link" value="http://www.linkAnswer3.com"/>
 		<property name="submitMoment" value="2018/03/16 15:30"/>
@@ -598,6 +651,167 @@
 		<property name="problem" ref="problem4"/>
 	</bean>	
 
+<!-- =================================================================== 
+					======= FINDER ========= 
+		=================================================================== -->
+	
+	<bean id="finder1" class="domain.Finder">
+		<!-- Finder -->
+		<property name="maxSalary" value="1800.0"/>
+		<property name="creationDate" value="2019/04/11 13:00"/>
+
+		<!-- Reletions -->
+		<property name="positions">
+			<list>
+				<ref bean="position1" />
+				<ref bean="position2" />
+				<ref bean="position3" />
+				<ref bean="position5" />
+				<ref bean="position6" />
+			</list>
+		</property>
+
+	</bean>
+	
+	<bean id="finder2" class="domain.Finder">
+		<!-- Finder -->
+		<property name="minSalary" value="1800.0"/>
+		<property name="creationDate" value="2019/04/11 13:00"/>
+
+		<!-- Reletions -->
+		<property name="positions">
+			<list>
+				<ref bean="position4"/>
+			</list>
+		</property>
+
+	</bean>
+	
+	<!-- =================================================================== 
+					======= CURRICULA ========= 
+		=================================================================== -->
+	
+	<bean id="curricula1" class="domain.Curricula">
+		<property name="personalRecord" ref="personalData1"/>
+		<property name="educations">
+			<list>
+			<ref bean="educationData1"/>
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="positionData1"/>
+			</list>
+		</property>
+		<property name="miscellaneous">
+			<list>
+				<ref bean="miscellaneousData1"/>
+			</list>
+		</property>
+		<property name="hacker" ref="hacker1"/>
+	</bean>
+	
+	<bean id="curricula2" class="domain.Curricula">
+		<property name="personalRecord" ref="personalData2"/>
+		<property name="educations">
+			<list>
+				<ref bean="educationData2"/>
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+				<ref bean="positionData2"/>
+			</list>
+		</property>
+		<property name="miscellaneous">
+			<list>
+				<ref bean="miscellaneousData2"/>
+			</list>
+		</property>
+		<property name="hacker" ref="hacker2"/>
+	</bean>
+	
+	<!-- =================================================================== 
+					======= PERSONAL DATA ========= 
+		=================================================================== -->
+	
+	<bean id="personalData1" class="domain.PersonalData">
+	<property name="fullName" value="Hacker 1"/>
+	<property name="statement" value="Statement hacker 1"/>
+	<property name="github" value="http://www.githubHacker1.com"/>
+	<property name="phone" value="657896321"/>
+	<property name="linkedin" value="http://www.linkedInHacker1.com"/>
+	</bean>
+	
+	<bean id="personalData2" class="domain.PersonalData">
+	<property name="fullName" value="Hacker 2"/>
+	<property name="statement" value="Statement hacker 2"/>
+	<property name="github" value="http://www.githubHacker2.com"/>
+	<property name="phone" value="697125753"/>
+	<property name="linkedin" value="http://www.linkedInHacker2.com"/>
+	</bean>
+	
+	
+	<!-- =================================================================== 
+					======= EDUCATION DATA ========= 
+		=================================================================== -->
+	
+	<bean id="educationData1" class="domain.EducationData">
+	<property name="degree" value="Informática"/>
+	<property name="institution" value="Universidad de Sevilla"/>
+	<property name="mark" value="7"/>
+	<property name="startDate" value="2014/04/11 13:00"/>
+	<property name="endDate" value="2018/04/11 13:00"/>
+	</bean>
+	
+	<bean id="educationData2" class="domain.EducationData">
+	<property name="degree" value="Magisterio"/>
+	<property name="institution" value="Universidad de Sevilla"/>
+	<property name="mark" value="8"/>
+	<property name="startDate" value="2018/04/11 13:00"/>
+	</bean>
+	
+	<!-- =================================================================== 
+					======= POSITION DATA ========= 
+		=================================================================== -->
+	
+	<bean id="positionData1" class="domain.PositionData">
+	<property name="title" value="Position Data 1"/>
+	<property name="description" value="Description position data 1"/>
+	<property name="startDate" value="2014/04/11 13:00"/>
+	<property name="endDate" value="2018/04/11 13:00"/>
+	</bean>
+	
+	<bean id="positionData2" class="domain.PositionData">
+	<property name="title" value="Position Data 2"/>
+	<property name="description" value="Description position data 2"/>
+	<property name="startDate" value="2014/04/11 13:00"/>
+	<property name="endDate" value="2018/04/11 13:00"/>
+	</bean>
+	
+	<!-- =================================================================== 
+					======= MISCELLANEOUS DATA ========= 
+		=================================================================== -->
+	
+	<bean id="miscellaneousData1" class="domain.MiscellaneousData">
+	<property name="freeText" value="Miscellaneous data 1"/>
+	<property name="attachments">
+		<list>
+			<value> Attachment 1 of Miscellaneous Data 1</value>
+			<value> Attachment 2 of Miscellaneous Data 1</value>
+		</list>
+	</property>
+	</bean>
+	
+	<bean id="miscellaneousData2" class="domain.MiscellaneousData">
+	<property name="freeText" value="Miscellaneous data 2"/>
+	<property name="attachments">
+		<list>
+			<value> Attachment 1 of Miscellaneous Data 2</value>
+			<value> Attachment 2 of Miscellaneous Data 2</value>
+		</list>
+	</property>
+	</bean>
 	
 </beans>
 

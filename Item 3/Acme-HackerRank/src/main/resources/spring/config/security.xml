@@ -48,6 +48,9 @@
 		<security:intercept-url pattern="/company/create.do" access="permitAll" />
 		<security:intercept-url pattern="/hacker/create.do" access="permitAll" />
 		<security:intercept-url pattern="/misc/403.jsp" access="permitAll" />
+		<security:intercept-url pattern="/profile/terms.do" access="permitAll" />
+		
+		
 		
 		<!-- PROBLEM -->
 		<security:intercept-url pattern="/problem/company/**" access="hasRole('COMPANY')" /> 
@@ -71,7 +74,11 @@
 		
 		<!-- HACKER -->
 		<security:intercept-url pattern="/hacker/create.do" access="permitAll" />
-		
+		<security:intercept-url pattern="/hacker/edit.do" access="permitAll" />
+		<security:intercept-url pattern="/hacker/displayTabla.do" access="permitAll" />
+		<security:intercept-url pattern="/hacker/deletePersonalData.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/hacker/display.do" access="hasRole('HACKER')" />
+
 		<!-- CONFIGURATION PARAMETERS -->
 		<security:intercept-url pattern="/configurationParameters/administrator/**.do" access="hasRole('ADMIN')" />
 

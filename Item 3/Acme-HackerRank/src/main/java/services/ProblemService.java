@@ -68,6 +68,8 @@ public class ProblemService {
 		this.actorService.checkAuthority(company, Authority.COMPANY);
 		if (problem.getId() == 0) {
 			final Position position = this.positionService.findOne(positionId);
+			final Collection<Position> positions = this.positionService.findAllByCompany();
+			Assert.isTrue(positions.contains(position));
 			problem.setPosition(position);
 			problem.setCompany(company);
 			problem.setMode("DRAFT");
@@ -137,6 +139,10 @@ public class ProblemService {
 
 	public void deleteInBatch(final Collection<Problem> problems) {
 		this.problemRepository.deleteInBatch(problems);
+	}
+
+	public void flush() {
+		this.problemRepository.flush();
 	}
 
 }
