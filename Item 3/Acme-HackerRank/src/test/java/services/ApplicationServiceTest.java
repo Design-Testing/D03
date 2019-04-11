@@ -33,14 +33,14 @@ public class ApplicationServiceTest extends AbstractTest {
 				//			B: Test Positivo: Hacker crea una nueva solicitud a una position
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "position4", null
+				"hacker1", "position3", null
 			}, {
 				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
 				//			them, creating them, and updating them.
 				//			B: Test Negativo: Hacker crea una nueva solicitud a una position que esta en DRAFT MODE
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "position3", IllegalArgumentException.class
+				"hacker1", "position5", IllegalArgumentException.class
 			}, {
 				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
 				//			them, creating them, and updating them.
@@ -81,31 +81,31 @@ public class ApplicationServiceTest extends AbstractTest {
 			{
 				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
 				//			them, creating them, and UPDATING them.
-				//			B: Test Positivo: 
+				//			B: Test Positivo: Un hacker actualiza una application para añadirle una solución al problema.
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "position4", null
+				"hacker1", "application1", "Explanation application 1", "http://www.linkAnswer1.com", null
 			}, {
 				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
 				//			them, creating them, and UPDATING them.
-				//			B: Test Negativo: 
+				//			B: Test Negativo: Un hacker actualiza una application (que no le pertenece) para añadirle una solución al problema.
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "position3", IllegalArgumentException.class
+				"hacker2", "application1", "Explanation application 1", "http://www.linkAnswer1.com", IllegalArgumentException.class
 			}, {
 				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
 				//			them, creating them, and UPDATING them.
-				//			B: Test Negativo: 
+				//			B: Test Negativo: Un hacker actualiza una application para añadirle una solución al problema y esa application ya tiene solución añadida.
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "position1", IllegalArgumentException.class
+				"hacker1", "application3", "Explanation application 3", "http://www.linkAnswer3.com", IllegalArgumentException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Class<?>) testingData[i][2]);
+			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Class<?>) testingData[i][4]);
 	}
-	protected void templateEdit(final String hacker, final String application, final String position, final String explanation, final String link, final Class<?> expected) {
+	protected void templateEdit(final String hacker, final String application, final String explanation, final String link, final Class<?> expected) {
 
 		Class<?> caught = null;
 
@@ -113,9 +113,9 @@ public class ApplicationServiceTest extends AbstractTest {
 			this.authenticate(hacker);
 
 			final Integer applicationId = this.getEntityId(application);
-			final Application saved = this.applicationService.save(application, positionId)
+			final Application find = this.applicationService.findOne(applicationId);
+			this.applicationService.save(find, find.getPosition().getId());
 
-			Assert.isTrue(saved.getId() != 0);
 			this.applicationService.flush();
 			this.unauthenticate();
 		} catch (final Throwable oops) {
@@ -133,14 +133,14 @@ public class ApplicationServiceTest extends AbstractTest {
 				//			B: Test Positivo: Company acepta una application
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"company2", "application3", null
+				"company1", "application3", null
 			}, {
 				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
 				//			them grouped by status, showing them, and UPDATING them.
 				//			B: Test Negativo: Company acepta una application que no le pertenece
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"company1", "application3", IllegalArgumentException.class
+				"company2", "application3", IllegalArgumentException.class
 			}, {
 				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
 				//			them grouped by status, showing them, and UPDATING them.
@@ -181,14 +181,14 @@ public class ApplicationServiceTest extends AbstractTest {
 				//			B: Test Positivo: Company rechaza una application
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"company2", "application3", null
+				"company1", "application3", null
 			}, {
 				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
 				//			them grouped by status, showing them, and UPDATING them.
 				//			B: Test Negativo: Company acepta una application que no le pertenece
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"company1", "application3", IllegalArgumentException.class
+				"company2", "application3", IllegalArgumentException.class
 			}, {
 				//			A: Acme Hacker Rank Req. 9.3 -> Manage the applications to their positions which includes listing 
 				//			them grouped by status, showing them, and UPDATING them.
@@ -220,45 +220,4 @@ public class ApplicationServiceTest extends AbstractTest {
 
 	}
 
-	//
-	//	@Test
-	//	public void driverDelete() {
-	//
-	//		final Object testingData[][] = {
-	//			{
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Positivo: Brotherhood borra LegalRecord 
-	//				//			C: 100% Recorre 78 de las 78 lineas posibles
-	//				//			D: cobertura de datos=1/3
-	//				"brotherhood2", null
-	//			}, {
-	//				//			A: Acme Parade Req. 3 -> Brotherhoods can manage their history
-	//				//			B: Test Negativo: Member intenta borrar LegalRecord 
-	//				//			C: 10,25% Recorre 8 de las 78 lineas posibles
-	//				//			D: cobertura de datos=1/3
-	//				"member1", IllegalArgumentException.class
-	//			},
-	//		};
-	//
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateDelete((String) testingData[i][0], (Class<?>) testingData[i][1]);
-	//	}
-	//
-	//	private void templateDelete(final String actor, final Class<?> expected) {
-	//		Class<?> caught = null;
-	//		try {
-	//			this.authenticate(actor);
-	//			final Brotherhood bro = this.brotherhoodService.findByPrincipal();
-	//			final ArrayList<LegalRecord> lRecs = new ArrayList<LegalRecord>(bro.getHistory().getLegalRecords());
-	//			final LegalRecord lRec = lRecs.get(0);
-	//			this.legalRecordService.delete(lRec);
-	//			this.legalRecordService.flush();
-	//			this.unauthenticate();
-	//		} catch (final Throwable oops) {
-	//			caught = oops.getClass();
-	//		}
-	//
-	//		super.checkExceptions(expected, caught);
-	//
-	//	}
 }
