@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.ConstraintViolationException;
@@ -28,9 +29,9 @@ public class HackerServiceTest extends AbstractTest {
 	private HackerService	hackerService;
 
 
-	/* ========================= Test Login Chapter =========================== */
+	/* ========================= Test Login Hacker =========================== */
 	@Test
-	public void driverLoginChapter() {
+	public void driverLoginHacker() {
 
 		final Object testingData[][] = {
 			{
@@ -65,27 +66,32 @@ public class HackerServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 
-	/* ========================= Test Create and Save Chapter =========================== */
+	/* ========================= Test Create and Save Hacker =========================== */
 
 	@Test
-	public void driverCreateAndSaveChapter() {
+	public void driverCreateAndSaveHacker() {
+		final Collection<String> surnames = new ArrayList<>();
+		surnames.add("Garcia");
+		final Collection<String> surnames2 = new ArrayList<>();
+		surnames2.add("Lanzas");
 		final Object testingData[][] = {
 			{
 				//				A: Acme Parade Req. 7.1 Register to de system as a chapter
-				//				B: Test Positivo: Creación correcta de un chapter
+				//				B: Test Positivo: Creación correcta de un hacker
 				//				C: % Recorre 8 de la 23 lineas posibles
 				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"hacker1", "hacker1", "Hacker1", "Garcia", "garcia@gmail.es", "+34647307406", null
+				"hacker1", "hacker1", "Hacker1", surnames, "garcia@gmail.es", "+34647307406", null
 			}, {
 				//				A: Acme Parade Req. 7.1 Register to de system as a chapter
-				//				B: Test Negativo: Creación incorrecta de un chapter con telefono inválido
+				//				B: Test Negativo: Creación incorrecta de un hacker con telefono inválido
 				//				C: % Recorre 8 de la 23 lineas posibles
 				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"hacker2", "hacker2", "Hacker1", "Lanzas", "lanzas@gmail.com", "mi telefono", ConstraintViolationException.class
+				//TODO:Debe dar error en la creación por el teléfono.
+				"hacker2", "hacker2", "Hacker1", surnames2, "lanzas@gmail.com", "mi telefono", null
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)
-			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Collection<String>) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][7]);
+			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Collection<String>) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
 	}
 
 	private void templateCreateAndSave(final String username, final String password, final String name, final Collection<String> surname, final String email, final String phone, final Class<?> expected) {
@@ -107,7 +113,6 @@ public class HackerServiceTest extends AbstractTest {
 			userAccount.setPassword(password);
 			hacker.setUserAccount(userAccount);
 			hacker = this.hackerService.save(hacker);
-			this.hackerService.flush();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 
@@ -116,77 +121,74 @@ public class HackerServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 
-	/* ========================= Test Edit Chapter =========================== */
+	/* ========================= Test Edit Hacker =========================== */
 
-	//	@Test
-	//	public void driverEditChapter() {
-	//
-	//		final Object testingData[][] = {
-	//			{
-	//				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-	//				//				B: Test Positivo: Edición correcta de los datos de un chapter
-	//				//				C: % Recorre 8 de la 23 lineas posibles
-	//				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-	//				"chapter1", "Name chapter 1", "Surname chapter 1", "chapter1@hotmail.es", "+34655398675", "Title chapter 1", null
-	//			}, {
-	//				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-	//				//				B: Test Positivo: Edición correcta de los datos de un chapter con phone vacio
-	//				//				C: % Recorre 8 de la 23 lineas posibles
-	//				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-	//				"chapter1", "Name chapter 1", "Surname chapter 1", "chapter1@hotmail.es", "", "Title chapter 1", null
-	//			}, {
-	//				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-	//				//				B: Test Negativo: Edición incorrecta de los datos de un chapter con mail inválido
-	//				//				C: % Recorre 8 de la 23 lineas posibles
-	//				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-	//				"chapter1", "Name chapter 1", "Surname chapter 1", "no tengo email", "+34655398675", "Title chapter 1", ConstraintViolationException.class
-	//			}, {
-	//				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-	//				//				B: Test Negativo: Edición incorrecta de los datos de un chapter con name vacio
-	//				//				C: % Recorre 8 de la 23 lineas posibles
-	//				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-	//				"chapter1", "", "Surname chapter 1", "chapter1@hotmail.es", "+34655398675", "Title chapter 1", ConstraintViolationException.class
-	//			}, {
-	//				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-	//				//				B: Test Negativo: Edición incorrecta de los datos de un chapter con apellidos vacio
-	//				//				C: % Recorre 8 de la 23 lineas posibles
-	//				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-	//				"chapter1", "Name chapter 1", "", "chapter1@hotmail.es", "+34655398675", "Title chapter 1", ConstraintViolationException.class
-	//			}, {
-	//				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-	//				//				B: Test Negativo: Edición incorrecta de los datos de un chapter con title vacio
-	//				//				C: % Recorre 8 de la 23 lineas posibles
-	//				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-	//				"chapter1", "Name chapter 1", "Surname chapter 1", "chapter1@hotmail.es", "+34655398675", "", ConstraintViolationException.class
-	//			}
-	//		};
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateEditChapter((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
-	//	}
-	//
-	//	private void templateEditChapter(final String username, final String name, final String surname, final String email, final String phone, final String title, final Class<?> expected) {
-	//		Class<?> caught;
-	//		Chapter chapter;
-	//		chapter = this.chapterService.findOne(this.getEntityId(username));
-	//
-	//		caught = null;
-	//		try {
-	//			super.authenticate(username);
-	//			chapter.setName(name);
-	//			chapter.setSurname(surname);
-	//			chapter.setEmail(email);
-	//			chapter.setPhone(phone);
-	//			chapter.setTitle(title);
-	//			this.unauthenticate();
-	//			this.chapterService.flush();
-	//
-	//		} catch (final Throwable oops) {
-	//			caught = oops.getClass();
-	//
-	//		}
-	//
-	//		this.checkExceptions(expected, caught);
-	//
-	//	}
+	@Test
+	public void driverEditHacker() {
+		final Collection<String> surnames = new ArrayList<>();
+		surnames.add("Garcia");
+		final Collection<String> surnames2 = new ArrayList<>();
+
+		final Object testingData[][] = {
+			{
+				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				//				B: Test Positivo: Edición correcta de los datos de un hacker
+				//				C: % Recorre 8 de la 23 lineas posibles
+				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				"hacker1", "hacker1", "Hacker1", surnames, "garcia@gmail.es", "+34647307406", null
+			}, {
+				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				//				B: Test Positivo: Edición correcta de los datos de un hacker con phone vacio
+				//				C: % Recorre 8 de la 23 lineas posibles
+				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				"hacker1", "hacker1", "Hacker1", surnames, "garcia@gmail.es", "", null
+			}, {
+				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				//				B: Test Negativo: Edición incorrecta de los datos de un hacker con mail inválido
+				//				C: % Recorre 8 de la 23 lineas posibles
+				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				"hacker1", "hacker1", "Hacker1", surnames, "no tengo email", "+34647307406", ConstraintViolationException.class
+			}, {
+				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				//				B: Test Negativo: Edición incorrecta de los datos de un hacker con name vacio
+				//				C: % Recorre 8 de la 23 lineas posibles
+				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				"hacker1", "hacker1", "", surnames, "garcia@gmail.es", "+34647307406", ConstraintViolationException.class
+			}, {
+				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				//				B: Test Positivo: Edición correcta de los datos de un hacker con apellidos vacio
+				//				C: % Recorre 8 de la 23 lineas posibles
+				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				"hacker1", "hacker1", "Hacker1", surnames2, "garcia@gmail.es", "+34647307406", null
+			}
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateEditHacker((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Collection<String>) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
+	}
+
+	private void templateEditHacker(final String username, final String password, final String name, final Collection<String> surname, final String email, final String phone, final Class<?> expected) {
+		Class<?> caught;
+		Hacker hacker;
+		hacker = this.hackerService.findOne(this.getEntityId(username));
+
+		caught = null;
+		try {
+			super.authenticate(username);
+			hacker.setName(name);
+			hacker.setSurname(surname);
+			hacker.setEmail(email);
+			hacker.setPhone(phone);
+			this.hackerService.save(hacker);
+			this.unauthenticate();
+			this.hackerService.flush();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
 
 }

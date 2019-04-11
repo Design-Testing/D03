@@ -282,4 +282,8 @@ public class ConfigurationParametersService {
 		return words;
 	}
 
+	public void flush() {
+		this.configurationParametersRepository.flush();
+	}
+
 }
