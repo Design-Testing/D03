@@ -33,7 +33,7 @@ public class ApplicationServiceTest extends AbstractTest {
 				//			B: Test Positivo: Hacker crea una nueva solicitud a una position
 				//			C: 97,95% Recorre 48 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "position3", null
+				"hacker1", "position6", null
 			}, {
 				//			A: Acme Hacker Rank Req. 10.1 -> Manage his or her applications, which includes listing them grouped by status, showing
 				//			them, creating them, and updating them.
