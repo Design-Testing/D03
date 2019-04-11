@@ -484,6 +484,29 @@
 		<property name="company" ref="company1" />
 	</bean>
 	
+	<bean id="position6" class="domain.Position">
+		<property name="title" value="Position 6" />
+		<property name="description" value="Description position 6" />
+		<property name="deadline" value="2020/04/24 00:00" />
+		<property name="ticker" value="COMM-1789" />
+		<property name="profile" value="Profile for position 6" />
+		<property name="salary" value="1750.0" />
+		<property name="mode" value="DRAFT" />
+		<property name="skills">
+			<list>
+				<value>Skill1 for position 6</value>
+				<value>Skill2 for position 6</value>
+			</list>
+		</property>
+		<property name="technologies">
+			<list>
+				<value>Technology1 for position 6</value>
+			</list>
+		</property>
+		<!-- Relations -->
+		<property name="company" ref="company1" />
+	</bean>
+	
 	<!-- =================================================================== 
 					======= Problem ========= 
 		=================================================================== -->
@@ -564,11 +587,12 @@
 		<property name="hint" value="Hint of problem 6"/>
 		<property name="attachments">
 			<list>
+				<value>Attachment1 of problem 6</value>
 			</list>
 		</property>
 		<property name="mode" value="FINAL" />
 		<property name="company" ref="company1" />
-		<property name="position" ref="position3"/>
+		<property name="position" ref="position6"/>
 	</bean>
 	
 	<bean id="problem7" class="domain.Problem">
@@ -577,11 +601,12 @@
 		<property name="hint" value="Hint of problem 7"/>
 		<property name="attachments">
 			<list>
+				<value>Attachment1 of problem 7</value>
 			</list>
 		</property>
 		<property name="mode" value="FINAL" />
 		<property name="company" ref="company1" />
-		<property name="position" ref="position3"/>
+		<property name="position" ref="position6"/>
 	</bean>
 	
 	<!-- =================================================================== 

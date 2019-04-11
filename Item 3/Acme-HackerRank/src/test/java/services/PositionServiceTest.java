@@ -1,5 +1,5 @@
 
-package Services;
+package services;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,8 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import services.CompanyService;
-import services.PositionService;
 import utilities.AbstractTest;
 import domain.Position;
 
@@ -30,9 +28,6 @@ public class PositionServiceTest extends AbstractTest {
 
 	@Autowired
 	private PositionService	positionService;
-
-	@Autowired
-	private CompanyService	companyService;
 
 
 	@Test
@@ -143,7 +138,7 @@ public class PositionServiceTest extends AbstractTest {
 			this.authenticate(user);
 			final Position pos;
 			if (!prop) {
-				final Integer id = this.getEntityId("position1");
+				final Integer id = this.getEntityId("position6");
 				pos = this.positionService.findOne(id);
 			} else {
 				final Integer id = this.getEntityId("position2");
@@ -196,19 +191,18 @@ public class PositionServiceTest extends AbstractTest {
 		Class<?> caught = null;
 		try {
 			this.authenticate(user);
-			Position pos = null;
 			if (option == 1) {
-				final Integer id = this.getEntityId("position1");
-				pos = this.positionService.toFinalMode(id);
+				final Integer id = this.getEntityId("position6");
+				this.positionService.toFinalMode(id);
 			} else if (option == 2) {
-				final Integer id = this.getEntityId("position3");
-				pos = this.positionService.toCancelMode(id);
+				final Integer id = this.getEntityId("position1");
+				this.positionService.toCancelMode(id);
 			} else if (option == 3) {
 				final Integer id = this.getEntityId("position2");
-				pos = this.positionService.toCancelMode(id);
+				this.positionService.toCancelMode(id);
 			} else if (option == 4) {
-				final Integer id = this.getEntityId("position3");
-				pos = this.positionService.toFinalMode(id);
+				final Integer id = this.getEntityId("position5");
+				this.positionService.toFinalMode(id);
 			}
 			this.positionService.flush();
 			this.unauthenticate();
@@ -248,7 +242,7 @@ public class PositionServiceTest extends AbstractTest {
 		Class<?> caught = null;
 		try {
 			this.authenticate(actor);
-			final Integer id = this.getEntityId("position1");
+			final Integer id = this.getEntityId("position6");
 			final Position pos = this.positionService.findOne(id);
 			this.positionService.delete(pos);
 			this.positionService.flush();
