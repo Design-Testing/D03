@@ -46,22 +46,23 @@
 	
 	
 	<!-- CREDIT CARD -->
+	<h3><spring:message code="hacker.creditCard"/></h3>
 	
-	<acme:textbox code="hacker.creditCard.holderName" path="creditCard.holderName"/>
+	<acme:textbox code="hacker.creditCard.holderName" path="holderName"/>
 
-	<form:label path="creditCard.make">
+	<form:label path="make">
 		<spring:message code="hacker.creditCard.brandName" />
-	</form:label>	
-	<form:select  path="creditCard.make">
-		<form:option items="${makes}"/>
+	</form:label>
+	<form:select path="make">
+		<form:options items="${cardmakes}"/>
 	</form:select>
-	<form:errors path="creditCard.make" cssClass="error" />
+	<form:errors path="make" cssClass="error" />
 	
-	<acme:textbox code="hacker.creditCard.number" path="creditCard.number"/>
-	<acme:textbox code="hacker.creditCard.expirationMonth" path="creditCard.expirationMonth" placeholder="09"/>
-	<acme:textbox code="hacker.creditCard.expirationYear" path="creditCard.expirationYear" placeholder="21"/>
-	<acme:textbox code="hacker.creditCard.cvv" path="creditCard.cvv"/>
-	
+	<acme:textbox code="hacker.creditCard.number" path="number"/>
+	<acme:textbox code="hacker.creditCard.expirationMonth" path="expirationMonth" placeholder="09"/>
+	<acme:textbox code="hacker.creditCard.expirationYear" path="expirationYear" placeholder="21"/>
+	<acme:numberbox code="hacker.creditCard.cvv" path="cvv" min="100" max="999"/>
+	<br/>
 
 	<jstl:choose>
 	    <jstl:when test="${actorForm.termsAndCondicions == true}">
@@ -72,6 +73,7 @@
 			<br>
 	    </jstl:otherwise>
 	</jstl:choose>
+	<br/>
 
 	<acme:submit code="hacker.edit.submit" name="save"/>
 </form:form>

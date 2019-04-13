@@ -5,21 +5,21 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
-import domain.CreditCard;
 import domain.DomainEntity;
 
 @Entity
@@ -33,9 +33,12 @@ public class ActorForm extends DomainEntity {
 	private String				phone;
 	private String				address;
 	private double				vat;
-	private CreditCard			creditCard;
-	//private Double		score;
-	//private Boolean		spammer;
+	private String				holderName;
+	private String				make;
+	private String				number;
+	private Integer				expirationMonth;
+	private Integer				expirationYear;
+	private Integer				cvv;
 
 	private Boolean				termsAndCondicions;
 
@@ -147,17 +150,6 @@ public class ActorForm extends DomainEntity {
 	//		this.spammer = spammer;
 	//	}
 
-	//Relational methods
-
-	@Valid
-	public CreditCard getCreditCard() {
-		return this.creditCard;
-	}
-
-	public void setCreditCard(final CreditCard creditCard) {
-		this.creditCard = creditCard;
-	}
-
 	@Range(min = 0, max = 0)
 	@Digits(integer = 1, fraction = 2)
 	public double getVat() {
@@ -171,6 +163,63 @@ public class ActorForm extends DomainEntity {
 	@Override
 	public String toString() {
 		return this.name;
+	}
+
+	@NotBlank
+	@SafeHtml
+	public String getHolderName() {
+		return this.holderName;
+	}
+
+	public void setHolderName(final String holderName) {
+		this.holderName = holderName;
+	}
+
+	@NotBlank
+	public String getMake() {
+		return this.make;
+	}
+
+	public void setMake(final String make) {
+		this.make = make;
+	}
+
+	@Column(unique = true)
+	@NotBlank
+	@CreditCardNumber
+	public String getNumber() {
+		return this.number;
+	}
+
+	public void setNumber(final String number) {
+		this.number = number;
+	}
+
+	@Range(min = 1, max = 12)
+	public Integer getExpirationMonth() {
+		return this.expirationMonth;
+	}
+
+	public void setExpirationMonth(final Integer expirationMonth) {
+		this.expirationMonth = expirationMonth;
+	}
+
+	@Range(min = 0, max = 99)
+	public Integer getExpirationYear() {
+		return this.expirationYear;
+	}
+
+	public void setExpirationYear(final Integer expirationYear) {
+		this.expirationYear = expirationYear;
+	}
+
+	@Range(min = 100, max = 999)
+	public Integer getCvv() {
+		return this.cvv;
+	}
+
+	public void setCvv(final Integer cvv) {
+		this.cvv = cvv;
 	}
 
 }
