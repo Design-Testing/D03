@@ -18,6 +18,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Administrator;
+import domain.CreditCard;
 import forms.ActorForm;
 
 @Service
@@ -94,6 +95,14 @@ public class AdministratorService {
 
 	public Administrator reconstruct(final ActorForm actorForm, final BindingResult binding) {
 		Administrator admin;
+		final CreditCard c = new CreditCard();
+		c.setHolderName(actorForm.getHolderName());
+		c.setNumber(actorForm.getNumber());
+		c.setMake(actorForm.getMake());
+		c.setExpirationMonth(actorForm.getExpirationMonth());
+		c.setExpirationYear(actorForm.getExpirationYear());
+		c.setCvv(actorForm.getCvv());
+
 		if (actorForm.getId() == 0) {
 			admin = this.create();
 			admin.setName(actorForm.getName());
@@ -103,7 +112,6 @@ public class AdministratorService {
 			admin.setEmail(actorForm.getEmail());
 			admin.setAddress(actorForm.getAddress());
 			admin.setVat(actorForm.getVat());
-			admin.setCreditCard(actorForm.getCreditCard());
 			admin.setVersion(actorForm.getVersion());
 			//			admin.setScore(0.0);
 			admin.setSpammer(false);
@@ -125,14 +133,13 @@ public class AdministratorService {
 			admin.setEmail(actorForm.getEmail());
 			admin.setAddress(actorForm.getAddress());
 			admin.setVat(actorForm.getVat());
-			admin.setCreditCard(actorForm.getCreditCard());
 			admin.setVersion(actorForm.getVersion());
 			final UserAccount account = this.userAccountService.findOne(admin.getUserAccount().getId());
 			account.setUsername(actorForm.getUserAccountuser());
 			account.setPassword(actorForm.getUserAccountpassword());
 			admin.setUserAccount(account);
 		}
-
+		admin.setCreditCard(c);
 		this.validator.validate(admin, binding);
 		if (binding.hasErrors())
 			throw new ValidationException();

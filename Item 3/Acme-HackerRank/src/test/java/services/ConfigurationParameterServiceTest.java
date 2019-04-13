@@ -18,7 +18,7 @@ public class ConfigurationParameterServiceTest extends AbstractTest {
 
 	// Services
 	@Autowired
-	private ConfigurationParameterService	configurationParameterService;
+	private ConfigurationParametersService	configurationParameterService;
 
 	@Autowired
 	private CompanyService					companyService;

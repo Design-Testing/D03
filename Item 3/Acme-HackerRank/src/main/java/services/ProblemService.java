@@ -139,4 +139,8 @@ public class ProblemService {
 		this.problemRepository.deleteInBatch(problems);
 	}
 
+	public void flush() {
+		this.problemRepository.flush();
+	}
+
 }

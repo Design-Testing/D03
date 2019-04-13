@@ -19,6 +19,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.Company;
+import domain.CreditCard;
 import forms.CompanyForm;
 
 @Service
@@ -83,6 +84,15 @@ public class CompanyService {
 
 	public Company reconstruct(final CompanyForm companyForm, final BindingResult binding) {
 		Company company;
+		final CreditCard c = new CreditCard();
+		c.setHolderName(companyForm.getHolderName());
+		final String cardNumber = companyForm.getNumber().replace(" ", "");
+		c.setNumber(cardNumber);
+		c.setMake(companyForm.getMake());
+		c.setExpirationMonth(companyForm.getExpirationMonth());
+		c.setExpirationYear(companyForm.getExpirationYear());
+		c.setCvv(companyForm.getCvv());
+
 		if (companyForm.getId() == 0) {
 			company = new Company();
 			company.setName(companyForm.getName());
@@ -91,6 +101,8 @@ public class CompanyService {
 			company.setPhone(companyForm.getPhone());
 			company.setEmail(companyForm.getEmail());
 			company.setAddress(companyForm.getAddress());
+			company.setVat(companyForm.getVat());
+			company.setVersion(companyForm.getVersion());
 			company.setCommercialName(companyForm.getCommercialName());
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();
@@ -109,12 +121,16 @@ public class CompanyService {
 			company.setPhone(companyForm.getPhone());
 			company.setEmail(companyForm.getEmail());
 			company.setAddress(companyForm.getAddress());
+			company.setVat(companyForm.getVat());
+			company.setVersion(companyForm.getVersion());
 			company.setCommercialName(companyForm.getCommercialName());
 			final UserAccount account = this.userAccountService.findOne(company.getUserAccount().getId());
 			account.setUsername(companyForm.getUserAccountuser());
 			account.setPassword(companyForm.getUserAccountpassword());
 			company.setUserAccount(account);
 		}
+
+		company.setCreditCard(c);
 
 		this.validator.validate(company, binding);
 		if (binding.hasErrors())

@@ -67,8 +67,7 @@ public class HackerController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView();
 		final ActorForm hacker = new ActorForm();
-		result = new ModelAndView("hacker/edit");
-		result.addObject("actorForm", hacker);
+		result = this.createEditModelAndView(hacker);
 		return result;
 	}
 
@@ -116,7 +115,7 @@ public class HackerController extends AbstractController {
 		final ActorForm actor = this.registerService.inyect(hacker);
 		actor.setTermsAndCondicions(true);
 		result.addObject("actorForm", actor);
-		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
@@ -148,6 +147,7 @@ public class HackerController extends AbstractController {
 				actorForm.setTermsAndCondicions(false);
 				result.addObject("actorForm", actorForm);
 			}
+		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
@@ -188,7 +188,7 @@ public class HackerController extends AbstractController {
 
 		result = new ModelAndView("hacker/edit");
 		result.addObject("actorForm", actorForm);
-		result.addObject("makes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		result.addObject("message", messageCode);
 
 		return result;

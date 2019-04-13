@@ -41,17 +41,23 @@
 	<acme:textbox code="company.edit.email" path="email" />
 	<acme:textbox code="company.edit.phone" path="phone" />
 	<acme:textbox code="company.edit.address" path="address" />
+	<acme:numberbox code="company.edit.vat" path="vat" min="0" max="1"/>
 	<acme:textbox code="company.edit.commercialName" path="commercialName" />
-	<br>
-	<spring:message code="company.edit.creditCard"/>
-	<br>
-	<acme:textbox code="company.edit.holder" path="creditCard.holderName" />
-	<acme:select items="${makes}" itemLabel="makes" code="company.edit.make" path="creditCard.make"/>
-	<acme:textbox code="company.edit.number" path="creditCard.number" />
-	<acme:textbox code="company.edit.expirationMonth" path="creditCard.expirationMonth" />
-	<acme:textbox code="company.edit.expirationYear" path="creditCard.expirationYear" />
-	<acme:textbox code="company.edit.cvv" path="creditCard.cvv" />
 	
+	<h3><spring:message code="company.edit.creditCard"/></h3>
+	<acme:textbox code="company.edit.holder" path="holderName" />
+	<form:label path="make">
+		<spring:message code="company.edit.make" />
+	</form:label>
+	<form:select path="make">
+		<form:options items="${cardmakes}"/>
+	</form:select>
+	<form:errors path="make" cssClass="error" />
+	<acme:textbox code="company.edit.number" path="number" />
+	<acme:textbox code="company.edit.expirationMonth" path="expirationMonth" />
+	<acme:textbox code="company.edit.expirationYear" path="expirationYear" />
+	<acme:numberbox code="company.edit.cvv" path="cvv" min="100" max="999"/>
+	<br/>
 
 	<jstl:choose>
 	    <jstl:when test="${companyForm.termsAndCondicions == true}">
@@ -62,7 +68,8 @@
 			<br>
 	    </jstl:otherwise>
 	</jstl:choose>
-	
+	<br/>
+
 	<input type="submit" name="save"
 		value="<spring:message code="company.edit.submit" />" />
 	

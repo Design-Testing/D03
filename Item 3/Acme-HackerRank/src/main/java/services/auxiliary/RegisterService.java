@@ -17,6 +17,7 @@ import services.UserAccountService;
 import domain.Actor;
 import domain.Administrator;
 import domain.Company;
+import domain.CreditCard;
 import domain.Hacker;
 import forms.ActorForm;
 
@@ -133,6 +134,8 @@ public class RegisterService {
 	public ActorForm inyect(final Actor actor) {
 		final ActorForm result = new ActorForm();
 
+		final CreditCard c = actor.getCreditCard();
+
 		result.setAddress(actor.getAddress());
 		result.setEmail(actor.getEmail());
 		result.setId(actor.getId());
@@ -141,8 +144,14 @@ public class RegisterService {
 		result.setPhoto(actor.getPhoto());
 		result.setSurname(actor.getSurname());
 		result.setVat(actor.getVat());
-		result.setCreditCard(actor.getCreditCard());
 		result.setVersion(actor.getVersion());
+		// CreditCard
+		result.setHolderName(c.getHolderName());
+		result.setExpirationMonth(c.getExpirationMonth());
+		result.setExpirationYear(c.getExpirationYear());
+		result.setMake(c.getMake());
+		result.setNumber(c.getNumber());
+		result.setCvv(c.getCvv());
 
 		result.setUserAccountpassword(actor.getUserAccount().getPassword());
 		result.setUserAccountuser(actor.getUserAccount().getUsername());

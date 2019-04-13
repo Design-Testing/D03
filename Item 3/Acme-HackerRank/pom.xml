@@ -11,9 +11,9 @@
 
 	<!-- Artifact identification and properties -->
 
-	<groupId>Design-and-Testing</groupId>
-	<artifactId>Sample-Project</artifactId>
-	<version>1.0</version>
+	<groupId>Acme.com</groupId>
+	<artifactId>Acme-HackerRank</artifactId>
+	<version>1.0.0</version>
 	<packaging>war</packaging>
 
 	<properties>
@@ -22,8 +22,9 @@
 
 	<!-- Indexing information -->
 
-	<name>Sample Project</name>
-	<url>http://www.sample-project.com</url>
+	<name>Acme-HackerRank</name>
+	<url>http://www.acme-hacker.com</url>
+	<description>This system allows people apply positions.</description>
 
 	<!-- Build commands -->
 
@@ -329,5 +330,5 @@
 
 	</dependencies>
 
-	<description>This system allows people share their favourite Shouts.</description>
+	
 </project> 

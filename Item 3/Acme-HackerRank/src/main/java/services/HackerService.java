@@ -18,6 +18,7 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
+import domain.CreditCard;
 import domain.Hacker;
 import forms.ActorForm;
 
@@ -107,6 +108,14 @@ public class HackerService {
 
 	public Hacker reconstruct(final ActorForm actorForm, final BindingResult binding) {
 		Hacker hacker;
+		final CreditCard c = new CreditCard();
+		c.setHolderName(actorForm.getHolderName());
+		c.setNumber(actorForm.getNumber());
+		c.setMake(actorForm.getMake());
+		c.setExpirationMonth(actorForm.getExpirationMonth());
+		c.setExpirationYear(actorForm.getExpirationYear());
+		c.setCvv(actorForm.getCvv());
+
 		if (actorForm.getId() == 0) {
 			hacker = this.create();
 			hacker.setName(actorForm.getName());
@@ -116,7 +125,6 @@ public class HackerService {
 			hacker.setEmail(actorForm.getEmail());
 			hacker.setAddress(actorForm.getAddress());
 			hacker.setVat(actorForm.getVat());
-			hacker.setCreditCard(actorForm.getCreditCard());
 			hacker.setVersion(actorForm.getVersion());
 			//			hacker.setScore(0.0);
 			//			hacker.setSpammer(false);
@@ -138,13 +146,14 @@ public class HackerService {
 			hacker.setEmail(actorForm.getEmail());
 			hacker.setAddress(actorForm.getAddress());
 			hacker.setVat(actorForm.getVat());
-			hacker.setCreditCard(actorForm.getCreditCard());
 			hacker.setVersion(actorForm.getVersion());
 			final UserAccount account = this.userAccountService.findOne(hacker.getUserAccount().getId());
 			account.setUsername(actorForm.getUserAccountuser());
 			account.setPassword(actorForm.getUserAccountpassword());
 			hacker.setUserAccount(account);
 		}
+
+		hacker.setCreditCard(c);
 
 		this.validator.validate(hacker, binding);
 		if (binding.hasErrors())

@@ -1,5 +1,5 @@
 
-package Services;
+package services;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,8 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import services.CompanyService;
-import services.PositionService;
 import utilities.AbstractTest;
 import domain.Position;
 

@@ -1,5 +1,5 @@
 
-package Services;
+package services;
 
 import javax.validation.ConstraintViolationException;
 
@@ -11,8 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import services.PositionService;
-import services.ProblemService;
 import utilities.AbstractTest;
 import domain.Problem;
 
