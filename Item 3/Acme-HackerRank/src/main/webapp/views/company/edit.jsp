@@ -36,7 +36,7 @@
 	<acme:password code="company.edit.userAccountpassword" path="userAccountpassword" />
 
 	<acme:textbox code="company.edit.name" path="name" />
-	<acme:textbox code="company.edit.surname" path="surname" />
+	<acme:textarea code="company.edit.surname" path="surname" />
 	<acme:textbox code="company.edit.photo" path="photo" />
 	<acme:textbox code="company.edit.email" path="email" />
 	<acme:textbox code="company.edit.phone" path="phone" />

@@ -31,7 +31,10 @@
 					<li class="arrow"></li>
 					<li><a href="configurationParameters/administrator/edit.do"><spring:message code="master.page.configurationParameters.edit" /></a></li>
 				</ul>
-			</li>	
+			</li>
+			
+			<li><a href="administrator/create.do"><spring:message	code="master.page.create.administrator" /></a></li>
+				
 		</security:authorize>
 		
 		<!-- ========================================================================================================= -->

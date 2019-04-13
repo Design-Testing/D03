@@ -47,7 +47,11 @@ function deletePersonalData(){
 
 
 <acme:display code="hacker.name" value="${hacker.name}"/>
-<acme:display code="hacker.surname" value="${hacker.surname}"/>
+<jstl:if test="${not empty hacker.surname}">
+<jstl:forEach items="${hacker.surname}" var="df">
+	<acme:display code="hacker.surname" value="${df}"/>
+</jstl:forEach>
+</jstl:if>
 <spring:message code="hacker.photo"/>:<br>
 <img src="${hacker.photo}" alt="<spring:message code="hacker.alt.image"/>" width="20%" height="20%"/>
 <br>

@@ -27,13 +27,14 @@ function generatePDF(){
 	var doc = new jsPDF()
 	doc.text('<spring:message code="display.document.title"/>', 20, 10)
 	doc.text('', 10, 20)
-	doc.text('<spring:message code="actor.name"/> : <jstl:out value="${member.name}"/>', 10, 30)
-	doc.text('<spring:message code="actor.middleName"/> : <jstl:out value="${member.middleName}"/>', 10, 40)
-	doc.text('<spring:message code="actor.surname"/> : <jstl:out value="${member.surname}"/>', 10, 50)
-	doc.text('<spring:message code="actor.photo"/> : <jstl:out value="${member.photo}"/>', 10, 60)
-	doc.text('<spring:message code="actor.phone"/> : <jstl:out value="${member.phone}"/>', 10, 70)
-	doc.text('<spring:message code="actor.email"/> : <jstl:out value="${member.email}"/>', 10, 80)
-	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${member.address}"/>', 10, 90)
+	doc.text('<spring:message code="actor.name"/> : <jstl:out value="${company.name}"/>', 10, 30)
+	doc.text('<spring:message code="actor.middleName"/> : <jstl:out value="${company.middleName}"/>', 10, 40)
+	doc.text('<spring:message code="actor.surname"/> : <jstl:out value="${company.surname}"/>', 10, 50)
+	doc.text('<spring:message code="actor.photo"/> : <jstl:out value="${company.photo}"/>', 10, 60)
+	doc.text('<spring:message code="actor.phone"/> : <jstl:out value="${company.phone}"/>', 10, 70)
+	doc.text('<spring:message code="actor.email"/> : <jstl:out value="${company.email}"/>', 10, 80)
+	doc.text('<spring:message code="actor.address"/> : <jstl:out value="${company.address}"/>', 10, 90)
+	doc.text('<spring:message code="actor.vat"/> : <jstl:out value="${company.vat}"/>', 10, 100)
 	doc.save('<spring:message code="display.document.fileName"/>.pdf')
 }
 function deletePersonalData(){
@@ -45,17 +46,20 @@ function deletePersonalData(){
 </script>
 
 
-<acme:display code="actor.name" value="${company.name}"/>
-<spring:message code="actor.photo"/>:<br>
+<acme:display code="company.name" value="${company.name}"/>
+<spring:message code="company.photo"/>:<br>
 <img src="${company.photo}" alt="<spring:message code="hacker.alt.image"/>" width="20%" height="20%"/>
 <br>
-<acme:display code="actor.middleName" value="${company.middleName}"/>
-<acme:display code="actor.surname" value="${company.surname}"/>
-<acme:display code="actor.email" value="${company.email}"/>
-<acme:display code="actor.phone" value="${company.phone}"/>
-<acme:display code="actor.email" value="${company.email}"/>
-<acme:display code="actor.address" value="${company.address}"/>
-<acme:display code="actor.score" value="${company.score}"/>
+<jstl:if test="${not empty company.surname}">
+<jstl:forEach items="${company.surname}" var="df">
+	<acme:display code="company.surname" value="${df}"/>
+</jstl:forEach>
+</jstl:if>
+<acme:display code="company.email" value="${company.email}"/>
+<acme:display code="company.phone" value="${company.phone}"/>
+<acme:display code="company.email" value="${company.email}"/>
+<acme:display code="company.address" value="${company.address}"/>
+<acme:display code="company.vat" value="${company.vat}"/>
 
 <jstl:if test="${displayButtons}">
 <br>

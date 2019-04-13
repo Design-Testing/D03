@@ -17,6 +17,7 @@ import security.Authority;
 import security.UserAccount;
 import services.ActorService;
 import services.AdministratorService;
+import services.ConfigurationParametersService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
 import domain.Actor;
@@ -28,16 +29,19 @@ import forms.ActorForm;
 public class AdministratorController extends AbstractController {
 
 	@Autowired
-	private AdministratorService	administratorService;
+	private AdministratorService			administratorService;
 
 	@Autowired
-	private UserAccountService		accountService;
+	private UserAccountService				accountService;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private RegisterService			registerService;
+	private RegisterService					registerService;
+
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -70,7 +74,7 @@ public class AdministratorController extends AbstractController {
 				result.addObject("errors", binding.getAllErrors());
 				result.addObject("actorForm", actorForm);
 			}
-
+		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
@@ -91,6 +95,7 @@ public class AdministratorController extends AbstractController {
 		final ActorForm admin = new ActorForm();
 		result = new ModelAndView("administrator/edit");
 		result.addObject("actorForm", admin);
+		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
@@ -100,6 +105,7 @@ public class AdministratorController extends AbstractController {
 		final Administrator admin = this.administratorService.findByPrincipal();
 		result = new ModelAndView("administrator/display");
 		result.addObject("administrator", admin);
+		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}
 
