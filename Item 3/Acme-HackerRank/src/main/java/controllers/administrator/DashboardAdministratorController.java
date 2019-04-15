@@ -74,7 +74,7 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("minPositions", positionsPerCompany[1]);
 		result.addObject("maxPositions", positionsPerCompany[2]);
 		result.addObject("desviationPositions", positionsPerCompany[3]);
-		//result.addObject("companyMorePositions", this.companyService.getCompaniesMorePositions()[0]);
+		result.addObject("companyMorePositions", this.companyService.getCompaniesMorePositions().toArray()[0]);
 		result.addObject("best", this.positionService.getBestPosition()[0]);
 		result.addObject("worst", this.positionService.getWorstPosition()[0]);
 

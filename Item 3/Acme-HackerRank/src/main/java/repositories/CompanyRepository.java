@@ -1,6 +1,8 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,6 +27,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
 	/** Companies that have offered more positions **/
 	@Query("select g from Company g where (1.0 + (select count(e) from Position e where e.company.id=g.id) - 1.0)=(select max(1.0 + (select count(en) from Position en where en.company.id=b.id) - 1.0) from Company b)")
-	Company[] getCompaniesMorePositions();
+	Collection<Company> getCompaniesMorePositions();
 
 }

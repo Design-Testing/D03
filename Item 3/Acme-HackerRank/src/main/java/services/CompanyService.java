@@ -188,8 +188,8 @@ public class CompanyService {
 	 * 
 	 * @author a8081
 	 */
-	public Company[] getCompaniesMorePositions() {
-		final Company[] res = this.companyRepository.getCompaniesMorePositions();
+	public Collection<Company> getCompaniesMorePositions() {
+		final Collection<Company> res = this.companyRepository.getCompaniesMorePositions();
 		Assert.notNull(res);
 		return res;
 	}

@@ -139,4 +139,10 @@ public class Position extends DomainEntity {
 	public void setCompany(final Company company) {
 		this.company = company;
 	}
+
+	@Override
+	public String toString() {
+		return "Position [title=" + this.title + ", ticker=" + this.ticker + ", salary=" + this.salary + "]";
+	}
+
 }
