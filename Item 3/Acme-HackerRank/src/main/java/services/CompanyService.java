@@ -172,6 +172,28 @@ public class CompanyService {
 		return res;
 	}
 
+	/**
+	 * The average, minimum, maximum and standard deviation of the number of positions per company
+	 * 
+	 * @author a8081
+	 */
+	public Double[] getStatisticsOfPositionsPerCompany() {
+		final Double[] res = this.companyRepository.getStatisticsOfPositionsPerCompany();
+		Assert.notNull(res);
+		return res;
+	}
+
+	/**
+	 * Companies that have offered more positions
+	 * 
+	 * @author a8081
+	 */
+	public Company[] getCompaniesMorePositions() {
+		final Company[] res = this.companyRepository.getCompaniesMorePositions();
+		Assert.notNull(res);
+		return res;
+	}
+
 	public void flush() {
 		this.companyRepository.flush();
 	}

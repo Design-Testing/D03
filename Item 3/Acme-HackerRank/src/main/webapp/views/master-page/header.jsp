@@ -30,9 +30,11 @@
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="configurationParameters/administrator/edit.do"><spring:message code="master.page.configurationParameters.edit" /></a></li>
+					<li><a href="dashboard/administrator/dataBreach.do"><spring:message	code="master.page.administrator.data.breach" /></a></li>
 				</ul>
 			</li>
 			
+			<li><a href="dashboard/administrator/statistics.do"><spring:message	code="master.page.dashboard" /></a></li>
 			<li><a href="administrator/create.do"><spring:message	code="master.page.create.administrator" /></a></li>
 				
 		</security:authorize>

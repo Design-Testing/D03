@@ -102,6 +102,28 @@ public class HackerService {
 		return hacker;
 	}
 
+	/**
+	 * The average, minimum, maximum and standard deviation of the number of applications per hacker
+	 * 
+	 * @author a8081
+	 */
+	public Double[] getStatisticsOfApplicationsPerHacker() {
+		final Double[] res = this.hackerRepository.getStatisticsOfApplicationsPerHacker();
+		Assert.notNull(res);
+		return res;
+	}
+
+	/**
+	 * Hackers who have made more applications
+	 * 
+	 * @author a8081
+	 */
+	public Hacker[] getHackersMoreApplications() {
+		final Hacker[] res = this.hackerRepository.getHackersMoreApplications();
+		Assert.notNull(res);
+		return res;
+	}
+
 	public void flush() {
 		this.hackerRepository.flush();
 	}

@@ -78,6 +78,39 @@ public class PositionService {
 		return result;
 	}
 
+	/**
+	 * The average, minimum, maximum and standard deviation of the salary offered
+	 * 
+	 * @author a8081
+	 * */
+	public Double[] getStatisticsOfSalary() {
+		final Double[] res = this.positionRepository.getStatisticsOfSalary();
+		Assert.notNull(res);
+		return res;
+	}
+
+	/**
+	 * The best position in terms of salary.
+	 * 
+	 * @author a8081
+	 * */
+	public Position[] getBestPosition() {
+		final Position[] res = this.positionRepository.getBestPosition();
+		Assert.notNull(res);
+		return res;
+	}
+
+	/**
+	 * The worst position in terms of salary.
+	 * 
+	 * @author a8081
+	 * */
+	public Position[] getWorstPosition() {
+		final Position[] res = this.positionRepository.getWorstPosition();
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Position findOne(final int positionId) {
 		Assert.isTrue(positionId != 0);
 		final Position res = this.positionRepository.findOne(positionId);
