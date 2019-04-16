@@ -47,11 +47,9 @@ public class PositionService {
 
 	public Position create() {
 		final Position position = new Position();
-		position.setMode("DRAFT");
 		final Company principal = this.companyService.findByPrincipal();
-		final String ticker = this.generateTicker(principal.getCommercialName());
-		position.setTicker(ticker);
-
+		position.setCompany(principal);
+		position.setMode("DRAFT");
 		return position;
 	}
 
@@ -124,11 +122,15 @@ public class PositionService {
 		Assert.notNull(position);
 		final Company principal = this.companyService.findByPrincipal();
 		final Position result;
-		if (position.getId() != 0) {
+		if (position.getId() == 0) {
+			final String ticker = this.generateTicker(principal.getCommercialName());
+			position.setTicker(ticker);
+			position.setMode("DRAFT");
+			position.setCompany(principal);
+		} else {
 			Assert.isTrue(position.getCompany().equals(principal));
 			Assert.isTrue(position.getMode().equals("DRAFT"), "No puede modificar una posición que ya no esta en DRAFT MODE.");
-		} else
-			position.setCompany(principal);
+		}
 		result = this.positionRepository.save(position);
 		return result;
 	}
@@ -152,6 +154,7 @@ public class PositionService {
 
 		this.positionRepository.delete(position);
 	}
+
 	public Collection<Position> findAllByPrincipal() {
 		Collection<Position> res = new ArrayList<>();
 		final Actor principal = this.actorService.findByPrincipal();
@@ -217,7 +220,6 @@ public class PositionService {
 		else
 			result = this.findOne(positionForm.getId());
 
-		result.setId(positionForm.getId());
 		result.setVersion(positionForm.getVersion());
 		result.setTitle(positionForm.getTitle());
 		result.setDescription(positionForm.getDescription());
@@ -233,6 +235,22 @@ public class PositionService {
 			throw new ValidationException();
 
 		return result;
+	}
+
+	public PositionForm constructPruned(final Position position) {
+		final PositionForm pruned = new PositionForm();
+
+		pruned.setId(position.getId());
+		pruned.setVersion(position.getVersion());
+		pruned.setTitle(position.getTitle());
+		pruned.setDescription(position.getDescription());
+		pruned.setProfile(position.getProfile());
+		pruned.setDeadline(position.getDeadline());
+		pruned.setSkills(position.getSkills());
+		pruned.setTechnologies(position.getTechnologies());
+		pruned.setSalary(position.getSalary());
+
+		return pruned;
 	}
 
 	public void flush() {

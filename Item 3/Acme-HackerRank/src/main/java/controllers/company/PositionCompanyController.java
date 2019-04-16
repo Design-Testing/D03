@@ -46,9 +46,8 @@ public class PositionCompanyController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Position position;
+		final PositionForm position = new PositionForm();
 
-		position = this.positionService.create();
 		result = this.createEditModelAndView(position);
 		return result;
 	}
@@ -114,6 +113,7 @@ public class PositionCompanyController extends AbstractController {
 				result = this.myPositions();
 			} catch (final Throwable oops) {
 				result = new ModelAndView("position/error");
+				result.addObject("ok", "Error al pasar a final mode la posicion.");
 			}
 
 		return result;
@@ -126,9 +126,10 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
-		if (position == null || !position.getMode().equals("FINAL"))
+		if (position == null || !position.getMode().equals("FINAL")) {
 			result = new ModelAndView("position/error");
-		else {
+			result.addObject("ok", "Error al pasar a cancelled mode la posicion.");
+		} else {
 			this.positionService.toCancelMode(positionId);
 			result = this.myPositions();
 		}
@@ -148,7 +149,7 @@ public class PositionCompanyController extends AbstractController {
 		final Company company = this.companyService.findByPrincipal();
 
 		if ((position.getMode().equals("DRAFT") && position.getCompany().equals(company)))
-			result = this.createEditModelAndView(position);
+			result = this.createEditModelAndView(this.positionService.constructPruned(position));
 		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -162,18 +163,18 @@ public class PositionCompanyController extends AbstractController {
 		ModelAndView result;
 
 		if (binding.hasErrors()) {
-			result = new ModelAndView("position/edit");
-			result.addObject("position", positionForm);
+			result = this.createEditModelAndView(positionForm);
+			result.addObject("errors", binding.getAllErrors());
 		} else
 			try {
 				final Position position = this.positionService.reconstruct(positionForm, binding);
 				this.positionService.save(position);
 				result = this.myPositions();
 			} catch (final ValidationException oops) {
-				result = new ModelAndView("position/edit");
-				result.addObject("position", positionForm);
+				result = this.createEditModelAndView(positionForm, "commit.position.error");
 			} catch (final Throwable oops) {
-				result = new ModelAndView("position/error");
+				result = this.createEditModelAndView(positionForm, "commit.position.error");
+				result.addObject("errors", binding.getAllErrors());
 			}
 
 		return result;
@@ -182,56 +183,29 @@ public class PositionCompanyController extends AbstractController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(final int positionId) {
-		ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
-
-		//		try {
 		this.positionService.delete(position);
-		result = this.myPositions();
-		//		} catch (final Throwable oops) {
-		//			result = new ModelAndView("redirect:/position/error");
-		//		}
-
-		return result;
+		return this.myPositions();
 
 	}
 
 	// ANCILLIARY METHODS --------------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Position position) {
+	protected ModelAndView createEditModelAndView(final PositionForm position) {
 		ModelAndView result;
-
 		result = this.createEditModelAndView(position, null);
-
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Position position, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final PositionForm position, final String messageCode) {
 		Assert.notNull(position);
 		final ModelAndView result;
 
 		result = new ModelAndView("position/edit");
-		result.addObject("position", this.constructPruned(position)); //this.constructPruned(position)
-
+		result.addObject("position", position); //this.constructPruned(position)
 		result.addObject("message", messageCode);
 
 		return result;
-	}
-
-	public PositionForm constructPruned(final Position position) {
-		final PositionForm pruned = new PositionForm();
-
-		pruned.setId(position.getId());
-		pruned.setVersion(position.getVersion());
-		pruned.setTitle(position.getTitle());
-		pruned.setDescription(position.getDescription());
-		pruned.setProfile(position.getProfile());
-		pruned.setDeadline(position.getDeadline());
-		pruned.setSkills(position.getSkills());
-		pruned.setTechnologies(position.getTechnologies());
-		pruned.setSalary(position.getSalary());
-
-		return pruned;
 	}
 
 }

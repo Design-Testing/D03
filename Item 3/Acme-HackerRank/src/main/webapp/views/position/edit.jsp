@@ -8,18 +8,28 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<jstl:if test="${not empty errors}">
+	<div class="errorDiv">
+		<ul>
+			<jstl:forEach items="${errors}" var="error">
+				<li><spring:message code="position.${error.field}" />
+					- <jstl:out value="${error.defaultMessage}" /></li>
+			</jstl:forEach>
+		</ul>
+	</div>
+</jstl:if>
 
 <form:form action="position/company/edit.do" modelAttribute="position" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 
-
 	<acme:textbox code="position.title" path="title" />
 	<acme:textbox code="position.description" path="description" />
-	<acme:textbox code="position.deadline" path="deadline" />
+	<acme:textbox code="position.deadline" path="deadline" placeholder="yyyy-MM-dd HH:mm"/>
+	<spring:message code="position.data.pattern"/>
 	<acme:textbox code="position.profile" path="profile" />
-	<acme:textbox code="position.skills" path="skills" />
-	<acme:textbox code="position.technologies" path="technologies" />
+	<acme:textarea code="position.skills" path="skills" />
+	<acme:textarea code="position.technologies" path="technologies" />
 	<acme:numberbox code="position.salary" path="salary" min="0" />
 <br>
 	<acme:submit code="position.submit" name="save"/>
