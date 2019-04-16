@@ -24,7 +24,6 @@ import services.UserAccountService;
 import services.auxiliary.RegisterService;
 import domain.Actor;
 import domain.Company;
-import forms.ActorForm;
 import forms.CompanyForm;
 
 @Controller
@@ -94,7 +93,7 @@ public class CompanyController extends AbstractController {
 		final ModelAndView result;
 		final Company company = this.companyService.findByPrincipal();
 		if (company != null) {
-			result = new ModelAndView("company/display");
+			result = new ModelAndView("company/display2");
 			result.addObject("company", company);
 			result.addObject("displayButtons", true);
 		} else
@@ -109,11 +108,11 @@ public class CompanyController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit() {
 		ModelAndView result;
-		result = new ModelAndView("company/edit");
+
 		final Company company = this.companyService.findByPrincipal();
-		final ActorForm actor = this.registerService.inyect(company);
-		actor.setTermsAndCondicions(true);
-		result.addObject("actorForm", actor);
+		final CompanyForm companyForm = this.registerService.inyect(company);
+		companyForm.setTermsAndCondicions(true);
+		result = this.createEditModelAndView(companyForm);
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
 		return result;
 	}

@@ -20,6 +20,7 @@ import domain.Company;
 import domain.CreditCard;
 import domain.Hacker;
 import forms.ActorForm;
+import forms.CompanyForm;
 
 @Service
 @Transactional
@@ -156,6 +157,36 @@ public class RegisterService {
 		result.setUserAccountpassword(actor.getUserAccount().getPassword());
 		result.setUserAccountuser(actor.getUserAccount().getUsername());
 		result.setVersion(actor.getVersion());
+
+		return result;
+	}
+
+	public CompanyForm inyect(final Company company) {
+		final CompanyForm result = new CompanyForm();
+
+		final CreditCard c = company.getCreditCard();
+
+		result.setAddress(company.getAddress());
+		result.setEmail(company.getEmail());
+		result.setId(company.getId());
+		result.setName(company.getName());
+		result.setPhone(company.getPhone());
+		result.setPhoto(company.getPhoto());
+		result.setSurname(company.getSurname());
+		result.setVat(company.getVat());
+		result.setVersion(company.getVersion());
+		result.setCommercialName(company.getCommercialName());
+		// CreditCard
+		result.setHolderName(c.getHolderName());
+		result.setExpirationMonth(c.getExpirationMonth());
+		result.setExpirationYear(c.getExpirationYear());
+		result.setMake(c.getMake());
+		result.setNumber(c.getNumber());
+		result.setCvv(c.getCvv());
+
+		result.setUserAccountpassword(company.getUserAccount().getPassword());
+		result.setUserAccountuser(company.getUserAccount().getUsername());
+		result.setVersion(company.getVersion());
 
 		return result;
 	}
