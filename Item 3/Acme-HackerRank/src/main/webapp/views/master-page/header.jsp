@@ -78,9 +78,9 @@
 					<li><a href="application/hacker/listSubmitted.do"><spring:message code="master.page.application.listSubmitted" /></a></li>
 					<li><a href="application/hacker/listAccepted.do"><spring:message code="master.page.application.listAccepted" /></a></li>
 					<li><a href="application/hacker/listRejected.do"><spring:message code="master.page.application.listRejected" /></a></li>
-					
 				</ul>
 			</li>
+			<li><a href="finder/hacker/edit.do"><spring:message code="master.page.finder.hacker.edit" /></a></li>
 			<li><a class="fNiv" href="position/list.do"><spring:message code="master.page.position.list" /></a></li>
 			
 			

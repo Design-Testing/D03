@@ -80,6 +80,7 @@
 		<security:intercept-url pattern="/hacker/displayTabla.do" access="permitAll" />
 		<security:intercept-url pattern="/hacker/deletePersonalData.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/hacker/display.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/finder/hacker/edit.do" access="hasRole('HACKER')"/>
 
 		<!-- IS AUTHENTICATED -->
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
