@@ -26,4 +26,24 @@
 		<put-attribute name="body" value="/views/administrator/edit.jsp" />
 	</definition>
 	
+	<definition name="administrator/congratulation" extends="master.page">	
+		<put-attribute name="title" value="¡Enhorabuena! Has enviado su difundido" />
+		<put-attribute name="body" value="/views/administrator/congratulation.jsp" />
+	</definition>
+	
+	<definition name="administrator/congratulationMove" extends="master.page">	
+		<put-attribute name="title" value="Has movido bien su mensaje" />
+		<put-attribute name="body" value="/views/administrator/congratulationMove.jsp" />
+	</definition>
+
+	<definition name="administrator/congratulationCopy" extends="master.page">	
+		<put-attribute name="title" value="Has copiado bien su mensaje" />
+		<put-attribute name="body" value="/views/administrator/congratulationCopy.jsp" />
+	</definition>
+	
+	<definition name="administrator/error" extends="master.page">
+        <put-attribute name="title" value="Ups... Ha ocurrido un error"/>
+        <put-attribute name="body" value="/views/administrator/error.jsp"/>
+    </definition>
+	
 </tiles-definitions>

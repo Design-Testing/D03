@@ -17,12 +17,6 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
     <div>
-        <input type="button" class="btn btn-danger" name="createFolder"
-               value="<spring:message code="general.createFolder" />"
-               onclick="relativeRedir('folder/create.do');"/>
-    </div>
-
-    <div>
         <input type="button" class="btn btn-danger" name="createMessage"
                value="<spring:message code="message.createMessage" />"
                onclick="relativeRedir('message/create.do');"/>
@@ -49,20 +43,6 @@
 
     <spring:message var="title" code="folder.name"/>
     <display:column property="name" title="${title}" sortable="true"/>
-	
-	
-           
-        <display:column>
-        	<jstl:if test="${row.isSystemFolder eq false}">     
-            <input type="button" class="btn btn-danger" name="edit"
-                   value="<spring:message code="general.edit" />"
-                   onclick="relativeRedir('folder/edit.do?folderId=${row.id}');"/>
-
-            <input type="button" class="btn btn-danger" name="edit"
-                   value="<spring:message code="general.delete" />"
-                   onclick="relativeRedir('folder/delete.do?folderId=${row.id}');"/>
-                   </jstl:if>
-        </display:column>
         
 
 </display:table>
