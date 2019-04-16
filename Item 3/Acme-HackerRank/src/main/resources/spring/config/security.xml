@@ -73,6 +73,7 @@
 		<security:intercept-url pattern="/company/create.do" access="permitAll" />
 		<security:intercept-url pattern="/company/edit.do" access="permitAll" />
 		<security:intercept-url pattern="/company/display2.do" access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/company/deletePersonalData.do" access="hasRole('COMPANY')" />
 		
 		<!-- HACKER -->
 		<security:intercept-url pattern="/hacker/create.do" access="permitAll" />

@@ -26,6 +26,11 @@
 		<put-attribute name="body" value="/views/company/display.jsp" />
 	</definition>
 	
+	<definition name="company/display2" extends="master.page">	
+		<put-attribute name="title" value="Company: Display" />
+		<put-attribute name="body" value="/views/company/display2.jsp" />
+	</definition>
+	
 	<definition name="company/list" extends="master.page">	
 		<put-attribute name="title" value="Company: List" />
 		<put-attribute name="body" value="/views/company/list.jsp" />

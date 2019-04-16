@@ -48,7 +48,8 @@
 
 <acme:display code="position.mode" value="${position.mode}"/>
 
-<acme:display code="position.company" value="${position.company.name}"/>
+<acme:display code="position.company" value="${position.company.name}"/> 
+<acme:button url="company/display.do?companyId=${position.company.id}" name="displayCompany" code="position.display"/>
 <br>
 <spring:message code="position.problem"/>
 
