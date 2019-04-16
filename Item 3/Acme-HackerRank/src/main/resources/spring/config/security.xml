@@ -81,6 +81,32 @@
 		<security:intercept-url pattern="/hacker/deletePersonalData.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/hacker/display.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/finder/hacker/edit.do" access="hasRole('HACKER')"/>
+		
+		
+		<!-- MESSAGE -->
+		<security:intercept-url pattern="/message/create.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/edit.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/send.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/display.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/list.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/delete.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/move.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/saveMove.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/copy.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/saveCopy.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/message/broadcast.do" access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/saveBroadcast.do" access="hasRole('ADMIN')" />
+		
+		<!-- FOLDER -->
+		<security:intercept-url pattern="/folder/list.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/folder/listFolder.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" /> 
+		<security:intercept-url pattern="/folder/edit.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" /> 
+		<security:intercept-url pattern="/folder/create.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/folder/view.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/folder/display.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/folder/createInFolder.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/folder/saveInFather.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
+		<security:intercept-url pattern="/folder/delete.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
 
 		<!-- IS AUTHENTICATED -->
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 

@@ -114,6 +114,7 @@ public class FolderService {
 			f.setActor(a);
 			saved = this.folderRepository.save(f);
 		} else {
+			final Folder folder = this.findOne(f.getId());
 			f.setActor(a);
 			final Collection<Folder> fs = this.findAllByUserId(a.getUserAccount().getId());
 			Assert.isTrue(fs.contains(f));

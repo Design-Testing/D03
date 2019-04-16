@@ -33,6 +33,8 @@
 		<value>/views/company/tiles.xml</value>
 		<value>/views/configurationParameters/tiles.xml</value>
 		<value>/views/finder/tiles.xml</value>
+		<value>/views/folder/tiles.xml</value>
+		<value>/views/message/tiles.xml</value>
 		<value>/views/dashboard/tiles.xml</value>
 	</util:list>
 
