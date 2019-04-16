@@ -19,6 +19,7 @@ import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.CreditCard;
+import domain.Finder;
 import domain.Hacker;
 import forms.ActorForm;
 
@@ -31,6 +32,9 @@ public class HackerService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private FinderService		finderService;
 
 	@Autowired
 	private UserAccountService	userAccountService;
@@ -58,6 +62,8 @@ public class HackerService {
 		Hacker result;
 
 		if (hacker.getId() == 0) {
+			final Finder finder = this.finderService.createForNewHacker();
+			hacker.setFinder(finder);
 			this.actorService.setAuthorityUserAccount(Authority.HACKER, hacker);
 			result = this.hackerRepository.save(hacker);
 			//			this.folderService.setFoldersByDefault(result);

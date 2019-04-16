@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.ValidationException;
@@ -255,5 +256,11 @@ public class PositionService {
 
 	public void flush() {
 		this.positionRepository.flush();
+	}
+
+	public Collection<Position> findPositions(final String keyword, final Double minSalary, final Double maxSalary, final Date minDeadline, final Date maxDeadline) {
+		final Collection<Position> res = this.positionRepository.findPositions(keyword, minSalary, maxSalary, minDeadline, maxDeadline);
+		Assert.notNull(res);
+		return res;
 	}
 }

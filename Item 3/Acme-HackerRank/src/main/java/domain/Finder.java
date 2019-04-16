@@ -21,7 +21,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Finder extends DomainEntity {
 
 	private String					keyword;
-	private Date					deadline;
+	private Date					minDeadline;
+	private Date					maxDeadline;
 	private Double					minSalary;
 	private Double					maxSalary;
 	private Date					creationDate;
@@ -39,12 +40,22 @@ public class Finder extends DomainEntity {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-	public Date getDeadline() {
-		return this.deadline;
+	public Date getMinDeadline() {
+		return this.minDeadline;
 	}
 
-	public void setDeadline(final Date deadline) {
-		this.deadline = deadline;
+	public void setMinDeadline(final Date minDeadline) {
+		this.minDeadline = minDeadline;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	public Date getMaxDeadline() {
+		return this.maxDeadline;
+	}
+
+	public void setMaxDeadline(final Date maxDeadline) {
+		this.maxDeadline = maxDeadline;
 	}
 
 	@Min(0)

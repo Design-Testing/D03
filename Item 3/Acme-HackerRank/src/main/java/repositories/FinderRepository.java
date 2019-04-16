@@ -19,4 +19,7 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	/** The ratio of empty versus non empty finders */
 	@Query("select sum(case when f.positions.size=0 then 1.0 else 0.0 end) / sum(case when f.positions.size>0 then 1.0 else 0.0 end) from Finder f")
 	Double findRatioFinders();
+
+	@Query()
+	Finder findHackerFinder(int id);
 }
