@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -63,6 +64,7 @@ public class Application extends DomainEntity {
 		this.submitMoment = submitMoment;
 	}
 
+	@SafeHtml
 	public String getExplanation() {
 		return this.explanation;
 	}
@@ -72,6 +74,7 @@ public class Application extends DomainEntity {
 	}
 
 	@URL
+	@SafeHtml
 	public String getLink() {
 		return this.link;
 	}

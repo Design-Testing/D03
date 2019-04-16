@@ -118,8 +118,8 @@ public class HackerService {
 	 * 
 	 * @author a8081
 	 */
-	public Hacker[] getHackersMoreApplications() {
-		final Hacker[] res = this.hackerRepository.getHackersMoreApplications();
+	public Collection<Hacker> getHackersMoreApplications() {
+		final Collection<Hacker> res = this.hackerRepository.getHackersMoreApplications();
 		Assert.notNull(res);
 		return res;
 	}

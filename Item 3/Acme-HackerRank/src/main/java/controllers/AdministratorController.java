@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,6 +68,9 @@ public class AdministratorController extends AbstractController {
 				admin.setUserAccount(ua);
 				this.registerService.saveAdmin(admin, binding);
 				result.addObject("alert", "administartor.edit.correct");
+				result.addObject("actorForm", actorForm);
+			} catch (final ValidationException oops) {
+				result = new ModelAndView("hacker/edit");
 				result.addObject("actorForm", actorForm);
 			} catch (final Throwable e) {
 				if (e.getMessage().contains("username is register"))

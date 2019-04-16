@@ -30,11 +30,27 @@
 			<td><spring:message code="desviation.positions.company" /></td>
 			<td>${desviationPositions}</td>
 		</tr>
-		<tr>
-			<td><spring:message code="largest.company" /></td>
-			<td>${companyMorePositions}</td>
-		</tr>
+		<jstl:choose>
+			<jstl:when test="${companiesMorePositions.size() eq 1}">
+				<tr>
+					<td><spring:message code="largest.company" /></td>
+					<td>${companyMorePositions}</td>
+				</tr>
+			</jstl:when>
+			<jstl:otherwise>
+				<jstl:forEach items="${companiesMorePositions}" var="c"
+					varStatus="in">
+					<tr>
+						<td><spring:message code="largest.company" /> ${in.index + 1}</td>
+						<td>${c}</td>
+					</tr>
+				</jstl:forEach>
+			</jstl:otherwise>
+		</jstl:choose>
 	</table>
+	<jstl:if test="${companiesMorePositions.size() gt 1}">
+		<p><spring:message code="largest.company.two" /><p/>
+	</jstl:if>
 
 	<table>
 		<spring:message code="dashboard.applications.hacker" />
@@ -54,21 +70,43 @@
 			<td><spring:message code="desviation.applications.hacker" /></td>
 			<td>${desviationHacker}</td>
 		</tr>
-		<tr>
-			<td><spring:message code="largest.hacker" /></td>
-			<td>${hackerMoreApplications}</td>
-		</tr>
+		<jstl:choose>
+			<jstl:when test="${hackersMoreApplications.size() eq 1}">
+				<tr>
+					<td><spring:message code="largest.hacker" /></td>
+					<td>${hackerMoreApplications}</td>
+				</tr>
+			</jstl:when>
+			<jstl:otherwise>
+				<jstl:forEach items="${hackersMoreApplications}" var="h"
+					varStatus="i">
+					<tr>
+						<td><spring:message code="largest.hacker" /> ${i.index + 1}</td>
+						<td>${h}</td>
+					</tr>
+				</jstl:forEach>
+			</jstl:otherwise>
+		</jstl:choose>
 	</table>
-
+	<jstl:if test="${hackersMoreApplications.size() gt 1}">
+		<p><spring:message code="largest.hacker.two" /><p/>
+	</jstl:if>
+	
 	<table>
 		<spring:message code="dashboard.positions" />
 		<tr>
 			<td><spring:message code="largest.position" /></td>
-			<td><strong><spring:message code="position" />: <spring:message code="position.title" /></strong> ${best.title}, <strong><spring:message code="position.ticker" /></strong> ${best.ticker}, <strong><spring:message code="position.salary" /></strong> ${best.salary}</td>
+			<td><strong><spring:message code="position" />: <spring:message
+						code="position.title" /></strong> ${best.title}, <strong><spring:message
+						code="position.ticker" /></strong> ${best.ticker}, <strong><spring:message
+						code="position.salary" /></strong> ${best.salary}</td>
 		</tr>
 		<tr>
 			<td><spring:message code="smallest.position" /></td>
-			<td><strong><spring:message code="position" />: <spring:message code="position.title" /></strong> ${worst.title}, <strong><spring:message code="position.ticker" /></strong> ${worst.ticker}, <strong><spring:message code="position.salary" /></strong> ${worst.salary}</td>
+			<td><strong><spring:message code="position" />: <spring:message
+						code="position.title" /></strong> ${worst.title}, <strong><spring:message
+						code="position.ticker" /></strong> ${worst.ticker}, <strong><spring:message
+						code="position.salary" /></strong> ${worst.salary}</td>
 		</tr>
 	</table>
 

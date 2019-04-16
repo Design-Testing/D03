@@ -11,6 +11,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
 import cz.jirutka.validator.collection.constraints.EachNotBlank;
@@ -34,6 +35,7 @@ public class ConfigurationParameters extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getSysName() {
 		return this.sysName;
 	}
@@ -44,6 +46,7 @@ public class ConfigurationParameters extends DomainEntity {
 
 	@NotBlank
 	@URL
+	@SafeHtml
 	public String getBanner() {
 		return this.banner;
 	}
@@ -53,6 +56,7 @@ public class ConfigurationParameters extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getWelcomeMessageEsp() {
 		return this.welcomeMessageEsp;
 	}
@@ -62,6 +66,7 @@ public class ConfigurationParameters extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getWelcomeMessageEn() {
 		return this.welcomeMessageEn;
 	}

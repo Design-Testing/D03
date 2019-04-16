@@ -62,14 +62,12 @@
 	</display:column>
 	
 	<display:column>
-	<jstl:choose>
-	<jstl:when test="${row.mode eq 'DRAFT'}">
+	<jstl:if test="${row.mode eq 'DRAFT'}">
 		<acme:button url="position/company/finalMode.do?positionId=${row.id}" name="edit" code="position.finalMode"/>
-	</jstl:when>
-	<jstl:otherwise>
+	</jstl:if>
+	<jstl:if test="${row.mode eq 'FINAL'}">
 		<acme:button url="position/company/cancelledMode.do?positionId=${row.id}" name="edit" code="position.cancelledMode"/>
-	</jstl:otherwise>
-	</jstl:choose>
+	</jstl:if>
 	</display:column>
 	
 	</security:authorize>

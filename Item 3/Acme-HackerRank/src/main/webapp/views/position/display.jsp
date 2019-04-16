@@ -85,10 +85,6 @@
 		<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
 	</display:column>
 	
-	<display:column>
-			<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
-	</display:column>
-	
 	</security:authorize>
 	
         

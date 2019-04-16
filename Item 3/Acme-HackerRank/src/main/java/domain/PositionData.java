@@ -50,15 +50,11 @@ public class PositionData extends DomainEntity {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public Date getStartDate() {
-
 		return this.startDate;
-
 	}
 
 	public void setStartDate(final Date startDate) {
-
 		this.startDate = startDate;
-
 	}
 
 	// Optional

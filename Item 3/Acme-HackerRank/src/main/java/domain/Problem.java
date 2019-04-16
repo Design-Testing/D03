@@ -12,6 +12,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -29,6 +32,7 @@ public class Problem extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getTitle() {
 		return this.title;
 	}
@@ -38,6 +42,7 @@ public class Problem extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getStatement() {
 		return this.statement;
 	}
@@ -46,6 +51,7 @@ public class Problem extends DomainEntity {
 		this.statement = statement;
 	}
 
+	@SafeHtml
 	public String getHint() {
 		return this.hint;
 	}
@@ -55,6 +61,7 @@ public class Problem extends DomainEntity {
 	}
 
 	@ElementCollection
+	@EachNotBlank
 	public Collection<String> getAttachments() {
 		return this.attachments;
 	}

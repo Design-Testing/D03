@@ -4,6 +4,7 @@ package controllers.company;
 import java.util.Collection;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -106,7 +107,7 @@ public class PositionCompanyController extends AbstractController {
 
 		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2)) {
 			result = new ModelAndView("position/error");
-			result.addObject("ok", "Error al pasar a final mode la posici�n.");
+			result.addObject("ok", "Error al pasar a final mode la posicion.");
 		} else
 			try {
 				this.positionService.toFinalMode(positionId);
@@ -160,21 +161,23 @@ public class PositionCompanyController extends AbstractController {
 	public ModelAndView save(@Valid final PositionForm positionForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Position position = this.positionService.reconstruct(positionForm, binding);
-
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(position);
-		else
+		if (binding.hasErrors()) {
+			result = new ModelAndView("position/edit");
+			result.addObject("position", positionForm);
+		} else
 			try {
+				final Position position = this.positionService.reconstruct(positionForm, binding);
 				this.positionService.save(position);
 				result = this.myPositions();
+			} catch (final ValidationException oops) {
+				result = new ModelAndView("position/edit");
+				result.addObject("position", positionForm);
 			} catch (final Throwable oops) {
 				result = new ModelAndView("position/error");
 			}
 
 		return result;
 	}
-
 	// DELETE --------------------------------------------------------
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)

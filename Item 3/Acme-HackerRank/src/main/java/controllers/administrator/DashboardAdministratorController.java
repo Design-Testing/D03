@@ -75,6 +75,7 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("maxPositions", positionsPerCompany[2]);
 		result.addObject("desviationPositions", positionsPerCompany[3]);
 		result.addObject("companyMorePositions", this.companyService.getCompaniesMorePositions().toArray()[0]);
+		result.addObject("companiesMorePositions", this.companyService.getCompaniesMorePositions());
 		result.addObject("best", this.positionService.getBestPosition()[0]);
 		result.addObject("worst", this.positionService.getWorstPosition()[0]);
 
@@ -84,7 +85,8 @@ public class DashboardAdministratorController extends AbstractController {
 		result.addObject("minHacker", applicationsPerHacker[1]);
 		result.addObject("maxHacker", applicationsPerHacker[2]);
 		result.addObject("desviationHacker", applicationsPerHacker[3]);
-		result.addObject("hackerMoreApplications", this.hackerService.getHackersMoreApplications()[0]);
+		result.addObject("hackerMoreApplications", this.hackerService.getHackersMoreApplications().toArray()[0]);
+		result.addObject("hackersMoreApplications", this.hackerService.getHackersMoreApplications());
 
 		return result;
 

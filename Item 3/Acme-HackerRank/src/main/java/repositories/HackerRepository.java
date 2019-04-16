@@ -1,6 +1,8 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,6 +19,6 @@ public interface HackerRepository extends JpaRepository<Hacker, Integer> {
 
 	/** Hackers who have made more applications **/
 	@Query("select g from Hacker g where (1.0 + (select count(e) from Application e where e.hacker.id=g.id) - 1.0)=(select max(1.0 + (select count(en) from Application en where en.hacker.id=b.id) - 1.0) from Hacker b)")
-	Hacker[] getHackersMoreApplications();
+	Collection<Hacker> getHackersMoreApplications();
 
 }
