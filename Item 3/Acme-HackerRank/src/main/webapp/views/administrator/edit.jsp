@@ -1,7 +1,9 @@
-
-<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"
@@ -9,34 +11,25 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<script type="text/javascript">
-	function confirmacion() {
-		alert("HOLAAAAAAA");
-		var res = false;
+<script>
+	function phoneFun() {
 		var x = document.getElementById("phone");
 		var telefono = x.value;
-		var CCACPN = new RegExp("(^\+([1-9]{1}[0-9]{1,2})){1}[ ]*(\([1-9]{1}[0-9]{1,2}\)){1}[ ]*(\d{4,}$)"); /* +CC (AC) PN */
-		var CCPN = new RegExp("(^\+([1-9]{1}[0-9]{1,2})){1}[ ]*(\d{4,}$)"); /* +CC PN */
-		var PN = new RegExp("(^\d{4,}$)"); /* PN */
-		if ('${phone}' != telefono && !CCACPN.test(telefono) && !CCPN.test(telefono)) {
+		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{1,2})){1}\\s*(\\([1-9]{1}[0-9]{1,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
+		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{1,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
+		var PN = new RegExp("(^\\d{4,}$)"); /* PN */
+		if (('${phone}' != telefono) && !CCACPN.test(telefono) && !CCPN.test(telefono)) {
 			if (PN.test(telefono)) {
-				alert("2222222222222222");
 				x.value = '${countryPhoneCode}' + " " + telefono;
-				res = true;
 			} else {
-				var mensaje = confirm('<spring:message code="phone.error"/>');
-				if (!mensaje) { 
-					res =  true; 
+				var mensaje = confirm("<spring:message code="phone.error"/>");
+				if (!mensaje) {
+					x.value = '${phone}';
 				}
 			}
 		}
-		return res;
 	}
 </script>
-
-<h2>
-	<spring:message code="administrator.edit.msg" />
-</h2>
 
 <jstl:if test="${not empty alert}">
 	<script>
@@ -45,6 +38,10 @@
 		});
 	</script>
 </jstl:if>
+
+<h2>
+	<spring:message code="administrator.edit.msg" />
+</h2>
 
 <form:form modelAttribute="actorForm" action="administrator/edit.do"
 	method="POST">
@@ -65,7 +62,7 @@
 		<form:label path="phone">
 			<spring:message code="administrator.edit.phone" />
 		</form:label>
-		<form:input path="phone" blur="javascript: Confirmacion()" />
+		<form:input path="phone" onblur="phoneFun()" />
 		<form:errors path="phone" cssClass="error" />
 	</div>
 
@@ -103,7 +100,8 @@
 		</jstl:otherwise>
 	</jstl:choose>
 
-	<input type="submit" name="save" onclick="return confirmacion();" value="<spring:message code="administrator.edit.submit" />" />
+	<input type="submit" name="save"
+		value="<spring:message code="administrator.edit.submit" />" />
 
 
 </form:form>
