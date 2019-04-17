@@ -97,7 +97,8 @@ public class AdministratorService {
 		Administrator admin;
 		final CreditCard c = new CreditCard();
 		c.setHolderName(actorForm.getHolderName());
-		c.setNumber(actorForm.getNumber());
+		final String cardNumber = actorForm.getNumber().replace(" ", "");
+		c.setNumber(cardNumber);
 		c.setMake(actorForm.getMake());
 		c.setExpirationMonth(actorForm.getExpirationMonth());
 		c.setExpirationYear(actorForm.getExpirationYear());
@@ -113,7 +114,6 @@ public class AdministratorService {
 			admin.setAddress(actorForm.getAddress());
 			admin.setVat(actorForm.getVat());
 			admin.setVersion(actorForm.getVersion());
-			//			admin.setScore(0.0);
 			admin.setSpammer(false);
 			final UserAccount account = this.userAccountService.create();
 			final Collection<Authority> authorities = new ArrayList<>();

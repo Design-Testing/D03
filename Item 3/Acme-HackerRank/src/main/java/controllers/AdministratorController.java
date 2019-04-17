@@ -79,6 +79,7 @@ public class AdministratorController extends AbstractController {
 				result.addObject("actorForm", actorForm);
 			}
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 	}
 
@@ -100,6 +101,7 @@ public class AdministratorController extends AbstractController {
 		result = new ModelAndView("administrator/edit");
 		result.addObject("actorForm", admin);
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 	}
 
@@ -110,6 +112,7 @@ public class AdministratorController extends AbstractController {
 		result = new ModelAndView("administrator/display");
 		result.addObject("administrator", admin);
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 	}
 

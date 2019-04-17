@@ -16,6 +16,14 @@
 <%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+<jstl:if test="${not empty alert}">
+	<script>
+		$(document).ready(function() {
+			alert('<spring:message code="${alert}"/>');
+		});
+	</script>
+</jstl:if>
+
 <form:form action="j_spring_security_check" modelAttribute="credentials">
 
 	<form:label path="username">

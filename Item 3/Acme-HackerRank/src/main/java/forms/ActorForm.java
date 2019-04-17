@@ -10,16 +10,18 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
 import domain.DomainEntity;
 
 @Entity
@@ -85,6 +87,8 @@ public class ActorForm extends DomainEntity {
 		this.name = name;
 	}
 
+	@NotEmpty
+	@EachNotBlank
 	@ElementCollection
 	public Collection<String> getSurname() {
 		return this.surname;
@@ -105,7 +109,7 @@ public class ActorForm extends DomainEntity {
 	}
 
 	@NotBlank
-	@Email
+	@Pattern(regexp = "^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$||^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$")
 	@SafeHtml
 	public String getEmail() {
 		return this.email;
@@ -115,7 +119,8 @@ public class ActorForm extends DomainEntity {
 		this.email = email;
 	}
 
-	@Pattern(regexp = "((\\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8})||''")
+	// regexp = "((^\\+([1-9]{1,3}))?[ -]*(6|7)[ -]*([0-9][ -]*){8})||''"
+	@Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
 	public String getPhone() {
 		return this.phone;
 	}
@@ -150,6 +155,7 @@ public class ActorForm extends DomainEntity {
 	//		this.spammer = spammer;
 	//	}
 
+	@NotNull
 	@Range(min = 0, max = 0)
 	@Digits(integer = 1, fraction = 2)
 	public double getVat() {
@@ -195,6 +201,7 @@ public class ActorForm extends DomainEntity {
 		this.number = number;
 	}
 
+	@NotNull
 	@Range(min = 1, max = 12)
 	public Integer getExpirationMonth() {
 		return this.expirationMonth;
@@ -204,6 +211,7 @@ public class ActorForm extends DomainEntity {
 		this.expirationMonth = expirationMonth;
 	}
 
+	@NotNull
 	@Range(min = 0, max = 99)
 	public Integer getExpirationYear() {
 		return this.expirationYear;
@@ -213,6 +221,7 @@ public class ActorForm extends DomainEntity {
 		this.expirationYear = expirationYear;
 	}
 
+	@NotNull
 	@Range(min = 100, max = 999)
 	public Integer getCvv() {
 		return this.cvv;

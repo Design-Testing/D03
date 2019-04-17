@@ -15,8 +15,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
@@ -36,7 +36,6 @@ public class Actor extends DomainEntity {
 	private String				address;
 	private Double				vat;
 	private CreditCard			creditCard;
-	//private Double		score;
 	private Boolean				spammer;
 
 	//Relational attributes
@@ -53,6 +52,7 @@ public class Actor extends DomainEntity {
 		this.name = name;
 	}
 
+	@NotEmpty
 	@ElementCollection
 	@EachNotBlank
 	public Collection<String> getSurname() {
@@ -73,8 +73,13 @@ public class Actor extends DomainEntity {
 		this.photo = photo;
 	}
 
+	/*
+	 * alias<identifier@domain> OR alias<identifier@> ^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$
+	 * 
+	 * identifier@domain OR identifier@ ^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$
+	 */
 	@NotBlank
-	@Email
+	@Pattern(regexp = "^((([\\w]\\s)*[\\w])+<\\w+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]+){0,1}>)$||^[\\w]+@((?:[a-zA-Z0-9]+\\.)+[a-zA-Z0-9]{2,3}){0,1}$")
 	@SafeHtml
 	public String getEmail() {
 		return this.email;
@@ -84,7 +89,8 @@ public class Actor extends DomainEntity {
 		this.email = email;
 	}
 
-	@Pattern(regexp = "((\\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8})||''")
+	// regexp = "((^\\+([1-9]{1,3}))?[ -]*(6|7)[ -]*([0-9][ -]*){8})||''"
+	@Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
 	public String getPhone() {
 		return this.phone;
 	}
@@ -102,25 +108,6 @@ public class Actor extends DomainEntity {
 		this.address = address;
 	}
 
-	//	@Range(min = (long) -1.00, max = (long) 1.00)
-	//	public Double getScore() {
-	//		return this.score;
-	//	}
-	//
-	//	public void setScore(final Double score) {
-	//		this.score = score;
-	//	}
-
-	public Boolean getSpammer() {
-		return this.spammer;
-	}
-
-	public void setSpammer(final Boolean spammer) {
-		this.spammer = spammer;
-	}
-
-	//Relational methods
-
 	@NotNull
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL, optional = false)
@@ -133,6 +120,14 @@ public class Actor extends DomainEntity {
 		this.userAccount = userAccount;
 	}
 
+	public Boolean getSpammer() {
+		return this.spammer;
+	}
+
+	public void setSpammer(final Boolean spammer) {
+		this.spammer = spammer;
+	}
+
 	@Valid
 	public CreditCard getCreditCard() {
 		return this.creditCard;
@@ -142,6 +137,7 @@ public class Actor extends DomainEntity {
 		this.creditCard = creditCard;
 	}
 
+	@NotNull
 	@Range(min = 0, max = 0)
 	@Digits(integer = 1, fraction = 2)
 	public Double getVat() {

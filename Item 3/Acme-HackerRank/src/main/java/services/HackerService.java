@@ -138,7 +138,8 @@ public class HackerService {
 		Hacker hacker;
 		final CreditCard c = new CreditCard();
 		c.setHolderName(actorForm.getHolderName());
-		c.setNumber(actorForm.getNumber());
+		final String cardNumber = actorForm.getNumber().replace(" ", "");
+		c.setNumber(cardNumber);
 		c.setMake(actorForm.getMake());
 		c.setExpirationMonth(actorForm.getExpirationMonth());
 		c.setExpirationYear(actorForm.getExpirationYear());

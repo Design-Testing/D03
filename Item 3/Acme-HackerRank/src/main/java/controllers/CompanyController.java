@@ -114,6 +114,7 @@ public class CompanyController extends AbstractController {
 		companyForm.setTermsAndCondicions(true);
 		result = this.createEditModelAndView(companyForm);
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 	}
 
@@ -146,6 +147,7 @@ public class CompanyController extends AbstractController {
 				result.addObject("companyForm", companyForm);
 			}
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 	}
 
@@ -187,6 +189,7 @@ public class CompanyController extends AbstractController {
 		result = new ModelAndView("company/edit");
 		result.addObject("companyForm", companyForm);
 		result.addObject("cardmakes", this.configurationParametersService.find().getCreditCardMake());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		result.addObject("message", messageCode);
 
 		return result;
