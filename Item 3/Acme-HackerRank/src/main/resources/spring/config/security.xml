@@ -109,6 +109,30 @@
 		<security:intercept-url pattern="/folder/saveInFather.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
 		<security:intercept-url pattern="/folder/delete.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
 
+		<!-- History & Records -->
+		
+		<security:intercept-url pattern="/curricula/list.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/create.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/listForAnonymous.do" access="permitAll" />
+		<security:intercept-url pattern="/personalData/create.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/personalData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/personalData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/personalData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/educationData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/educationData/create.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/educationData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/educationData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/miscellaneousData/create.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/miscellaneousData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/miscellaneousData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/miscellaneousData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/positionData/create.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/positionData/edit.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/positionData/delete.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/positionData/display.do" access="permitAll" />
+
 		<!-- IS AUTHENTICATED -->
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 

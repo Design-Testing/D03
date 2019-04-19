@@ -20,5 +20,20 @@ public interface HackerRepository extends JpaRepository<Hacker, Integer> {
 	/** Hackers who have made more applications **/
 	@Query("select g from Hacker g where (1.0 + (select count(e) from Application e where e.hacker.id=g.id) - 1.0)=(select max(1.0 + (select count(en) from Application en where en.hacker.id=b.id) - 1.0) from Hacker b)")
 	Collection<Hacker> getHackersMoreApplications();
+	
+	@Query("select c.hacker from Curricula c where c.id=?1")
+	Hacker findHackerByCurricula(int id);
+
+	@Query("select c.hacker from Curricula c where c.personalRecord.id=?1")
+	Hacker findHackerByPersonalData(int id);
+
+	@Query("select c.hacker from Curricula c join c.miscellaneous m where m.id=?1")
+	Hacker findHackerByMiscellaneous(int id);
+	
+	@Query("select c.hacker from Curricula c join c.positions m where m.id=?1")
+	Hacker findHackerByPositionDatas(int id);
+	
+	@Query("select c.hacker from Curricula c join c.educations m where m.id=?1")
+	Hacker findHackerByEducationDatas(int id);
 
 }

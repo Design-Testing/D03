@@ -1,0 +1,99 @@
+package services;
+
+import java.util.Collection;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import repositories.PositionDataRepository;
+import domain.Curricula;
+import domain.Hacker;
+import domain.PositionData;
+
+@Service
+@Transactional
+public class PositionDataService {
+	
+	@Autowired
+	private PositionDataRepository	 positionDataRepository;
+	
+	@Autowired
+	private HackerService	hackerService;
+		
+	@Autowired
+	private CurriculaService curriculaService;
+
+
+	//Metodos CRUD
+
+	public PositionData create() {
+		final PositionData pData = new PositionData();
+		pData.setTitle("");
+		pData.setDescription("");
+		pData.setStartDate(new Date(System.currentTimeMillis() - 1));
+		return pData;
+	}
+
+	public Collection<PositionData> findAll() {
+		final Collection<PositionData> res = this.positionDataRepository.findAll();
+		Assert.notNull(res);
+		return res;
+	}
+
+	public PositionData findOne(final int id) {
+		Assert.isTrue(id != 0);
+		final PositionData res = this.positionDataRepository.findOne(id);
+		Assert.notNull(res);
+		return res;
+	}
+
+	public PositionData save(final PositionData positionData) {
+		final Hacker me = this.hackerService.findByPrincipal();
+		Assert.notNull(me, "You must be logged in the system");
+		Assert.notNull(positionData);
+		if(positionData.getEndDate()!=null)
+			Assert.isTrue(positionData.getEndDate().after(positionData.getStartDate()),"End date must be after start date");
+		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		if (positionData.getId() != 0)
+			Assert.isTrue(this.hackerService.findHackerByPositionDatas(positionData.getId()) == me);
+		
+			
+		final PositionData res = this.positionDataRepository.save(positionData);
+		
+		Assert.notNull(curricula.getPositions().contains(res));
+		
+		//TODO
+		if (positionData.getId() == 0){
+			Collection<PositionData> misc = curricula.getPositions();
+			misc.add(positionData);
+			curricula.setPositions(misc);
+			this.curriculaService.save(curricula);
+		}
+		return res;
+	}
+
+	public void delete(final PositionData mR) {
+		final Hacker me = this.hackerService.findByPrincipal();
+		Assert.notNull(me, "You must be logged in the system");
+		Assert.isTrue(this.hackerService.findHackerByPositionDatas(mR.getId()) == me, "No puede borrar un PositionData que no pertenezca a su historia.");
+		Assert.notNull(mR);
+		Assert.isTrue(mR.getId() != 0);
+		final PositionData res = this.findOne(mR.getId());
+		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		
+		final Collection<PositionData> positionDatas = curricula.getPositions();
+		Assert.isTrue(positionDatas.contains(res));
+		positionDatas.remove(res);
+		
+		this.positionDataRepository.delete(res.getId());
+		//TODO
+		curricula.setPositions(positionDatas);
+		this.curriculaService.save(curricula);
+
+	}
+
+
+}

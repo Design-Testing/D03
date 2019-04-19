@@ -190,4 +190,29 @@ public class HackerService {
 		return hacker;
 	}
 
+	public Hacker findHackerByCurricula(int id) {
+		Hacker result = this.hackerRepository.findHackerByCurricula(id);
+		return result;
+	}
+	
+	public Hacker findHackerByPersonalData(int id) {
+		Hacker result = this.hackerRepository.findHackerByPersonalData(id);
+		return result;
+	}
+
+	public Hacker findHackerByMiscellaneous(int id) {
+		final Hacker result = this.hackerRepository.findHackerByMiscellaneous(id);
+		return result;
+	}
+	
+	public Hacker findHackerByEducationDatas(int id) {
+		final Hacker result = this.hackerRepository.findHackerByEducationDatas(id);
+		return result;
+	}
+	
+	public Hacker findHackerByPositionDatas(int id) {
+		final Hacker result = this.hackerRepository.findHackerByPositionDatas(id);
+		return result;
+	}
+
 }
