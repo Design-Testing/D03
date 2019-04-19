@@ -29,7 +29,7 @@
 </jstl:if>
 <acme:display code="company.email" value="${company.email}"/>
 <acme:display code="company.phone" value="${company.phone}"/>
-<acme:display code="company.email" value="${company.email}"/>
+<acme:display code="company.commercialName" value="${company.commercialName}"/>
 <acme:display code="company.address" value="${company.address}"/>
 <acme:display code="company.vat" value="${company.vat}"/>
 
