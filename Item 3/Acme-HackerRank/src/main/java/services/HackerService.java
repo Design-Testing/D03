@@ -13,12 +13,14 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.CurriculaRepository;
 import repositories.HackerRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.CreditCard;
+import domain.Curricula;
 import domain.Finder;
 import domain.Hacker;
 import forms.ActorForm;
@@ -38,6 +40,12 @@ public class HackerService {
 
 	@Autowired
 	private UserAccountService	userAccountService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
+
+	@Autowired
+	private CurriculaRepository	curriculaRepository;
 
 	@Autowired
 	private Validator			validator;
@@ -67,6 +75,14 @@ public class HackerService {
 			this.actorService.setAuthorityUserAccount(Authority.HACKER, hacker);
 			result = this.hackerRepository.save(hacker);
 			//			this.folderService.setFoldersByDefault(result);
+
+			//crear curricula por defecto
+			final Curricula curricula = this.curriculaService.createForNewHacker();
+			System.out.println(curricula);
+			curricula.setHacker(result);
+			final Curricula res = this.curriculaRepository.save(curricula);
+			System.out.println(res);
+			Assert.notNull(res);
 
 		} else {
 			this.actorService.checkForSpamWords(hacker);

@@ -36,8 +36,33 @@ public class CurriculaService {
 		final Hacker hacker = this.hackerService.findByPrincipal();
 
 		final PersonalData personalData = this.personalDataService.create();
+
 		personalData.setFullName(hacker.getName());
 		personalData.setStatement("Statement " + hacker.getName());
+
+		curricula.setPersonalRecord(personalData);
+
+		final Collection<PositionData> positionData = new ArrayList<PositionData>();
+		curricula.setPositions(positionData);
+
+		final Collection<MiscellaneousData> miscellaneousData = new ArrayList<MiscellaneousData>();
+		curricula.setMiscellaneous(miscellaneousData);
+
+		final Collection<EducationData> educationData = new ArrayList<EducationData>();
+		curricula.setEducations(educationData);
+
+		return curricula;
+
+	}
+
+	public Curricula createForNewHacker() {
+		final Curricula curricula = new Curricula();
+
+		final PersonalData personalData = this.personalDataService.create();
+
+		personalData.setFullName("full name");
+		personalData.setStatement("statement");
+
 		curricula.setPersonalRecord(personalData);
 
 		final Collection<PositionData> positionData = new ArrayList<PositionData>();
