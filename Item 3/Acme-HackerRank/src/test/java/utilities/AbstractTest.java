@@ -30,6 +30,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import security.LoginService;
 import utilities.internal.EclipseConsole;
+import domain.CreditCard;
 
 public abstract class AbstractTest {
 
@@ -143,5 +144,16 @@ public abstract class AbstractTest {
 
 		return result;
 	}
+
+	protected CreditCard defaultCreditCard() {
+		final CreditCard c = new CreditCard();
+		c.setHolderName("HolderName");
+		c.setNumber("4532116259206467");
+		c.setCvv(624);
+		c.setExpirationMonth(4);
+		c.setExpirationYear(20);
+		c.setMake("VISA");
+		return c;
+	};
 
 }

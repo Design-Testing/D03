@@ -42,8 +42,8 @@ public class Actor extends DomainEntity {
 	private UserAccount			userAccount;
 
 
-	@NotBlank
 	@SafeHtml
+	@NotBlank
 	public String getName() {
 		return this.name;
 	}
@@ -90,7 +90,7 @@ public class Actor extends DomainEntity {
 	}
 
 	// regexp = "((^\\+([1-9]{1,3}))?[ -]*(6|7)[ -]*([0-9][ -]*){8})||''"
-	@Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
+	// @Pattern(regexp = "(^\\+([1-9]{1}[0-9]{1,2}))?[ ]*(\\([1-9]{1}[0-9]{1,2}\\))?[ ]*(\\d{4,}$)||''")
 	public String getPhone() {
 		return this.phone;
 	}

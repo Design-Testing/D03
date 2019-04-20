@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import security.UserAccount;
 import utilities.AbstractTest;
 import domain.Administrator;
+import domain.CreditCard;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -35,10 +36,10 @@ public class AdministratorServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				//				A: Acme Parade Req. X Titulo Use Case
-				//				B: Test Positivo: Un chapter puede loguearse correctamente
+				//				A: Acme HackerRank Login Use Case
+				//				B: Test Positivo: Un administrador puede loguearse correctamente
 				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				D: % cobertura de datos= 2/2
 				"admin1", null
 			}, {
 				//Login usuario no registrado
@@ -72,29 +73,58 @@ public class AdministratorServiceTest extends AbstractTest {
 	public void driverCreateAndSaveAdministrator() {
 		final Collection<String> surnames = new ArrayList<>();
 		surnames.add("Garcia");
+		final Collection<String> surnames1 = new ArrayList<>();
 		final Collection<String> surnames2 = new ArrayList<>();
 		surnames2.add("Lanzas");
+		final CreditCard c = super.defaultCreditCard();
 		final Object testingData[][] = {
 			{
-				//				A: Acme Parade Req. 7.1 Register to de system as a chapter
+				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
 				//				B: Test Positivo: Creación correcta de un admin
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"admin1", "admin1", "Administrator1", surnames, "garcia@gmail.es", "+34647307406", null
+				//				C: % Recorre 54 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "admin3", "admin3", "Administrator1", surnames, "garcia@gmail.es", "+34647307406", "0.1", c, null
 			}, {
-				//				A: Acme Parade Req. 7.1 Register to de system as a chapter
-				//				B: Test Negativo: Creación incorrecta de un admin con telefono inválido
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				//TODO:Debe dar error en la creación por el teléfono.
-				"admin2", "admin2", "Administrator1", surnames2, "lanzas@gmail.com", "mi telefono", null
+				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
+				//				B: Test Negacion: Creacion incorrecta de un admin. Para registrar un actor como administrador el actor logeado tiene que ser un adninistrador
+				//				C: % Recorre 28 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"hacker1", "admin23", "admin23", "Administrator1", surnames, "garcia@gmail.es", "+34647307406", "0.1", c, IllegalArgumentException.class
+			}, {
+				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
+				//				B: Test Negativo: Creación incorrecta de un admin con name en blanco
+				//				C: % Recorre 54 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "admin33", "admin33", "", surnames, "lanzas@gmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
+
+			}, {
+				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
+				//				B: Test Negativo: Creación incorrecta de un admin. Vat fuera de rango
+				//				C: % Recorre 51 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "admin3", "admin3", "Administrator1", surnames, "garcia@gmail.com", "+34647307406", "3.1", c, ConstraintViolationException.class
+			}, {
+				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
+				//				B: Test Negativo: Creación incorrecta de un admin con surnames vacio (tiene que tener al menos uno)
+				//				C: % Recorre 54 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "admin13", "admin13", "Administrator1", surnames1, "lanzas1@gmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
+			}, {
+				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
+				//				B: Test Negativo: Creación incorrecta de un admin con email que no cumple patron
+				//				C: % Recorre 54 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "admin43", "admin43", "Administrator1", surnames2, "lanzasgmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)
-			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Collection<String>) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
+			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Collection<String>) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6],
+				(String) testingData[i][7], (CreditCard) testingData[i][8], (Class<?>) testingData[i][9]);
 	}
+	private void templateCreateAndSave(final String principal, final String username, final String password, final String name, final Collection<String> surname, final String email, final String phone, final String vat, final CreditCard creditCard,
+		final Class<?> expected) {
 
-	private void templateCreateAndSave(final String username, final String password, final String name, final Collection<String> surname, final String email, final String phone, final Class<?> expected) {
+		// para crear un administrador tienes que tener autoridad de administrador
 
 		Class<?> caught;
 		Administrator admin;
@@ -103,91 +133,27 @@ public class AdministratorServiceTest extends AbstractTest {
 		caught = null;
 
 		try {
+			super.authenticate(principal);
 			admin = this.adminService.create();
 			admin.setName(name);
 			admin.setSurname(surname);
 			admin.setEmail(email);
 			admin.setPhone(phone);
+			admin.setCreditCard(creditCard);
+			admin.setVat(new Double(vat));
 			userAccount = admin.getUserAccount();
 			userAccount.setUsername(username);
 			userAccount.setPassword(password);
 			admin.setUserAccount(userAccount);
 			admin = this.adminService.save(admin);
-		} catch (final Throwable oops) {
-			caught = oops.getClass();
-
-		}
-
-		this.checkExceptions(expected, caught);
-	}
-
-	/* ========================= Test Edit Administrator =========================== */
-
-	@Test
-	public void driverEditAdministrator() {
-		final Collection<String> surnames = new ArrayList<>();
-		surnames.add("Garcia");
-		final Collection<String> surnames2 = new ArrayList<>();
-
-		final Object testingData[][] = {
-			{
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-				//				B: Test Positivo: Edición correcta de los datos de un admin
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"admin1", "admin1", "Administrator1", surnames, "garcia@gmail.es", "+34647307406", null
-			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-				//				B: Test Positivo: Edición correcta de los datos de un admin con phone vacio
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"admin1", "admin1", "Administrator1", surnames, "garcia@gmail.es", "", null
-			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-				//				B: Test Negativo: Edición incorrecta de los datos de un admin con mail inválido
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"admin1", "admin1", "Administrator1", surnames, "no tengo email", "+34647307406", ConstraintViolationException.class
-			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-				//				B: Test Negativo: Edición incorrecta de los datos de un admin con name vacio
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"admin1", "admin1", "", surnames, "garcia@gmail.es", "+34647307406", ConstraintViolationException.class
-			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-				//				B: Test Positivo: Edición correcta de los datos de un admin con apellidos vacio
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"admin1", "admin1", "Administrator1", surnames2, "garcia@gmail.es", "+34647307406", null
-			}
-		};
-		for (int i = 0; i < testingData.length; i++)
-			this.templateEditAdministrator((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Collection<String>) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
-	}
-
-	private void templateEditAdministrator(final String username, final String password, final String name, final Collection<String> surname, final String email, final String phone, final Class<?> expected) {
-		Class<?> caught;
-		Administrator admin;
-		admin = this.adminService.findOne(this.getEntityId(username));
-
-		caught = null;
-		try {
-			super.authenticate(username);
-			admin.setName(name);
-			admin.setSurname(surname);
-			admin.setEmail(email);
-			admin.setPhone(phone);
-			this.adminService.save(admin);
-			this.unauthenticate();
 			this.adminService.flush();
-
+			super.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 
 		}
 
 		this.checkExceptions(expected, caught);
-
 	}
+
 }

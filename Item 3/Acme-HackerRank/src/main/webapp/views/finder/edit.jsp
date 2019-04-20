@@ -32,12 +32,20 @@
 	<acme:textbox code="finder.minDate" path="minDeadline" placeholder="yyyy-MM-dd HH:mm"/>
 	<acme:textbox code="finder.maxDate" path="maxDeadline" placeholder="yyyy-MM-dd HH:mm"/>
 	<br>
+	<jstl:if test="${salnul}">
+		<spring:message code="finder.n.salary" />
+	</jstl:if>
+	<jstl:if test="${deadnul}">
+		<spring:message code="finder.n.deadline" />
+	</jstl:if>
+	<br><br>
 	<input type="submit" name="save" value="<spring:message code="finder.search" />" />
 	<input type="submit" name="clear" value="<spring:message code="finder.clear" />" />
 	<br>
 	<br>
 	<spring:message code="finder.results" />
 	<br>
+	
 	
 <display:table name="${finder.positions}" id="row" requestURI="/finder/hacker/edit.do" pagesize="15" class="displaytag">
 	<display:column property="title" titleKey="position.title" />
