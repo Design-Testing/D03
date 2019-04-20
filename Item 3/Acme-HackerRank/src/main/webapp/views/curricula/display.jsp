@@ -18,7 +18,7 @@
         </ul>
     </div>
 	<display:table pagesize="10" class="displaytag" keepStatus="true"
-               name="personalData" requestURI="${requestURI}" id="row">
+               name="curricula.personalRecord" requestURI="${requestURI}" id="row">
     <!-- Attributes -->
 	
     <spring:message var="fullName" code="record.fullName"/>

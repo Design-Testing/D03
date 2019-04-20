@@ -69,8 +69,9 @@ public class EducationDataController {
 			try {
 				this.educationDataService.save(educationData);
 				//TODO
-				result = this.curriculaController.displayAll();
+				result = this.createEditModelAndView(educationData);
 			} catch (final Throwable e) {
+				System.out.println(e.getMessage());
 				if (e.getMessage().equals("End date must be after start date"))
 					result = this.createEditModelAndView(educationData, "alert.dates");
 				else

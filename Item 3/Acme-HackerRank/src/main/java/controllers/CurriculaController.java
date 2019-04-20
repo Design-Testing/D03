@@ -136,6 +136,7 @@ public class CurriculaController extends AbstractController {
 		ModelAndView result;
 		final Hacker hacker = this.hackerService.findByPrincipal();
 		final Curricula newCurricula = this.curriculaService.create();
+		result = this.displayAll();
 		this.curriculaService.save(newCurricula);
 		result = this.displayAll();
 		return result;

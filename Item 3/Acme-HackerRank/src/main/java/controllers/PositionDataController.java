@@ -78,6 +78,7 @@ public class PositionDataController {
 				final Curricula curricula = this.curriculaService.findCurriculaByPositionData(positionData.getId());
 				result = new ModelAndView("curricula/display");
 				result.addObject("curricula", curricula);
+				result.addObject("buttons", true);
 			} catch (final Throwable e) {
 				if (e.getMessage().equals("End date must be after start date"))
 					result = this.createEditModelAndView(positionData, "alert.dates");

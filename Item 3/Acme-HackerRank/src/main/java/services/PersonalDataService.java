@@ -30,8 +30,8 @@ public class PersonalDataService {
 		res.setFullName("");
 		res.setStatement("");
 		res.setPhone("+34654987654");
-		res.setGithub("");
-		res.setLinkedin("");
+		res.setGithub("http://www.github.com");
+		res.setLinkedin("http://www.linkedin.com");
 		return res;
 	}
 
