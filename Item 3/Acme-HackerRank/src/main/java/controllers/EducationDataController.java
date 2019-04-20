@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -12,27 +13,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CurriculaService;
-import services.HackerService;
 import services.EducationDataService;
+import services.HackerService;
 import domain.Curricula;
-import domain.Hacker;
 import domain.EducationData;
+import domain.Hacker;
 
 @Controller
 @RequestMapping("/educationData")
 public class EducationDataController {
 
-private EducationDataService			educationDataService;
-	
 	@Autowired
-	private HackerService				hackerService;
-	
-	@Autowired
-	private CurriculaService     curriculaService;
-	
-	@Autowired
-	private CurriculaController    curriculaController;
+	private EducationDataService	educationDataService;
 
+	@Autowired
+	private HackerService			hackerService;
+
+	@Autowired
+	private CurriculaService		curriculaService;
+
+	@Autowired
+	private CurriculaController		curriculaController;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -52,7 +53,7 @@ private EducationDataService			educationDataService;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			educationData = this.educationDataService.findOne(educationDataId);
 			final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			Assert.isTrue(curricula.getPersonalRecord().equals(educationData), "This personal data is not of your property");
+			Assert.isTrue(curricula.getEducations().contains(educationData), "This personal data is not of your property");
 			result = this.createEditModelAndView(educationData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
@@ -72,8 +73,12 @@ private EducationDataService			educationDataService;
 			try {
 				this.educationDataService.save(educationData);
 				result = this.curriculaController.list();
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(educationData, "general.commit.error");
+			} catch (final Throwable e) {
+				if (e.getMessage().equals("End date must be after start date")){
+					result = this.createEditModelAndView(educationData, "alert.dates");
+				}else{
+					result = new ModelAndView("redirect:/misc/403.jsp");
+				}
 			}
 
 		return result;
@@ -97,6 +102,16 @@ private EducationDataService			educationDataService;
 
 		return res;
 
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int educationDataId) {
+		ModelAndView result;
+		final EducationData educationData = this.educationDataService.findOne(educationDataId);
+		this.educationDataService.delete(educationData);
+		result = this.curriculaController.list();
+
+		return result;
 	}
 
 	protected ModelAndView createEditModelAndView(final EducationData educationData) {

@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -18,23 +19,21 @@ import domain.Curricula;
 import domain.Hacker;
 import domain.MiscellaneousData;
 
-
 @Controller
 @RequestMapping("/miscellaneousData")
 public class MiscellaneousDataController {
 
 	@Autowired
-	private MiscellaneousDataService			miscellaneousDataService;
-	
+	private MiscellaneousDataService	miscellaneousDataService;
+
 	@Autowired
 	private HackerService				hackerService;
-	
-	@Autowired
-	private CurriculaService     curriculaService;
-	
-	@Autowired
-	private CurriculaController    curriculaController;
 
+	@Autowired
+	private CurriculaService			curriculaService;
+
+	@Autowired
+	private CurriculaController			curriculaController;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -54,7 +53,7 @@ public class MiscellaneousDataController {
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
 			final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			Assert.isTrue(curricula.getPersonalRecord().equals(miscellaneousData), "This personal data is not of your property");
+			Assert.isTrue(curricula.getMiscellaneous().contains(miscellaneousData), "This personal data is not of your property");
 			result = this.createEditModelAndView(miscellaneousData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
@@ -99,6 +98,16 @@ public class MiscellaneousDataController {
 
 		return res;
 
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int miscellaneousDataId) {
+		ModelAndView result;
+		final MiscellaneousData miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
+		this.miscellaneousDataService.delete(miscellaneousData);
+		result = this.curriculaController.list();
+
+		return result;
 	}
 
 	protected ModelAndView createEditModelAndView(final MiscellaneousData miscellaneousData) {

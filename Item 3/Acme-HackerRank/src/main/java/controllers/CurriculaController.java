@@ -1,3 +1,4 @@
+
 package controllers;
 
 import java.util.Collection;
@@ -14,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.CurriculaService;
 import services.HackerService;
-
 import domain.Curricula;
 import domain.EducationData;
 import domain.Hacker;
@@ -24,13 +24,13 @@ import domain.PositionData;
 
 @Controller
 @RequestMapping("/curricula")
-public class CurriculaController extends AbstractController{
-	
+public class CurriculaController extends AbstractController {
+
 	@Autowired
 	private CurriculaService	curriculaService;
 
 	@Autowired
-	private HackerService	hackerService;
+	private HackerService		hackerService;
 
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -43,14 +43,13 @@ public class CurriculaController extends AbstractController{
 			final Collection<EducationData> educationDatas = curricula.getEducations();
 			final Collection<PositionData> positionDatas = curricula.getPositions();
 			final Collection<MiscellaneousData> miscellaneousRecords = curricula.getMiscellaneous();
-			
+
 			res = new ModelAndView("curricula/display");
 			res.addObject("curricula", curricula);
 			res.addObject("buttons", true);
 			res.addObject("personalData", personalData);
 			res.addObject("positionDatas", positionDatas);
 			res.addObject("educationDatas", educationDatas);
-			res.addObject("miscellaneousRecords", miscellaneousRecords);
 			res.addObject("miscellaneousRecords", miscellaneousRecords);
 		} else {
 			res = new ModelAndView("curricula/create");
@@ -106,11 +105,10 @@ public class CurriculaController extends AbstractController{
 			result = this.createEditModelAndView(curricula);
 		else
 			try {
-				if (curricula.getVersion() == 0) {
+				if (curricula.getVersion() == 0)
 					//final Hacker hacker = this.hackerService.findByPrincipal();
 					//hacker.setCurricula(curricula);
 					this.curriculaService.save(curricula);
-				}
 				result = this.list();
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(curricula, "general.commit.error");
@@ -129,8 +127,7 @@ public class CurriculaController extends AbstractController{
 		result.addObject("curricula", curricula);
 		return result;
 	}
-	
-	
+
 	protected ModelAndView createEditModelAndView(final Curricula curricula) {
 		ModelAndView result;
 
@@ -138,8 +135,7 @@ public class CurriculaController extends AbstractController{
 
 		return result;
 	}
-	
-	
+
 	// Edition ---------------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Curricula curricula, final String message) {

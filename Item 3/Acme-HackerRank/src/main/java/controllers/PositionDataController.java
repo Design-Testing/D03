@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -23,17 +24,16 @@ import domain.PositionData;
 public class PositionDataController {
 
 	@Autowired
-	private PositionDataService			positionDataService;
-	
-	@Autowired
-	private HackerService				hackerService;
-	
-	@Autowired
-	private CurriculaService     curriculaService;
-	
-	@Autowired
-	private CurriculaController    curriculaController;
+	private PositionDataService	positionDataService;
 
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
+
+	@Autowired
+	private CurriculaController	curriculaController;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -53,7 +53,7 @@ public class PositionDataController {
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			positionData = this.positionDataService.findOne(positionDataId);
 			final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			Assert.isTrue(curricula.getPersonalRecord().equals(positionData), "This personal data is not of your property");
+			Assert.isTrue(curricula.getPositions().contains(positionData), "This personal data is not of your property");
 			result = this.createEditModelAndView(positionData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
@@ -73,9 +73,23 @@ public class PositionDataController {
 			try {
 				this.positionDataService.save(positionData);
 				result = this.curriculaController.list();
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(positionData, "general.commit.error");
+			} catch (final Throwable e) {
+				if (e.getMessage().equals("End date must be after start date")){
+					result = this.createEditModelAndView(positionData, "alert.dates");
+				}else{
+					result = new ModelAndView("redirect:/misc/403.jsp");
+				}
 			}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int positionDataId) {
+		ModelAndView result;
+		final PositionData positionData = this.positionDataService.findOne(positionDataId);
+		this.positionDataService.delete(positionData);
+		result = this.curriculaController.list();
 
 		return result;
 	}
