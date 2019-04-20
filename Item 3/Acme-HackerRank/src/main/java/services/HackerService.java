@@ -76,12 +76,9 @@ public class HackerService {
 			result = this.hackerRepository.save(hacker);
 			//			this.folderService.setFoldersByDefault(result);
 
-			//crear curricula por defecto
 			final Curricula curricula = this.curriculaService.createForNewHacker();
-			System.out.println(curricula);
 			curricula.setHacker(result);
 			final Curricula res = this.curriculaRepository.save(curricula);
-			System.out.println(res);
 			Assert.notNull(res);
 
 		} else {
