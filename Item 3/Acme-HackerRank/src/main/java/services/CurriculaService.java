@@ -39,6 +39,7 @@ public class CurriculaService {
 
 		personalData.setFullName(hacker.getName());
 		personalData.setStatement("Statement " + hacker.getName());
+		personalData.setPhone(hacker.getPhone());
 
 		curricula.setPersonalRecord(personalData);
 
