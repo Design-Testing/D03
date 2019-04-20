@@ -31,7 +31,6 @@ public class Application extends DomainEntity {
 	private Position	position;
 	private Hacker		hacker;
 	private Problem		problem;
-	private Curricula	curricula;
 
 
 	@Pattern(regexp = "^(ACCEPTED|SUBMITTED|PENDING|REJECTED)$")
@@ -112,16 +111,6 @@ public class Application extends DomainEntity {
 
 	public void setProblem(final Problem problem) {
 		this.problem = problem;
-	}
-
-	@Valid
-	@OneToOne(optional = true)
-	public Curricula getCurricula() {
-		return this.curricula;
-	}
-
-	public void setCurricula(final Curricula curricula) {
-		this.curricula = curricula;
 	}
 
 }
