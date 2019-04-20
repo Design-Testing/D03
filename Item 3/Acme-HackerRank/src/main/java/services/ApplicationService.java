@@ -20,6 +20,7 @@ import security.Authority;
 import domain.Actor;
 import domain.Application;
 import domain.Company;
+import domain.Curricula;
 import domain.Hacker;
 import domain.Position;
 import domain.Problem;
@@ -49,6 +50,9 @@ public class ApplicationService {
 
 	@Autowired
 	private PositionService			positionService;
+
+	@Autowired
+	private CurriculaService		curriculaService;
 
 
 	public Application create(final int positionId) {
@@ -148,11 +152,13 @@ public class ApplicationService {
 		return result;
 	}
 
-	public Application apply(final int positionId) {
+	public Application apply(final int positionId, final int curriculaId) {
 		Assert.isTrue(positionId != 0);
 		Assert.isTrue(this.actorService.checkAuthority(this.actorService.findByPrincipal(), Authority.HACKER));
 		final Application application = this.create(positionId);
 		Assert.notNull(application);
+		final Curricula curricula = this.curriculaService.findOne(curriculaId);
+		application.setCurricula(curricula);
 		final Application retreived = this.applicationRepository.save(application);
 		return retreived;
 	}

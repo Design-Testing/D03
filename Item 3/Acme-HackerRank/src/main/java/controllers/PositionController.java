@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CurriculaService;
+import services.HackerService;
 import services.PositionService;
 import services.ProblemService;
 import domain.Position;
@@ -21,12 +23,18 @@ import domain.Problem;
 public class PositionController extends AbstractController {
 
 	@Autowired
-	private PositionService	positionService;
+	private PositionService		positionService;
 
 	@Autowired
-	private ProblemService	problemService;
+	private ProblemService		problemService;
 
-	final String			lang	= LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private CurriculaService	curriculaService;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
 	// DISPLAY --------------------------------------------------------
@@ -64,6 +72,7 @@ public class PositionController extends AbstractController {
 		result.addObject("listPositions", "list");
 		result.addObject("lang", this.lang);
 		result.addObject("requetURI", "position/list.do");
+
 		return result;
 	}
 }

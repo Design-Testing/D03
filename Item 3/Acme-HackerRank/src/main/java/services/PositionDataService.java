@@ -96,4 +96,16 @@ public class PositionDataService {
 
 	}
 
+	final PositionData makeCopyAndSave(final PositionData p) {
+		PositionData result = this.create();
+		result.setDescription(p.getDescription());
+		result.setEndDate(p.getEndDate());
+		result.setStartDate(p.getStartDate());
+		result.setTitle(p.getTitle());
+		Assert.notNull(result, "copy of position data is null");
+		result = this.positionDataRepository.save(result);
+		Assert.notNull(result, "retrieved of position data is null");
+		return result;
+	}
+
 }

@@ -1019,6 +1019,7 @@
 		<property name="hacker" ref="hacker1" />
 		<property name="position" ref="position1" />
 		<property name="problem" ref="problem1" />
+		<property name="curricula" ref="curricula3" />
 	</bean>
 
 	<bean id="application2" class="domain.Application">
@@ -1027,6 +1028,7 @@
 		<property name="hacker" ref="hacker1" />
 		<property name="position" ref="position1" />
 		<property name="problem" ref="problem2" />
+		<property name="curricula" ref="curricula4" />
 
 	</bean>
 
@@ -1039,6 +1041,7 @@
 		<property name="explanation" value="Explanation application 3" />
 		<property name="link" value="http://www.linkAnswer3.com" />
 		<property name="submitMoment" value="2018/03/16 15:30" />
+		<property name="curricula" ref="curricula5" />
 	</bean>
 
 	<bean id="application4" class="domain.Application">
@@ -1047,6 +1050,7 @@
 		<property name="hacker" ref="hacker1" />
 		<property name="position" ref="position4" />
 		<property name="problem" ref="problem4" />
+		<property name="curricula" ref="curricula6" />
 	</bean>
 
 	<!-- =================================================================== 
@@ -1120,6 +1124,70 @@
 		</property>
 		<property name="hacker" ref="hacker2" />
 	</bean>
+	
+	<bean id="curricula3" class="domain.Curricula">
+		<property name="personalRecord" ref="personalData3" />
+		<property name="educations">
+			<list>
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+			</list>
+		</property>
+		<property name="miscellaneous">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="curricula4" class="domain.Curricula">
+		<property name="personalRecord" ref="personalData4" />
+		<property name="educations">
+			<list>
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+			</list>
+		</property>
+		<property name="miscellaneous">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="curricula5" class="domain.Curricula">
+		<property name="personalRecord" ref="personalData5" />
+		<property name="educations">
+			<list>
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+			</list>
+		</property>
+		<property name="miscellaneous">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="curricula6" class="domain.Curricula">
+		<property name="personalRecord" ref="personalData6" />
+		<property name="educations">
+			<list>
+			</list>
+		</property>
+		<property name="positions">
+			<list>
+			</list>
+		</property>
+		<property name="miscellaneous">
+			<list>
+			</list>
+		</property>
+	</bean>
 
 	<!-- =================================================================== 
 		======= PERSONAL DATA ========= =================================================================== -->
@@ -1133,6 +1201,40 @@
 	</bean>
 
 	<bean id="personalData2" class="domain.PersonalData">
+		<property name="fullName" value="Hacker 2" />
+		<property name="statement" value="Statement hacker 2" />
+		<property name="github" value="http://www.githubHacker2.com" />
+		<property name="phone" value="697125753" />
+		<property name="linkedin" value="http://www.linkedInHacker2.com" />
+	</bean>
+	
+	<bean id="personalData3" class="domain.PersonalData">
+		<property name="fullName" value="Hacker 2" />
+		<property name="statement" value="Statement hacker 2" />
+		<property name="github" value="http://www.githubHacker2.com" />
+		<property name="phone" value="697125753" />
+		<property name="linkedin" value="http://www.linkedInHacker2.com" />
+	</bean>
+	
+	
+	<bean id="personalData4" class="domain.PersonalData">
+		<property name="fullName" value="Hacker 2" />
+		<property name="statement" value="Statement hacker 2" />
+		<property name="github" value="http://www.githubHacker2.com" />
+		<property name="phone" value="697125753" />
+		<property name="linkedin" value="http://www.linkedInHacker2.com" />
+	</bean>
+	
+	<bean id="personalData5" class="domain.PersonalData">
+		<property name="fullName" value="Hacker 2" />
+		<property name="statement" value="Statement hacker 2" />
+		<property name="github" value="http://www.githubHacker2.com" />
+		<property name="phone" value="697125753" />
+		<property name="linkedin" value="http://www.linkedInHacker2.com" />
+	</bean>
+	
+	
+	<bean id="personalData6" class="domain.PersonalData">
 		<property name="fullName" value="Hacker 2" />
 		<property name="statement" value="Statement hacker 2" />
 		<property name="github" value="http://www.githubHacker2.com" />

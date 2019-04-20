@@ -22,13 +22,22 @@ import domain.PositionData;
 public class CurriculaService {
 
 	@Autowired
-	private CurriculaRepository	curriculaRepository;
+	private CurriculaRepository			curriculaRepository;
 
 	@Autowired
-	private HackerService		hackerService;
+	private HackerService				hackerService;
 
 	@Autowired
-	private PersonalDataService	personalDataService;
+	private PersonalDataService			personalDataService;
+
+	@Autowired
+	private EducationDataService		educationDataService;
+
+	@Autowired
+	private PositionDataService			positionDataService;
+
+	@Autowired
+	private MiscellaneousDataService	miscellaneousDataService;
 
 
 	public Curricula create() {
@@ -154,4 +163,32 @@ public class CurriculaService {
 		return result;
 	}
 
+	public Curricula makeCopyAndSave(final Curricula curricula) {
+		Curricula result = this.create();
+
+		final PersonalData pd = this.personalDataService.makeCopyAndSave(curricula.getPersonalRecord());
+		result.setPersonalRecord(pd);
+
+		final Collection<EducationData> eds = new ArrayList<EducationData>();
+		for (final EducationData ed : curricula.getEducations())
+			eds.add(this.educationDataService.makeCopyAndSave(ed));
+		result.setEducations(eds);
+
+		final Collection<MiscellaneousData> mds = new ArrayList<MiscellaneousData>();
+		for (final MiscellaneousData md : curricula.getMiscellaneous())
+			mds.add(this.miscellaneousDataService.makeCopyAndSave(md));
+		result.setMiscellaneous(mds);
+
+		final Collection<PositionData> pds = new ArrayList<PositionData>();
+		for (final PositionData pod : curricula.getPositions())
+			pds.add(this.positionDataService.makeCopyAndSave(pod));
+		result.setPositions(pds);
+
+		result.setHacker(null);
+		Assert.notNull(result, "copy of curricula is null");
+		result = this.save(result);
+		Assert.notNull(result, "retrieves copy curricula is null");
+
+		return result;
+	}
 }

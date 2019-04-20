@@ -100,4 +100,18 @@ public class EducationDataService {
 
 	}
 
+	final EducationData makeCopyAndSave(final EducationData ed) {
+		EducationData result = this.create();
+		result.setDegree(ed.getDegree());
+		result.setEndDate(ed.getEndDate());
+		result.setInstitution(ed.getInstitution());
+		result.setMark(ed.getMark());
+		result.setStartDate(ed.getStartDate());
+		Assert.notNull(result, "copy os education data is null");
+		result = this.educationDataRepository.save(result);
+		Assert.notNull(result, "retrieved copy od education data is null");
+		return result;
+
+	}
+
 }
