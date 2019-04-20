@@ -13,12 +13,14 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import repositories.CurriculaRepository;
 import repositories.HackerRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
 import domain.CreditCard;
+import domain.Curricula;
 import domain.Finder;
 import domain.Hacker;
 import forms.ActorForm;
@@ -38,6 +40,12 @@ public class HackerService {
 
 	@Autowired
 	private UserAccountService	userAccountService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
+
+	@Autowired
+	private CurriculaRepository	curriculaRepository;
 
 	@Autowired
 	private Validator			validator;
@@ -67,6 +75,11 @@ public class HackerService {
 			this.actorService.setAuthorityUserAccount(Authority.HACKER, hacker);
 			result = this.hackerRepository.save(hacker);
 			//			this.folderService.setFoldersByDefault(result);
+
+			final Curricula curricula = this.curriculaService.createForNewHacker();
+			curricula.setHacker(result);
+			final Curricula res = this.curriculaRepository.save(curricula);
+			Assert.notNull(res);
 
 		} else {
 			this.actorService.checkForSpamWords(hacker);
@@ -189,6 +202,61 @@ public class HackerService {
 			throw new ValidationException();
 
 		return hacker;
+	}
+
+	public Hacker findHackerByCurricula(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByCurricula(id);
+		return result;
+	}
+
+	public Hacker findHackerByPersonalData(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByPersonalData(id);
+		return result;
+	}
+
+	public Hacker findHackerByMiscellaneous(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByMiscellaneous(id);
+		return result;
+	}
+
+	public Hacker findHackerByEducationDatas(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByEducationDatas(id);
+		return result;
+	}
+
+	public Hacker findHackerByPositionDatas(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByPositionDatas(id);
+		return result;
+	}
+
+	public Boolean hasPersonalData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasPersonalData(hackerId, dataId);
+		Assert.notNull(result, "hasPersonalData returns null");
+		return result;
+	}
+
+	public Boolean hasEducationData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasEducationData(hackerId, dataId);
+		Assert.notNull(result, "hasEducationData returns null");
+		return result;
+	}
+
+	public Boolean hasPositionData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasPositionData(hackerId, dataId);
+		Assert.notNull(result, "hasPositionData returns null");
+		return result;
+	}
+
+	public Boolean hasMiscellaneousData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasMiscellaneousData(hackerId, dataId);
+		Assert.notNull(result, "hasMiscellanousData returns null");
+		return result;
+	}
+
+	public Boolean hasCurricula(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasCurricula(hackerId, dataId);
+		Assert.notNull(result, "hasCurricula returns null");
+		return result;
 	}
 
 }

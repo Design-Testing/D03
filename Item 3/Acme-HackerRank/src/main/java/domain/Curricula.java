@@ -64,7 +64,7 @@ public class Curricula extends DomainEntity {
 		this.miscellaneous = miscellaneous;
 	}
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Hacker getHacker() {
 		return this.hacker;
 	}

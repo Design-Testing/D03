@@ -105,7 +105,7 @@
 		</property>
 		<property name="photo" value="" />
 		<property name="email" value="correo@gmail.com" />
-		<property name="phone" value="" />
+		<property name="phone" value="+34647307406" />
 		<property name="address" value="" />
 		<property name="vat" value="0.21" />
 		<property name="creditCard" ref="creditCard1" />

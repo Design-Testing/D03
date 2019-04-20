@@ -61,7 +61,8 @@ public class ApplicationHackerController extends AbstractController {
 			result.addObject("position", position);
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("application/error");
+			result = new ModelAndView("administrator/error");
+			result.addObject("trace", oops.getMessage());
 		}
 
 		return result;
