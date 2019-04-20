@@ -1,3 +1,4 @@
+
 package controllers;
 
 import javax.validation.Valid;
@@ -11,30 +12,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Curricula;
-import domain.Hacker;
-import domain.PersonalData;
-
 import services.CurriculaService;
 import services.HackerService;
 import services.PersonalDataService;
+import domain.Hacker;
+import domain.PersonalData;
 
 @Controller
 @RequestMapping("/personalData")
 public class PersonalDataController extends AbstractController {
 
 	@Autowired
-	private PersonalDataService			personalDataService;
-	
-	@Autowired
-	private HackerService				hackerService;
-	
-	@Autowired
-	private CurriculaService     curriculaService;
-	
-	@Autowired
-	private CurriculaController    curriculaController;
+	private PersonalDataService	personalDataService;
 
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
+
+	@Autowired
+	private CurriculaController	curriculaController;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -53,8 +51,9 @@ public class PersonalDataController extends AbstractController {
 			final PersonalData personalData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			personalData = this.personalDataService.findOne(personalDataId);
-			final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			Assert.isTrue(curricula.getPersonalRecord().equals(personalData), "This personal data is not of your property");
+			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
+			//Assert.isTrue(curricula.getPersonalRecord().equals(personalData), "This personal data is not of your property");
+			Assert.isTrue(this.hackerService.hasPersonalData(hacker.getId(), personalDataId), "This personal data is not of your property");
 			result = this.createEditModelAndView(personalData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
@@ -73,7 +72,8 @@ public class PersonalDataController extends AbstractController {
 		else
 			try {
 				this.personalDataService.save(personalData);
-				result = this.curriculaController.list();
+				//TODO
+				result = this.curriculaController.displayAll();
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(personalData, "general.commit.error");
 			}

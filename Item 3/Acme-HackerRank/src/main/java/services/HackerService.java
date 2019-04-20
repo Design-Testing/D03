@@ -190,28 +190,58 @@ public class HackerService {
 		return hacker;
 	}
 
-	public Hacker findHackerByCurricula(int id) {
-		Hacker result = this.hackerRepository.findHackerByCurricula(id);
-		return result;
-	}
-	
-	public Hacker findHackerByPersonalData(int id) {
-		Hacker result = this.hackerRepository.findHackerByPersonalData(id);
+	public Hacker findHackerByCurricula(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByCurricula(id);
 		return result;
 	}
 
-	public Hacker findHackerByMiscellaneous(int id) {
+	public Hacker findHackerByPersonalData(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByPersonalData(id);
+		return result;
+	}
+
+	public Hacker findHackerByMiscellaneous(final int id) {
 		final Hacker result = this.hackerRepository.findHackerByMiscellaneous(id);
 		return result;
 	}
-	
-	public Hacker findHackerByEducationDatas(int id) {
+
+	public Hacker findHackerByEducationDatas(final int id) {
 		final Hacker result = this.hackerRepository.findHackerByEducationDatas(id);
 		return result;
 	}
-	
-	public Hacker findHackerByPositionDatas(int id) {
+
+	public Hacker findHackerByPositionDatas(final int id) {
 		final Hacker result = this.hackerRepository.findHackerByPositionDatas(id);
+		return result;
+	}
+
+	public Boolean hasPersonalData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasPersonalData(hackerId, dataId);
+		Assert.notNull(result, "hasPersonalData returns null");
+		return result;
+	}
+
+	public Boolean hasEducationData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasEducationData(hackerId, dataId);
+		Assert.notNull(result, "hasEducationData returns null");
+		return result;
+	}
+
+	public Boolean hasPositionData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasPositionData(hackerId, dataId);
+		Assert.notNull(result, "hasPositionData returns null");
+		return result;
+	}
+
+	public Boolean hasMiscellaneousData(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasMiscellaneousData(hackerId, dataId);
+		Assert.notNull(result, "hasMiscellanousData returns null");
+		return result;
+	}
+
+	public Boolean hasCurricula(final int hackerId, final int dataId) {
+		final Boolean result = this.hackerRepository.hasCurricula(hackerId, dataId);
+		Assert.notNull(result, "hasCurricula returns null");
 		return result;
 	}
 

@@ -1,12 +1,13 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Curricula;
-import domain.Hacker;
 
 @Repository
 public interface CurriculaRepository extends JpaRepository<Curricula, Integer> {
@@ -16,8 +17,18 @@ public interface CurriculaRepository extends JpaRepository<Curricula, Integer> {
 	Double[] getStatisticsOfCurriculaPerHacker();
 
 	@Query("select c from Curricula c where c.hacker.id=?1")
-	Curricula findCurriculaByHacker(int id);
-	
-	
-	
+	Collection<Curricula> findCurriculaByHacker(int id);
+
+	@Query("select c from Curricula c where c.personalRecord.id=?1")
+	Curricula findCurriculaByPersonalData(int id);
+
+	@Query("select c from Curricula c join c.educations e where e.id=?1")
+	Curricula findCurriculaByEducationData(int id);
+
+	@Query("select c from Curricula c join c.positions e where e.id=?1")
+	Curricula findCurriculaByPositionData(int id);
+
+	@Query("select c from Curricula c join c.miscellaneous e where e.id=?1")
+	Curricula findCurriculaByMiscellaneousData(int id);
+
 }

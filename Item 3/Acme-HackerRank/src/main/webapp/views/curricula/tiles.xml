@@ -26,4 +26,9 @@
 		<put-attribute name="body" value="/views/curricula/create.jsp" />
 	</definition>
 	
+	<definition name="curricula/displayAll" extends="master.page">	
+		<put-attribute name="title" value="Curricula: all" />
+		<put-attribute name="body" value="/views/curricula/displayAll.jsp" />
+	</definition>
+	
 </tiles-definitions>

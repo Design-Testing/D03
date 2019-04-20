@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.CurriculaService;
 import services.EducationDataService;
 import services.HackerService;
-import domain.Curricula;
 import domain.EducationData;
 import domain.Hacker;
 
@@ -28,9 +26,6 @@ public class EducationDataController {
 
 	@Autowired
 	private HackerService			hackerService;
-
-	@Autowired
-	private CurriculaService		curriculaService;
 
 	@Autowired
 	private CurriculaController		curriculaController;
@@ -52,8 +47,9 @@ public class EducationDataController {
 			final EducationData educationData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			educationData = this.educationDataService.findOne(educationDataId);
-			final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			Assert.isTrue(curricula.getEducations().contains(educationData), "This personal data is not of your property");
+			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
+			//Assert.isTrue(curricula.getEducations().contains(educationData), "This personal data is not of your property");
+			Assert.isTrue(this.hackerService.hasEducationData(hacker.getId(), educationDataId), "This personal data is not of your property");
 			result = this.createEditModelAndView(educationData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
@@ -72,13 +68,13 @@ public class EducationDataController {
 		else
 			try {
 				this.educationDataService.save(educationData);
-				result = this.curriculaController.list();
+				//TODO
+				result = this.curriculaController.displayAll();
 			} catch (final Throwable e) {
-				if (e.getMessage().equals("End date must be after start date")){
+				if (e.getMessage().equals("End date must be after start date"))
 					result = this.createEditModelAndView(educationData, "alert.dates");
-				}else{
+				else
 					result = new ModelAndView("redirect:/misc/403.jsp");
-				}
 			}
 
 		return result;
@@ -109,7 +105,8 @@ public class EducationDataController {
 		ModelAndView result;
 		final EducationData educationData = this.educationDataService.findOne(educationDataId);
 		this.educationDataService.delete(educationData);
-		result = this.curriculaController.list();
+		//TODO
+		result = this.curriculaController.displayAll();
 
 		return result;
 	}

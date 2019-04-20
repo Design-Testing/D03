@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -8,11 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.MiscellaneousDataRepository;
 import domain.Curricula;
 import domain.Hacker;
 import domain.MiscellaneousData;
-
-import repositories.MiscellaneousDataRepository;
 
 @Service
 @Transactional
@@ -20,12 +20,12 @@ public class MiscellaneousDataService {
 
 	@Autowired
 	private MiscellaneousDataRepository	miscellaneousDataRepository;
-	
+
 	@Autowired
 	private HackerService				hackerService;
-		
+
 	@Autowired
-	private CurriculaService curriculaService;
+	private CurriculaService			curriculaService;
 
 
 	//Metodos CRUD
@@ -33,7 +33,7 @@ public class MiscellaneousDataService {
 	public MiscellaneousData create() {
 		final MiscellaneousData mRecord = new MiscellaneousData();
 		mRecord.setFreeText("");
-		Collection<String> attachments = new ArrayList<String>();
+		final Collection<String> attachments = new ArrayList<String>();
 		mRecord.setAttachments(attachments);
 		return mRecord;
 	}
@@ -55,18 +55,20 @@ public class MiscellaneousDataService {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(miscellaneousData);
-		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+
 		if (miscellaneousData.getId() != 0)
 			Assert.isTrue(this.hackerService.findHackerByMiscellaneous(miscellaneousData.getId()) == me);
-		
-			
+
 		final MiscellaneousData res = this.miscellaneousDataRepository.save(miscellaneousData);
-		
-		Assert.notNull(curricula.getMiscellaneous().contains(res));
-		
+
+		//Assert.notNull(curricula.getMiscellaneous().contains(res));
+		Assert.notNull(res);
+
 		//TODO
-		if (miscellaneousData.getId() == 0){
-			Collection<MiscellaneousData> misc = curricula.getMiscellaneous();
+		final Curricula curricula = this.curriculaService.findCurriculaByMiscellaneousData(res.getId());
+		if (miscellaneousData.getId() == 0) {
+			final Collection<MiscellaneousData> misc = curricula.getMiscellaneous();
 			misc.add(miscellaneousData);
 			curricula.setMiscellaneous(misc);
 			this.curriculaService.save(curricula);
@@ -81,12 +83,13 @@ public class MiscellaneousDataService {
 		Assert.notNull(mR);
 		Assert.isTrue(mR.getId() != 0);
 		final MiscellaneousData res = this.findOne(mR.getId());
-		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
-		
+		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		final Curricula curricula = this.curriculaService.findCurriculaByMiscellaneousData(res.getId());
+
 		final Collection<MiscellaneousData> miscellaneousDatas = curricula.getMiscellaneous();
 		Assert.isTrue(miscellaneousDatas.contains(res));
 		miscellaneousDatas.remove(res);
-		
+
 		this.miscellaneousDataRepository.delete(res.getId());
 		//TODO
 		curricula.setMiscellaneous(miscellaneousDatas);

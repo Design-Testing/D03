@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import repositories.CurriculaRepository;
 import domain.Curricula;
 import domain.EducationData;
 import domain.Hacker;
@@ -16,22 +17,18 @@ import domain.MiscellaneousData;
 import domain.PersonalData;
 import domain.PositionData;
 
-import repositories.CurriculaRepository;
-
 @Service
 @Transactional
 public class CurriculaService {
 
 	@Autowired
 	private CurriculaRepository	curriculaRepository;
-	
+
 	@Autowired
 	private HackerService		hackerService;
 
 	@Autowired
 	private PersonalDataService	personalDataService;
-	
-
 
 
 	public Curricula create() {
@@ -51,7 +48,6 @@ public class CurriculaService {
 
 		final Collection<EducationData> educationData = new ArrayList<EducationData>();
 		curricula.setEducations(educationData);
-
 
 		return curricula;
 
@@ -75,11 +71,10 @@ public class CurriculaService {
 		Assert.notNull(curricula);
 		final Curricula res;
 		final Hacker hacker = this.hackerService.findByPrincipal();
-		if (curricula.getId() != 0){
+		if (curricula.getId() != 0)
 			Assert.isTrue(this.hackerService.findHackerByCurricula(curricula.getId()).equals(hacker));
-		}else{
+		else
 			curricula.setHacker(hacker);
-		}		
 		res = this.curriculaRepository.save(curricula);
 		return res;
 	}
@@ -93,7 +88,6 @@ public class CurriculaService {
 		this.curriculaRepository.delete(retrieved.getId());
 	}
 
-
 	/**
 	 * The average, minimum, maximum and standard deviation of the number of curricula per hacker
 	 * 
@@ -104,13 +98,34 @@ public class CurriculaService {
 		Assert.notNull(res);
 		return res;
 	}
-	
-	
-	public Curricula findCurriculaByHacker(int id){
-		Curricula result = this.curriculaRepository.findCurriculaByHacker(id);
+
+	public Collection<Curricula> findCurriculaByHacker(final int id) {
+		final Collection<Curricula> result = this.curriculaRepository.findCurriculaByHacker(id);
 		return result;
 	}
-	
-	
+
+	public Curricula findCurriculaByPersonalData(final int id) {
+		final Curricula result = this.curriculaRepository.findCurriculaByPersonalData(id);
+		Assert.notNull(result, "findCurriculaByPersonalData returns null");
+		return result;
+	}
+
+	public Curricula findCurriculaByEducationData(final int id) {
+		final Curricula result = this.curriculaRepository.findCurriculaByEducationData(id);
+		Assert.notNull(result, "findCurriculaByEducationData returns null");
+		return result;
+	}
+
+	public Curricula findCurriculaByPositionData(final int id) {
+		final Curricula result = this.curriculaRepository.findCurriculaByPositionData(id);
+		Assert.notNull(result, "findCurriculaByPositionData returns null");
+		return result;
+	}
+
+	public Curricula findCurriculaByMiscellaneousData(final int id) {
+		final Curricula result = this.curriculaRepository.findCurriculaByMiscellaneousData(id);
+		Assert.notNull(result, "findCurriculaByMiscellanousData returns null");
+		return result;
+	}
 
 }

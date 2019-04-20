@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -8,22 +9,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.PersonalDataRepository;
-
 import domain.Hacker;
 import domain.PersonalData;
 
 @Service
 @Transactional
 public class PersonalDataService {
-	
+
 	@Autowired
 	private PersonalDataRepository	personalDataRepository;
-	
+
 	@Autowired
 	private HackerService			hackerService;
-	
-	@Autowired
-	private ActorService				actorService;
 
 
 	//Metodos CRUD
@@ -33,8 +30,8 @@ public class PersonalDataService {
 		res.setFullName("");
 		res.setStatement("");
 		res.setPhone("+34654987654");
-		res.setGithub("http://github.com/test");
-		res.setLinkedin("http://linkedin.com/test");
+		res.setGithub("");
+		res.setLinkedin("");
 		return res;
 	}
 
@@ -77,6 +74,5 @@ public class PersonalDataService {
 		Assert.notNull(this.findOne(saved.getId()));
 		return saved;
 	}
-
 
 }

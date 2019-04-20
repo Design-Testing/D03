@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -16,15 +17,15 @@ import domain.PositionData;
 @Service
 @Transactional
 public class PositionDataService {
-	
+
 	@Autowired
-	private PositionDataRepository	 positionDataRepository;
-	
+	private PositionDataRepository	positionDataRepository;
+
 	@Autowired
-	private HackerService	hackerService;
-		
+	private HackerService			hackerService;
+
 	@Autowired
-	private CurriculaService curriculaService;
+	private CurriculaService		curriculaService;
 
 
 	//Metodos CRUD
@@ -54,20 +55,21 @@ public class PositionDataService {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(positionData);
-		if(positionData.getEndDate()!=null)
-			Assert.isTrue(positionData.getEndDate().after(positionData.getStartDate()),"End date must be after start date");
-		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		if (positionData.getEndDate() != null)
+			Assert.isTrue(positionData.getEndDate().after(positionData.getStartDate()), "End date must be after start date");
+		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
 		if (positionData.getId() != 0)
 			Assert.isTrue(this.hackerService.findHackerByPositionDatas(positionData.getId()) == me);
-		
-			
+
 		final PositionData res = this.positionDataRepository.save(positionData);
-		
-		Assert.notNull(curricula.getPositions().contains(res));
-		
+
+		//Assert.notNull(curricula.getPositions().contains(res));
+		Assert.notNull(res);
+
 		//TODO
-		if (positionData.getId() == 0){
-			Collection<PositionData> misc = curricula.getPositions();
+		final Curricula curricula = this.curriculaService.findCurriculaByPositionData(res.getId());
+		if (positionData.getId() == 0) {
+			final Collection<PositionData> misc = curricula.getPositions();
 			misc.add(positionData);
 			curricula.setPositions(misc);
 			this.curriculaService.save(curricula);
@@ -82,18 +84,18 @@ public class PositionDataService {
 		Assert.notNull(mR);
 		Assert.isTrue(mR.getId() != 0);
 		final PositionData res = this.findOne(mR.getId());
-		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
-		
+		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		final Curricula curricula = this.curriculaService.findCurriculaByPositionData(res.getId());
+
 		final Collection<PositionData> positionDatas = curricula.getPositions();
 		Assert.isTrue(positionDatas.contains(res));
 		positionDatas.remove(res);
-		
+
 		this.positionDataRepository.delete(res.getId());
 		//TODO
 		curricula.setPositions(positionDatas);
 		this.curriculaService.save(curricula);
 
 	}
-
 
 }

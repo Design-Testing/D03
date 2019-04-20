@@ -112,6 +112,8 @@
 		<!-- History & Records -->
 		
 		<security:intercept-url pattern="/curricula/list.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/display.do" access="hasRole('HACKER')" />
+		<security:intercept-url pattern="/curricula/displayAll.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/curricula/create.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/curricula/edit.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/curricula/delete.do" access="hasRole('HACKER')" />

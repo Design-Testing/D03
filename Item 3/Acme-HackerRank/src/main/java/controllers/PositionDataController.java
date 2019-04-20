@@ -52,8 +52,9 @@ public class PositionDataController {
 			final PositionData positionData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			positionData = this.positionDataService.findOne(positionDataId);
-			final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			Assert.isTrue(curricula.getPositions().contains(positionData), "This personal data is not of your property");
+			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
+			//Assert.isTrue(curricula.getPositions().contains(positionData), "This personal data is not of your property");
+			Assert.isTrue(this.hackerService.hasPositionData(hacker.getId(), positionDataId), "This personal data is not of your property");
 			result = this.createEditModelAndView(positionData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
@@ -72,24 +73,27 @@ public class PositionDataController {
 		else
 			try {
 				this.positionDataService.save(positionData);
-				result = this.curriculaController.list();
+				//TODO
+				//result = this.curriculaController.displayAll();
+				final Curricula curricula = this.curriculaService.findCurriculaByPositionData(positionData.getId());
+				result = new ModelAndView("curricula/display");
+				result.addObject("curricula", curricula);
 			} catch (final Throwable e) {
-				if (e.getMessage().equals("End date must be after start date")){
+				if (e.getMessage().equals("End date must be after start date"))
 					result = this.createEditModelAndView(positionData, "alert.dates");
-				}else{
+				else
 					result = new ModelAndView("redirect:/misc/403.jsp");
-				}
 			}
 
 		return result;
 	}
-
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int positionDataId) {
 		ModelAndView result;
 		final PositionData positionData = this.positionDataService.findOne(positionDataId);
 		this.positionDataService.delete(positionData);
-		result = this.curriculaController.list();
+		//TODO
+		result = this.curriculaController.displayAll();
 
 		return result;
 	}

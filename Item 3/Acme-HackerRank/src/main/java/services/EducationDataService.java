@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -10,8 +11,8 @@ import org.springframework.util.Assert;
 
 import repositories.EducationDataRepository;
 import domain.Curricula;
-import domain.Hacker;
 import domain.EducationData;
+import domain.Hacker;
 
 @Service
 @Transactional
@@ -19,12 +20,12 @@ public class EducationDataService {
 
 	@Autowired
 	private EducationDataRepository	educationDataRepository;
-	
+
 	@Autowired
-	private HackerService				hackerService;
-		
+	private HackerService			hackerService;
+
 	@Autowired
-	private CurriculaService curriculaService;
+	private CurriculaService		curriculaService;
 
 
 	//Metodos CRUD
@@ -34,7 +35,7 @@ public class EducationDataService {
 		eData.setDegree("");
 		eData.setInstitution("");
 		eData.setStartDate(new Date(System.currentTimeMillis() - 1));
-		eData.setMark(0);	
+		eData.setMark(0);
 		return eData;
 	}
 
@@ -55,20 +56,22 @@ public class EducationDataService {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(educationData);
-		if(educationData.getEndDate()!=null)
+		if (educationData.getEndDate() != null)
 			Assert.isTrue(educationData.getEndDate().after(educationData.getStartDate()), "End date must be after start date");
-		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
 		if (educationData.getId() != 0)
-			Assert.isTrue(this.hackerService.findHackerByEducationDatas(educationData.getId()) == me);
-		
-			
+			Assert.isTrue(this.hackerService.hasEducationData(me.getId(), educationData.getId()), "This personal data is not of your property");
+		//Assert.isTrue(this.hackerService.findHackerByEducationDatas(educationData.getId()) == me);
+
 		final EducationData res = this.educationDataRepository.save(educationData);
-		
-		Assert.notNull(curricula.getEducations().contains(res));
-		
+
+		//Assert.notNull(curricula.getEducations().contains(res));
+		Assert.notNull(res);
+
 		//TODO
-		if (educationData.getId() == 0){
-			Collection<EducationData> misc = curricula.getEducations();
+		final Curricula curricula = this.curriculaService.findCurriculaByEducationData(res.getId());
+		if (educationData.getId() == 0) {
+			final Collection<EducationData> misc = curricula.getEducations();
 			misc.add(educationData);
 			curricula.setEducations(misc);
 			this.curriculaService.save(curricula);
@@ -83,12 +86,14 @@ public class EducationDataService {
 		Assert.notNull(mR);
 		Assert.isTrue(mR.getId() != 0);
 		final EducationData res = this.findOne(mR.getId());
-		final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
-		
+		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+		final Curricula curricula = this.curriculaService.findCurriculaByEducationData(res.getId());
 		final Collection<EducationData> educationDatas = curricula.getEducations();
-		Assert.isTrue(educationDatas.contains(res));
+
+		//Assert.isTrue(educationDatas.contains(res));
+		Assert.isTrue(this.hackerService.hasEducationData(me.getId(), res.getId()), "This personal data is not of your property");
 		educationDatas.remove(res);
-		
+
 		this.educationDataRepository.delete(res.getId());
 		//TODO
 		curricula.setEducations(educationDatas);
