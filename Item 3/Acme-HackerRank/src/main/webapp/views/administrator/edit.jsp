@@ -15,8 +15,8 @@
 	function phoneFun() {
 		var x = document.getElementById("phone");
 		var telefono = x.value;
-		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{1,2})){1}\\s*(\\([1-9]{1}[0-9]{1,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
-		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{1,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
+		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\([1-9]{1}[0-9]{0,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
+		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
 		var PN = new RegExp("(^\\d{4,}$)"); /* PN */
 		if (('${phone}' != telefono) && !CCACPN.test(telefono) && !CCPN.test(telefono)) {
 			if (PN.test(telefono)) {

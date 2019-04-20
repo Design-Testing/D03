@@ -28,10 +28,13 @@ public class CompanyService {
 
 	@Autowired
 	private CompanyRepository	companyRepository;
+
 	@Autowired
 	private ActorService		actorService;
+
 	@Autowired
 	private UserAccountService	userAccountService;
+
 	@Autowired
 	private Validator			validator;
 

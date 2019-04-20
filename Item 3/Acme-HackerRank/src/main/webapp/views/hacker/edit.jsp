@@ -18,8 +18,8 @@
 	function phoneFun() {
 		var x = document.getElementById("phone");
 		var telefono = x.value;
-		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{1,2})){1}\\s*(\\([1-9]{1}[0-9]{1,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
-		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{1,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
+		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\([1-9]{1}[0-9]{0,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
+		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
 		var PN = new RegExp("(^\\d{4,}$)"); /* PN */
 		if (('${phone}' != telefono) && !CCACPN.test(telefono) && !CCPN.test(telefono)) {
 			if (PN.test(telefono)) {
@@ -64,7 +64,7 @@
 		path="userAccountpassword" />
 
 	<acme:textbox code="hacker.edit.name" path="name" />
-	<acme:textbox code="hacker.edit.surname" path="surname" />
+	<acme:textarea code="hacker.edit.surname" path="surname" />
 	<acme:textbox code="hacker.edit.photo" path="photo" />
 	<acme:textbox code="hacker.edit.email" path="email"
 		placeholder="id@domain / alias id@domain / id@ / alias id@" size="45" />

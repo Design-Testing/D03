@@ -95,12 +95,21 @@ public class FinderHackerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Finder finder, final String messageCode) {
 		final ModelAndView result;
+		boolean salnul = false;
+		boolean deadnul = false;
+
+		if (finder.getMinSalary() != null && finder.getMaxSalary() != null)
+			salnul = !(finder.getMinSalary() < finder.getMaxSalary());
+
+		if (finder.getMinDeadline() != null && finder.getMaxDeadline() != null)
+			deadnul = !finder.getMinDeadline().before(finder.getMaxDeadline());
 
 		result = new ModelAndView("finder/edit");
 		result.addObject("finder", finder);
 		result.addObject("message", messageCode);
+		result.addObject("salnul", salnul);
+		result.addObject("deadnul", deadnul);
 
 		return result;
 	}
-
 }

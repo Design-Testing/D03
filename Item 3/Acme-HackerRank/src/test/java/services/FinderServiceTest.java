@@ -31,12 +31,63 @@ public class FinderServiceTest extends AbstractTest {
 	@Test
 	public void driverCreateAndSaveFinder() {
 		final Collection<Position> positions = new ArrayList<>();
-		final Object testingData[][] = {};
-		//		for (final int i = 0; i < testingData.length; i++)
-		//			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (Collection<Position>) testingData[i][2], (Class<?>) testingData[i][8]);
+		final Object testingData[][] = {
+			{
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "", "", "", "", "", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos keyword)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "jotaunit", "", "", "", "", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos min salary)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "", "1000.0", "", "", "", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos max salary)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "", "", "1500.0", "", "", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos min deadline)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "", "", "", "2019-02-02 20:00", "", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos max deadline)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "", "", "", "", "2019-02-02 20:00", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda)
+				//				C: % Recorre 31 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"hacker1", "jotaunit", "200.0", "1000.0", "2019-02-02 10:00", "2019-02-02 20:00", positions, null
+			}, {
+				//				A: Acme HackerRank R.17.2. Manage finder
+				//				B: Test Negativo: Un hacker puede actualizar su finder. Ningun actor ajeno a el puede hacerlo
+				//				C: % Recorre 6 de las 31 lineas posibles
+				//				D: % cobertura de datos= 8/32
+				"company1", "jotaunit", "200.0", "1000.0", "2019-02-02 10:00", "2019-02-02 20:00", positions, IllegalArgumentException.class
+			}
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Collection<Position>) testingData[i][6],
+				(Class<?>) testingData[i][6]);
 	}
-	private void templateCreateAndSave(final String keyword, final String minSalaryS, final String maxSalaryS, final String minDeadlineS, final String maxDeadlineS, final Collection<Position> positions, final Class<?> expected) {
-
+	private void templateCreateAndSave(final String principal, final String keyword, final String minSalaryS, final String maxSalaryS, final String minDeadlineS, final String maxDeadlineS, final Collection<Position> positions, final Class<?> expected) {
+		super.authenticate(principal);
 		Class<?> caught;
 		final Finder finder;
 
@@ -67,7 +118,7 @@ public class FinderServiceTest extends AbstractTest {
 			finder.setMinDeadline(minDeadline);
 			finder.setMaxDeadline(maxDeadline);
 			this.finderService.save(finder);
-			this.finderService.flush();
+			// this.finderService.flush();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 

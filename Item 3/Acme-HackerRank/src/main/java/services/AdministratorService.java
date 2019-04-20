@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -17,6 +18,7 @@ import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import security.UserAccountRepository;
 import domain.Administrator;
 import domain.CreditCard;
 import forms.ActorForm;
@@ -38,13 +40,16 @@ public class AdministratorService {
 	private UserAccountService		userAccountService;
 
 	@Autowired
+	private UserAccountRepository	userAccountRepository;
+
+	@Autowired
 	private Validator				validator;
 
 
 	public Administrator create() {
 		final Administrator a = new Administrator();
 
-		this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
+		//		this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
 
 		return a;
 	}
@@ -56,8 +61,19 @@ public class AdministratorService {
 		Administrator result;
 		this.actorService.checkForSpamWords(a);
 		if (a.getId() == 0) {
-			this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
+			//			this.actorService.setAuthorityUserAccount(Authority.ADMIN, a);
+			final UserAccount ua = a.getUserAccount();
+			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+			final String hash = encoder.encodePassword(ua.getPassword(), null);
+			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
+			ua.setPassword(hash);
+			a.setUserAccount(ua);
 			result = this.administratorRepository.save(a);
+			UserAccount uaSaved = result.getUserAccount();
+			uaSaved.setAuthorities(ua.getAuthorities());
+			uaSaved.setUsername(ua.getUsername());
+			uaSaved.setPassword(ua.getPassword());
+			uaSaved = this.userAccountService.save(uaSaved);
 			this.folderService.setFoldersByDefault(result);
 		} else
 			result = (Administrator) this.actorService.save(a);
@@ -140,7 +156,9 @@ public class AdministratorService {
 			admin.setUserAccount(account);
 		}
 		admin.setCreditCard(c);
+
 		this.validator.validate(admin, binding);
+
 		if (binding.hasErrors())
 			throw new ValidationException();
 
