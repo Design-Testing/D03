@@ -8,10 +8,13 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="educationData/edit.do" modelAttribute="educationData">
+<form:form action="educationData/edit.do?curriculaId=${curriculaId}" modelAttribute="educationData">
 
 	<form:hidden path="id"/>
     <form:hidden path="version"/>
+    
+    
+    <input type="hidden" name="curriculaId" value="${curriculaId}" />
     
      <jstl:if test="${alert}">
 		<h5 style="color: red;"><spring:message code="alert.dates"/></h5>
@@ -31,7 +34,7 @@
  	
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"
-           onclick="relativeRedir('curricula/list.do');"/>
+           onclick="relativeRedir('curricula/display.do?curriculaId=${curriculaId}');"/>
 
 
 

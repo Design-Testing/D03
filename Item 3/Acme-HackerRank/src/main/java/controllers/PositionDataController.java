@@ -32,30 +32,37 @@ public class PositionDataController {
 	@Autowired
 	private CurriculaService	curriculaService;
 
-	@Autowired
-	private CurriculaController	curriculaController;
-
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int curriculaId) {
+
 		ModelAndView result;
+
 		final PositionData positionData = this.positionDataService.create();
-		result = this.createEditModelAndView(positionData);
+
+		result = new ModelAndView("positionData/edit");
+		result.addObject("positionData", positionData);
+		result.addObject("curriculaId", curriculaId);
+		result.addObject("message", null);
+
 		return result;
 	}
 
-	//Updating
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int positionDataId) {
+	public ModelAndView edit(@RequestParam final int positionDataId, @RequestParam final int curriculaId) {
 		ModelAndView result;
 		try {
 			final PositionData positionData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			positionData = this.positionDataService.findOne(positionDataId);
-			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			//Assert.isTrue(curricula.getPositions().contains(positionData), "This personal data is not of your property");
+
 			Assert.isTrue(this.hackerService.hasPositionData(hacker.getId(), positionDataId), "This personal data is not of your property");
-			result = this.createEditModelAndView(positionData);
+
+			result = new ModelAndView("positionData/edit");
+			result.addObject("positionData", positionData);
+			result.addObject("curriculaId", curriculaId);
+			result.addObject("message", null);
+
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", e.getMessage());
@@ -64,21 +71,21 @@ public class PositionDataController {
 		return result;
 	}
 
-	//Save
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final PositionData positionData, final BindingResult bindingResult) {
+	public ModelAndView save(@RequestParam final int curriculaId, @Valid final PositionData positionData, final BindingResult bindingResult) {
 		ModelAndView result;
 		if (bindingResult.hasErrors())
 			result = this.createEditModelAndView(positionData);
 		else
 			try {
-				this.positionDataService.save(positionData);
-				//TODO
-				//result = this.curriculaController.displayAll();
-				final Curricula curricula = this.curriculaService.findCurriculaByPositionData(positionData.getId());
+				this.positionDataService.save(positionData, curriculaId);
+
+				final Curricula curricula = this.curriculaService.findOne(curriculaId);
 				result = new ModelAndView("curricula/display");
 				result.addObject("curricula", curricula);
+				result.addObject("message", null);
 				result.addObject("buttons", true);
+
 			} catch (final Throwable e) {
 				if (e.getMessage().equals("End date must be after start date"))
 					result = this.createEditModelAndView(positionData, "alert.dates");
@@ -88,13 +95,18 @@ public class PositionDataController {
 
 		return result;
 	}
+
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int positionDataId) {
 		ModelAndView result;
 		final PositionData positionData = this.positionDataService.findOne(positionDataId);
+		final Curricula curricula = this.curriculaService.findCurriculaByPositionData(positionDataId);
 		this.positionDataService.delete(positionData);
-		//TODO
-		result = this.curriculaController.displayAll();
+
+		result = new ModelAndView("curricula/display");
+		result.addObject("curricula", curricula);
+		result.addObject("message", null);
+		result.addObject("buttons", true);
 
 		return result;
 	}

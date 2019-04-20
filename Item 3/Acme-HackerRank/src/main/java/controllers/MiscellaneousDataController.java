@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CurriculaService;
 import services.HackerService;
 import services.MiscellaneousDataService;
+import domain.Curricula;
 import domain.Hacker;
 import domain.MiscellaneousData;
 
@@ -31,30 +32,36 @@ public class MiscellaneousDataController {
 	@Autowired
 	private CurriculaService			curriculaService;
 
-	@Autowired
-	private CurriculaController			curriculaController;
-
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int curriculaId) {
+
 		ModelAndView result;
 		final MiscellaneousData miscellaneousData = this.miscellaneousDataService.create();
-		result = this.createEditModelAndView(miscellaneousData);
+
+		result = new ModelAndView("miscellaneousData/edit");
+		result.addObject("miscellaneousData", miscellaneousData);
+		result.addObject("curriculaId", curriculaId);
+		result.addObject("message", null);
+
 		return result;
 	}
 
-	//Updating
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int miscellaneousDataId) {
+	public ModelAndView edit(@RequestParam final int miscellaneousDataId, @RequestParam final int curriculaId) {
 		ModelAndView result;
 		try {
 			final MiscellaneousData miscellaneousData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
-			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			//Assert.isTrue(curricula.getMiscellaneous().contains(miscellaneousData), "This personal data is not of your property");
+
 			Assert.isTrue(this.hackerService.hasMiscellaneousData(hacker.getId(), miscellaneousDataId), "This personal data is not of your property");
-			result = this.createEditModelAndView(miscellaneousData);
+
+			result = new ModelAndView("miscellaneousData/edit");
+			result.addObject("miscellaneousData", miscellaneousData);
+			result.addObject("curriculaId", curriculaId);
+			result.addObject("message", null);
+
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", e.getMessage());
@@ -63,17 +70,21 @@ public class MiscellaneousDataController {
 		return result;
 	}
 
-	//Save
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final MiscellaneousData miscellaneousData, final BindingResult bindingResult) {
+	public ModelAndView save(@RequestParam final int curriculaId, @Valid final MiscellaneousData miscellaneousData, final BindingResult bindingResult) {
 		ModelAndView result;
 		if (bindingResult.hasErrors())
 			result = this.createEditModelAndView(miscellaneousData);
 		else
 			try {
-				this.miscellaneousDataService.save(miscellaneousData);
-				//TODO
-				result = this.curriculaController.displayAll();
+				this.miscellaneousDataService.save(miscellaneousData, curriculaId);
+
+				final Curricula curricula = this.curriculaService.findOne(curriculaId);
+				result = new ModelAndView("curricula/display");
+				result.addObject("curricula", curricula);
+				result.addObject("message", null);
+				result.addObject("buttons", true);
+
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(miscellaneousData, "general.commit.error");
 			}
@@ -105,9 +116,13 @@ public class MiscellaneousDataController {
 	public ModelAndView delete(@RequestParam final int miscellaneousDataId) {
 		ModelAndView result;
 		final MiscellaneousData miscellaneousData = this.miscellaneousDataService.findOne(miscellaneousDataId);
+		final Curricula curricula = this.curriculaService.findCurriculaByMiscellaneousData(miscellaneousDataId);
 		this.miscellaneousDataService.delete(miscellaneousData);
-		//TODO
-		result = this.curriculaController.displayAll();
+
+		result = new ModelAndView("curricula/display");
+		result.addObject("curricula", curricula);
+		result.addObject("message", null);
+		result.addObject("buttons", true);
 
 		return result;
 	}

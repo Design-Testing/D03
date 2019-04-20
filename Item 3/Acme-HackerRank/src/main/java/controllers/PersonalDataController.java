@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.CurriculaService;
 import services.HackerService;
 import services.PersonalDataService;
+import domain.Curricula;
 import domain.Hacker;
 import domain.PersonalData;
 
@@ -31,19 +32,15 @@ public class PersonalDataController extends AbstractController {
 	@Autowired
 	private CurriculaService	curriculaService;
 
-	@Autowired
-	private CurriculaController	curriculaController;
 
-
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
 		final PersonalData personalData = this.personalDataService.create();
 		result = this.createEditModelAndView(personalData);
 		return result;
-	}
+	}*/
 
-	//Updating
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int personalDataId) {
 		ModelAndView result;
@@ -51,10 +48,14 @@ public class PersonalDataController extends AbstractController {
 			final PersonalData personalData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			personalData = this.personalDataService.findOne(personalDataId);
-			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			//Assert.isTrue(curricula.getPersonalRecord().equals(personalData), "This personal data is not of your property");
 			Assert.isTrue(this.hackerService.hasPersonalData(hacker.getId(), personalDataId), "This personal data is not of your property");
-			result = this.createEditModelAndView(personalData);
+
+			final Curricula curricula = this.curriculaService.findCurriculaByPersonalData(personalDataId);
+			result = new ModelAndView("personalData/edit");
+			result.addObject("personalData", personalData);
+			result.addObject("message", null);
+			result.addObject("curriculaId", curricula.getId());
+
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", e.getMessage());
@@ -63,7 +64,6 @@ public class PersonalDataController extends AbstractController {
 		return result;
 	}
 
-	//Save
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final PersonalData personalData, final BindingResult bindingResult) {
 		ModelAndView result;
@@ -72,8 +72,14 @@ public class PersonalDataController extends AbstractController {
 		else
 			try {
 				this.personalDataService.save(personalData);
-				//TODO
-				result = this.curriculaController.displayAll();
+
+				final Curricula curricula = this.curriculaService.findCurriculaByPersonalData(personalData.getId());
+
+				result = new ModelAndView("curricula/display");
+				result.addObject("curricula", curricula);
+				result.addObject("messages", null);
+				result.addObject("buttons", false);
+
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(personalData, "general.commit.error");
 			}
@@ -87,12 +93,14 @@ public class PersonalDataController extends AbstractController {
 		ModelAndView res;
 
 		final PersonalData personalData = this.personalDataService.findOne(personalDataId);
+		final Curricula curricula = this.curriculaService.findCurriculaByPersonalData(personalDataId);
 
 		if (personalData != null) {
 
 			res = new ModelAndView("personalData/display");
 			res.addObject("personalData", personalData);
 			res.addObject("buttons", false);
+			res.addObject("curriculaId", curricula.getId());
 
 		} else
 			res = new ModelAndView("redirect:/misc/403.jsp");

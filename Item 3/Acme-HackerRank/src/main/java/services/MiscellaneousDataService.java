@@ -51,22 +51,19 @@ public class MiscellaneousDataService {
 		return res;
 	}
 
-	public MiscellaneousData save(final MiscellaneousData miscellaneousData) {
+	public MiscellaneousData save(final MiscellaneousData miscellaneousData, final int curriculaId) {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(miscellaneousData);
-		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
 
 		if (miscellaneousData.getId() != 0)
-			Assert.isTrue(this.hackerService.findHackerByMiscellaneous(miscellaneousData.getId()) == me);
+			Assert.isTrue(this.hackerService.hasMiscellaneousData(me.getId(), miscellaneousData.getId()), "This personal data is not of your property");
 
 		final MiscellaneousData res = this.miscellaneousDataRepository.save(miscellaneousData);
 
-		//Assert.notNull(curricula.getMiscellaneous().contains(res));
 		Assert.notNull(res);
 
-		//TODO
-		final Curricula curricula = this.curriculaService.findCurriculaByMiscellaneousData(res.getId());
+		final Curricula curricula = this.curriculaService.findOne(curriculaId);
 		if (miscellaneousData.getId() == 0) {
 			final Collection<MiscellaneousData> misc = curricula.getMiscellaneous();
 			misc.add(miscellaneousData);
@@ -83,15 +80,17 @@ public class MiscellaneousDataService {
 		Assert.notNull(mR);
 		Assert.isTrue(mR.getId() != 0);
 		final MiscellaneousData res = this.findOne(mR.getId());
-		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+
 		final Curricula curricula = this.curriculaService.findCurriculaByMiscellaneousData(res.getId());
 
 		final Collection<MiscellaneousData> miscellaneousDatas = curricula.getMiscellaneous();
-		Assert.isTrue(miscellaneousDatas.contains(res));
+
+		Assert.isTrue(this.hackerService.hasMiscellaneousData(me.getId(), res.getId()), "This personal data is not of your property");
+
 		miscellaneousDatas.remove(res);
 
 		this.miscellaneousDataRepository.delete(res.getId());
-		//TODO
+
 		curricula.setMiscellaneous(miscellaneousDatas);
 		this.curriculaService.save(curricula);
 

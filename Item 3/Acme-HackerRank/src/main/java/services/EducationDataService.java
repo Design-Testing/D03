@@ -52,24 +52,22 @@ public class EducationDataService {
 		return res;
 	}
 
-	public EducationData save(final EducationData educationData) {
+	public EducationData save(final EducationData educationData, final int curriculaId) {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(educationData);
+
 		if (educationData.getEndDate() != null)
 			Assert.isTrue(educationData.getEndDate().after(educationData.getStartDate()), "End date must be after start date");
-		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+
 		if (educationData.getId() != 0)
 			Assert.isTrue(this.hackerService.hasEducationData(me.getId(), educationData.getId()), "This personal data is not of your property");
-		//Assert.isTrue(this.hackerService.findHackerByEducationDatas(educationData.getId()) == me);
 
 		final EducationData res = this.educationDataRepository.save(educationData);
 
-		//Assert.notNull(curricula.getEducations().contains(res));
 		Assert.notNull(res);
 
-		//TODO
-		final Curricula curricula = this.curriculaService.findCurriculaByEducationData(res.getId());
+		final Curricula curricula = this.curriculaService.findOne(curriculaId);
 		if (educationData.getId() == 0) {
 			final Collection<EducationData> misc = curricula.getEducations();
 			misc.add(educationData);
@@ -86,16 +84,17 @@ public class EducationDataService {
 		Assert.notNull(mR);
 		Assert.isTrue(mR.getId() != 0);
 		final EducationData res = this.findOne(mR.getId());
-		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+
 		final Curricula curricula = this.curriculaService.findCurriculaByEducationData(res.getId());
+
 		final Collection<EducationData> educationDatas = curricula.getEducations();
 
-		//Assert.isTrue(educationDatas.contains(res));
 		Assert.isTrue(this.hackerService.hasEducationData(me.getId(), res.getId()), "This personal data is not of your property");
+
 		educationDatas.remove(res);
 
 		this.educationDataRepository.delete(res.getId());
-		//TODO
+
 		curricula.setEducations(educationDatas);
 		this.curriculaService.save(curricula);
 

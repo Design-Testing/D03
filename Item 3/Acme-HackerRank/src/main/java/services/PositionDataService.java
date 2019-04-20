@@ -51,23 +51,20 @@ public class PositionDataService {
 		return res;
 	}
 
-	public PositionData save(final PositionData positionData) {
+	public PositionData save(final PositionData positionData, final int curriculaId) {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(positionData);
 		if (positionData.getEndDate() != null)
 			Assert.isTrue(positionData.getEndDate().after(positionData.getStartDate()), "End date must be after start date");
-		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
 		if (positionData.getId() != 0)
 			Assert.isTrue(this.hackerService.findHackerByPositionDatas(positionData.getId()) == me);
 
 		final PositionData res = this.positionDataRepository.save(positionData);
 
-		//Assert.notNull(curricula.getPositions().contains(res));
 		Assert.notNull(res);
 
-		//TODO
-		final Curricula curricula = this.curriculaService.findCurriculaByPositionData(res.getId());
+		final Curricula curricula = this.curriculaService.findOne(curriculaId);
 		if (positionData.getId() == 0) {
 			final Collection<PositionData> misc = curricula.getPositions();
 			misc.add(positionData);
@@ -84,15 +81,16 @@ public class PositionDataService {
 		Assert.notNull(mR);
 		Assert.isTrue(mR.getId() != 0);
 		final PositionData res = this.findOne(mR.getId());
-		//final Curricula curricula = this.curriculaService.findCurriculaByHacker(me.getId());
+
 		final Curricula curricula = this.curriculaService.findCurriculaByPositionData(res.getId());
 
 		final Collection<PositionData> positionDatas = curricula.getPositions();
-		Assert.isTrue(positionDatas.contains(res));
+		Assert.isTrue(this.hackerService.hasPositionData(me.getId(), res.getId()), "This personal data is not of your property");
+
 		positionDatas.remove(res);
 
 		this.positionDataRepository.delete(res.getId());
-		//TODO
+
 		curricula.setPositions(positionDatas);
 		this.curriculaService.save(curricula);
 

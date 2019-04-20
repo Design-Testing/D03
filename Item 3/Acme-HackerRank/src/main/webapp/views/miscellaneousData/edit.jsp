@@ -8,7 +8,7 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="miscellaneousData/edit.do" modelAttribute="miscellaneousData">
+<form:form action="miscellaneousData/edit.do?curriculaId=${curriculaId}" modelAttribute="miscellaneousData">
 
 	<form:hidden path="id"/>
     <form:hidden path="version"/>
@@ -25,7 +25,7 @@
  	
     <input type="button" class="btn btn-danger" name="cancel"
            value="<spring:message code="general.cancel" />"
-           onclick="relativeRedir('curricula/list.do');"/>
+           onclick="relativeRedir('curricula/display.do?curriculaId=${curriculaId}');"/>
 
 
 

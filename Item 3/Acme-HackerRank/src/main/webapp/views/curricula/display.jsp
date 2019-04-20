@@ -71,7 +71,7 @@
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="record.edit" />"
-                onclick="relativeRedir('educationData/edit.do?educationDataId=${row.id}')" />
+                onclick="relativeRedir('educationData/edit.do?educationDataId=${row.id}&curriculaId=${curricula.id}')" />
 	</display:column>
 	<display:column>
 			<input type="button" name="delete"
@@ -90,7 +90,7 @@
 	<jstl:if test="${buttons}">
 	<input type="button" name="create"
     value="<spring:message code="record.create.educationData" />"
-    onclick="relativeRedir('educationData/create.do')" />
+    onclick="relativeRedir('educationData/create.do?curriculaId=${curricula.id}')" />
     </jstl:if>
     <br />
     
@@ -117,7 +117,7 @@
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="record.edit" />"
-                onclick="relativeRedir('positionData/edit.do?positionDataId=${row.id}')" />
+                onclick="relativeRedir('positionData/edit.do?positionDataId=${row.id}&curriculaId=${curricula.id}')" />
 	</display:column>
 	<display:column>
 			<input type="button" name="delete"
@@ -137,7 +137,7 @@
 	<jstl:if test="${buttons}">
 	 <input type="button" name="create"
     value="<spring:message code="record.create.positionData" />"
-    onclick="relativeRedir('positionData/create.do')" />
+    onclick="relativeRedir('positionData/create.do?curriculaId=${curricula.id}')" />
     </jstl:if>
     <br />
     
@@ -161,7 +161,7 @@
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="record.edit" />"
-                onclick="relativeRedir('miscellaneousData/edit.do?miscellaneousDataId=${row.id}')" />
+                onclick="relativeRedir('miscellaneousData/edit.do?miscellaneousDataId=${row.id}&curriculaId=${curricula.id}')" />
 	</display:column>
 	<display:column>
 			<input type="button" name="delete"
@@ -180,7 +180,7 @@
 	<jstl:if test="${buttons}">
 	<input type="button" name="create"
     value="<spring:message code="record.create.miscellaneousData" />"
-    onclick="relativeRedir('miscellaneousData/create.do')" />
+    onclick="relativeRedir('miscellaneousData/create.do?curriculaId=${curricula.id}')" />
     </jstl:if>
     <br />
 	

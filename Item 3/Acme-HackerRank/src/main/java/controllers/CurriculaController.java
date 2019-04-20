@@ -64,7 +64,7 @@ public class CurriculaController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int curriculaId) {
 		final ModelAndView res;
-		final Hacker hacker = this.hackerService.findByPrincipal();
+
 		final Curricula curricula = this.curriculaService.findOne(curriculaId);
 
 		if (!(curricula == null)) {
@@ -134,7 +134,6 @@ public class CurriculaController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		final Hacker hacker = this.hackerService.findByPrincipal();
 		final Curricula newCurricula = this.curriculaService.create();
 		result = this.displayAll();
 		this.curriculaService.save(newCurricula);

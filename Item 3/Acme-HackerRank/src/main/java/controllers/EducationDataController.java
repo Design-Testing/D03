@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CurriculaService;
 import services.EducationDataService;
 import services.HackerService;
+import domain.Curricula;
 import domain.EducationData;
 import domain.Hacker;
 
@@ -28,29 +30,39 @@ public class EducationDataController {
 	private HackerService			hackerService;
 
 	@Autowired
-	private CurriculaController		curriculaController;
+	private CurriculaService		curriculaService;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int curriculaId) {
+
 		ModelAndView result;
+
 		final EducationData educationData = this.educationDataService.create();
-		result = this.createEditModelAndView(educationData);
+
+		result = new ModelAndView("educationData/edit");
+		result.addObject("educationData", educationData);
+		result.addObject("curriculaId", curriculaId);
+		result.addObject("message", null);
+
 		return result;
 	}
 
-	//Updating
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int educationDataId) {
+	public ModelAndView edit(@RequestParam final int educationDataId, @RequestParam final int curriculaId) {
 		ModelAndView result;
 		try {
 			final EducationData educationData;
 			final Hacker hacker = this.hackerService.findByPrincipal();
 			educationData = this.educationDataService.findOne(educationDataId);
-			//final Curricula curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-			//Assert.isTrue(curricula.getEducations().contains(educationData), "This personal data is not of your property");
+
 			Assert.isTrue(this.hackerService.hasEducationData(hacker.getId(), educationDataId), "This personal data is not of your property");
-			result = this.createEditModelAndView(educationData);
+
+			result = new ModelAndView("educationData/edit");
+			result.addObject("educationData", educationData);
+			result.addObject("curriculaId", curriculaId);
+			result.addObject("message", null);
+
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", e.getMessage());
@@ -59,23 +71,31 @@ public class EducationDataController {
 		return result;
 	}
 
-	//Save
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid final EducationData educationData, final BindingResult bindingResult) {
+	public ModelAndView save(@RequestParam final int curriculaId, @Valid final EducationData educationData, final BindingResult bindingResult) {
 		ModelAndView result;
 		if (bindingResult.hasErrors())
 			result = this.createEditModelAndView(educationData);
 		else
 			try {
-				this.educationDataService.save(educationData);
-				//TODO
-				result = this.createEditModelAndView(educationData);
+				this.educationDataService.save(educationData, curriculaId);
+
+				final Curricula curricula = this.curriculaService.findOne(curriculaId);
+				result = new ModelAndView("curricula/display");
+				result.addObject("curricula", curricula);
+				result.addObject("message", null);
+				result.addObject("buttons", true);
+
 			} catch (final Throwable e) {
 				System.out.println(e.getMessage());
-				if (e.getMessage().equals("End date must be after start date"))
-					result = this.createEditModelAndView(educationData, "alert.dates");
-				else
+				if (e.getMessage().equals("End date must be after start date")) {
+					result = new ModelAndView("educationData/edit");
+					result.addObject("educationData", educationData);
+					result.addObject("curriculaId", curriculaId);
+					result.addObject("message", "alert.dates");
+				} else
 					result = new ModelAndView("redirect:/misc/403.jsp");
+
 			}
 
 		return result;
@@ -105,9 +125,13 @@ public class EducationDataController {
 	public ModelAndView delete(@RequestParam final int educationDataId) {
 		ModelAndView result;
 		final EducationData educationData = this.educationDataService.findOne(educationDataId);
+		final Curricula curricula = this.curriculaService.findCurriculaByEducationData(educationDataId);
 		this.educationDataService.delete(educationData);
-		//TODO
-		result = this.curriculaController.displayAll();
+
+		result = new ModelAndView("curricula/display");
+		result.addObject("curricula", curricula);
+		result.addObject("message", null);
+		result.addObject("buttons", true);
 
 		return result;
 	}
