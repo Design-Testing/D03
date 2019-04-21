@@ -50,6 +50,8 @@ public class PositionService {
 		final Position position = new Position();
 		final Company principal = this.companyService.findByPrincipal();
 		position.setCompany(principal);
+		final String ticker = this.generateTicker(principal.getCommercialName());
+		position.setTicker(ticker);
 		position.setMode("DRAFT");
 		return position;
 	}
@@ -123,12 +125,7 @@ public class PositionService {
 		Assert.notNull(position);
 		final Company principal = this.companyService.findByPrincipal();
 		final Position result;
-		if (position.getId() == 0) {
-			final String ticker = this.generateTicker(principal.getCommercialName());
-			position.setTicker(ticker);
-			position.setMode("DRAFT");
-			position.setCompany(principal);
-		} else {
+		if (position.getId() != 0) {
 			Assert.isTrue(position.getCompany().equals(principal));
 			Assert.isTrue(position.getMode().equals("DRAFT"), "No puede modificar una posición que ya no esta en DRAFT MODE.");
 		}
