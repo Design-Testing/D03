@@ -36,37 +36,37 @@ public class FinderServiceTest extends AbstractTest {
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "", "", "", new ArrayList<Position>(), null
+				"hacker1", "", null, null, null, null, new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos keyword)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "jotaunit", "", "", "", "", new ArrayList<Position>(), null
+				"hacker1", "jotaunit", null, null, null, null, new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos min salary)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "1000.0", "", "", "", new ArrayList<Position>(), null
+				"hacker1", "", "1000.0", null, null, null, new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos max salary)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "1500.0", "", "", new ArrayList<Position>(), null
+				"hacker1", "", null, "1500.0", null, null, new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos min deadline)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "", "2019-02-02 20:00", "", new ArrayList<Position>(), null
+				"hacker1", "", null, null, "2019-02-02 20:00", null, new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos max deadline)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "", "", "2019-02-02 20:00", new ArrayList<Position>(), null
+				"hacker1", "", null, null, null, "2019-02-02 20:00", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda)
@@ -87,11 +87,20 @@ public class FinderServiceTest extends AbstractTest {
 	}
 	private void templateCreateAndSave(final String principal, final String keyword, final String minSalaryS, final String maxSalaryS, final String minDeadlineS, final String maxDeadlineS, final Collection<Position> positions, final Class<?> expected) {
 
+		Double minSalary;
+		Double maxSalary;
 		Class<?> caught = null;
 		try {
 			this.authenticate(principal);
-			final Double minSalary = new Double(minSalaryS);
-			final Double maxSalary = new Double(maxSalaryS);
+			if (minSalaryS != null)
+				minSalary = new Double(minSalaryS);
+			else
+				minSalary = null;
+
+			if (maxSalaryS != null)
+				maxSalary = new Double(maxSalaryS);
+			else
+				maxSalary = null;
 
 			Date minDeadline;
 			if (minDeadlineS != null)
@@ -106,7 +115,7 @@ public class FinderServiceTest extends AbstractTest {
 			else
 				maxDeadline = null;
 
-			final Finder finder = this.finderService.create();
+			final Finder finder = this.finderService.findHackerFinder();
 			finder.setKeyword(keyword);
 			finder.setPositions(positions);
 			finder.setMinSalary(minSalary);
@@ -114,6 +123,80 @@ public class FinderServiceTest extends AbstractTest {
 			finder.setMinDeadline(minDeadline);
 			finder.setMaxDeadline(maxDeadline);
 			this.finderService.save(finder);
+			this.finderService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+
+		}
+
+		super.checkExceptions(expected, caught);
+	}
+
+	@Test
+	public void driverFindFinder() {
+		final Object testingData[][] = {
+			{
+				//				A: Acme HackerRank R.17.2. Listing finder's contents
+				//				B: Test Positivo: Un hacker puede listar el contenido de su finder
+				//				C: % Recorre 34 de las 34 lineas posibles
+				//				D: % cobertura de datos= 2/2
+				"hacker1", null
+			}, {
+				//				A: Acme HackerRank R.17.2. Listing finder's contents
+				//				B: Test Positivo: Un HACKER puede listar el contenido de su finder
+				//				C: % Recorre 14 de las 31 lineas posibles
+				//				D: % cobertura de datos= 2/2
+				"company1", IllegalArgumentException.class
+			}
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateFind((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
+	private void templateFind(final String principal, final Class<?> expected) {
+
+		Class<?> caught = null;
+		try {
+			this.authenticate(principal);
+			final Finder finder = this.finderService.findHackerFinder();
+			this.finderService.find(finder);
+			this.finderService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+
+		}
+
+		super.checkExceptions(expected, caught);
+	}
+
+	@Test
+	public void driverClearFinder() {
+		final Object testingData[][] = {
+			{
+				//				A: Acme HackerRank R.17.2. Clear finder
+				//				B: Test Positivo: Un hacker puede limpiar su finder
+				//				C: % Recorre 35 de las 35 lineas posibles
+				//				D: % cobertura de datos= 2/2
+				"hacker1", null
+			}, {
+				//				A: Acme HackerRank R.17.2. Clear finder
+				//				B: Test Negativo: Un HACKER puede limpiar su finder
+				//				C: % Recorre 14 de las 35 lineas posibles
+				//				D: % cobertura de datos= 2/2
+				"company1", IllegalArgumentException.class
+			}
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateClear((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
+	private void templateClear(final String principal, final Class<?> expected) {
+
+		Class<?> caught = null;
+		try {
+			this.authenticate(principal);
+			final Finder finder = this.finderService.findHackerFinder();
+			this.finderService.clear(finder);
 			this.finderService.flush();
 			this.unauthenticate();
 		} catch (final Throwable oops) {
