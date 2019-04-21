@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +50,6 @@ public class PositionService {
 		final Position position = new Position();
 		final Company principal = this.companyService.findByPrincipal();
 		position.setCompany(principal);
-		final String ticker = this.generateTicker(principal.getCommercialName());
-		position.setTicker(ticker);
 		position.setMode("DRAFT");
 		return position;
 	}
@@ -123,7 +123,12 @@ public class PositionService {
 		Assert.notNull(position);
 		final Company principal = this.companyService.findByPrincipal();
 		final Position result;
-		if (position.getId() != 0) {
+		if (position.getId() == 0) {
+			final String ticker = this.generateTicker(principal.getCommercialName());
+			position.setTicker(ticker);
+			position.setMode("DRAFT");
+			position.setCompany(principal);
+		} else {
 			Assert.isTrue(position.getCompany().equals(principal));
 			Assert.isTrue(position.getMode().equals("DRAFT"), "No puede modificar una posición que ya no esta en DRAFT MODE.");
 		}
@@ -227,10 +232,26 @@ public class PositionService {
 
 		this.validator.validate(result, binding);
 
-		//		if (binding.hasErrors())
-		//			throw new ValidationException();
+		if (binding.hasErrors())
+			throw new ValidationException();
 
 		return result;
+	}
+
+	public PositionForm constructPruned(final Position position) {
+		final PositionForm pruned = new PositionForm();
+
+		pruned.setId(position.getId());
+		pruned.setVersion(position.getVersion());
+		pruned.setTitle(position.getTitle());
+		pruned.setDescription(position.getDescription());
+		pruned.setProfile(position.getProfile());
+		pruned.setDeadline(position.getDeadline());
+		pruned.setSkills(position.getSkills());
+		pruned.setTechnologies(position.getTechnologies());
+		pruned.setSalary(position.getSalary());
+
+		return pruned;
 	}
 
 	public void flush() {

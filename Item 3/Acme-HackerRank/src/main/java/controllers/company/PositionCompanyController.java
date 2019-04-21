@@ -46,7 +46,7 @@ public class PositionCompanyController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		final Position position = new Position();
+		final PositionForm position = new PositionForm();
 
 		result = this.createEditModelAndView(position);
 		return result;
@@ -149,7 +149,7 @@ public class PositionCompanyController extends AbstractController {
 		final Company company = this.companyService.findByPrincipal();
 
 		if ((position.getMode().equals("DRAFT") && position.getCompany().equals(company)))
-			result = this.createEditModelAndView(position);
+			result = this.createEditModelAndView(this.positionService.constructPruned(position));
 		else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
@@ -162,19 +162,18 @@ public class PositionCompanyController extends AbstractController {
 	public ModelAndView save(@Valid final PositionForm positionForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Position position = this.positionService.reconstruct(positionForm, binding);
-
 		if (binding.hasErrors()) {
-			result = this.createEditModelAndView(position);
+			result = this.createEditModelAndView(positionForm);
 			result.addObject("errors", binding.getAllErrors());
 		} else
 			try {
+				final Position position = this.positionService.reconstruct(positionForm, binding);
 				this.positionService.save(position);
 				result = this.myPositions();
 			} catch (final ValidationException oops) {
-				result = this.createEditModelAndView(position, "commit.position.error");
+				result = this.createEditModelAndView(positionForm, "commit.position.error");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(position, "commit.position.error");
+				result = this.createEditModelAndView(positionForm, "commit.position.error");
 				result.addObject("errors", binding.getAllErrors());
 			}
 
@@ -192,37 +191,21 @@ public class PositionCompanyController extends AbstractController {
 
 	// ANCILLIARY METHODS --------------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Position position) {
+	protected ModelAndView createEditModelAndView(final PositionForm position) {
 		ModelAndView result;
 		result = this.createEditModelAndView(position, null);
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Position position, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final PositionForm position, final String messageCode) {
 		Assert.notNull(position);
 		final ModelAndView result;
 
 		result = new ModelAndView("position/edit");
-		result.addObject("position", this.constructPruned(position)); //this.constructPruned(position)
+		result.addObject("position", position); //this.constructPruned(position)
 		result.addObject("message", messageCode);
 
 		return result;
-	}
-
-	public PositionForm constructPruned(final Position position) {
-		final PositionForm pruned = new PositionForm();
-
-		pruned.setId(position.getId());
-		pruned.setVersion(position.getVersion());
-		pruned.setTitle(position.getTitle());
-		pruned.setDescription(position.getDescription());
-		pruned.setProfile(position.getProfile());
-		pruned.setDeadline(position.getDeadline());
-		pruned.setSkills(position.getSkills());
-		pruned.setTechnologies(position.getTechnologies());
-		pruned.setSalary(position.getSalary());
-
-		return pruned;
 	}
 
 }
