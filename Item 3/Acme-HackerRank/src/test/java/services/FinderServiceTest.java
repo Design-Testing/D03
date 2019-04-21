@@ -19,7 +19,7 @@ import domain.Position;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-	"classpath:spring/datasource.xml", "classpath:spring/config/packages.xml"
+	"classpath:spring/junit.xml"
 })
 @Transactional
 public class FinderServiceTest extends AbstractTest {
@@ -30,70 +30,66 @@ public class FinderServiceTest extends AbstractTest {
 
 	@Test
 	public void driverCreateAndSaveFinder() {
-		final Collection<Position> positions = new ArrayList<>();
 		final Object testingData[][] = {
 			{
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "", "", "", positions, null
+				"hacker1", "", "", "", "", "", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos keyword)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "jotaunit", "", "", "", "", positions, null
+				"hacker1", "jotaunit", "", "", "", "", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos min salary)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "1000.0", "", "", "", positions, null
+				"hacker1", "", "1000.0", "", "", "", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos max salary)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "1500.0", "", "", positions, null
+				"hacker1", "", "", "1500.0", "", "", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos min deadline)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "", "2019-02-02 20:00", "", positions, null
+				"hacker1", "", "", "", "2019-02-02 20:00", "", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda vacios menos max deadline)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "", "", "", "", "2019-02-02 20:00", positions, null
+				"hacker1", "", "", "", "", "2019-02-02 20:00", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Positivo: Un hacker puede actualizar su finder (todos los parametros de busqueda)
 				//				C: % Recorre 31 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"hacker1", "jotaunit", "200.0", "1000.0", "2019-02-02 10:00", "2019-02-02 20:00", positions, null
+				"hacker1", "jotaunit", "200.0", "1000.0", "2019-02-02 10:00", "2019-02-02 20:00", new ArrayList<Position>(), null
 			}, {
 				//				A: Acme HackerRank R.17.2. Manage finder
 				//				B: Test Negativo: Un hacker puede actualizar su finder. Ningun actor ajeno a el puede hacerlo
 				//				C: % Recorre 6 de las 31 lineas posibles
 				//				D: % cobertura de datos= 8/32
-				"company1", "jotaunit", "200.0", "1000.0", "2019-02-02 10:00", "2019-02-02 20:00", positions, IllegalArgumentException.class
+				"company1", "jotaunit", "200.0", "1000.0", "2019-02-02 10:00", "2019-02-02 20:00", new ArrayList<Position>(), IllegalArgumentException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Collection<Position>) testingData[i][6],
-				(Class<?>) testingData[i][6]);
+				(Class<?>) testingData[i][7]);
 	}
 	private void templateCreateAndSave(final String principal, final String keyword, final String minSalaryS, final String maxSalaryS, final String minDeadlineS, final String maxDeadlineS, final Collection<Position> positions, final Class<?> expected) {
-		super.authenticate(principal);
-		Class<?> caught;
-		final Finder finder;
 
-		caught = null;
-
+		Class<?> caught = null;
 		try {
+			this.authenticate(principal);
 			final Double minSalary = new Double(minSalaryS);
 			final Double maxSalary = new Double(maxSalaryS);
 
@@ -110,7 +106,7 @@ public class FinderServiceTest extends AbstractTest {
 			else
 				maxDeadline = null;
 
-			finder = this.finderService.create();
+			final Finder finder = this.finderService.create();
 			finder.setKeyword(keyword);
 			finder.setPositions(positions);
 			finder.setMinSalary(minSalary);
@@ -118,13 +114,14 @@ public class FinderServiceTest extends AbstractTest {
 			finder.setMinDeadline(minDeadline);
 			finder.setMaxDeadline(maxDeadline);
 			this.finderService.save(finder);
-			// this.finderService.flush();
+			this.finderService.flush();
+			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 
 		}
 
-		this.checkExceptions(expected, caught);
+		super.checkExceptions(expected, caught);
 	}
 
 }
