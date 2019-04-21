@@ -88,7 +88,6 @@ public class PersonalDataController extends AbstractController {
 
 		return result;
 	}
-
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int personalDataId) {
 
@@ -124,7 +123,8 @@ public class PersonalDataController extends AbstractController {
 		result = new ModelAndView("personalData/edit");
 		result.addObject("personalData", personalData);
 		result.addObject("message", message);
-		result.addObject("curriculaId", this.curriculaService.findCurriculaByPersonalData(personalData.getId()).getId());
+		if (personalData.getId() != 0)
+			result.addObject("curriculaId", this.curriculaService.findCurriculaByPersonalData(personalData.getId()).getId());
 		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 

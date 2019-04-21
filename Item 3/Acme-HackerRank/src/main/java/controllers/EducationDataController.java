@@ -74,9 +74,10 @@ public class EducationDataController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@RequestParam final int curriculaId, @Valid final EducationData educationData, final BindingResult bindingResult) {
 		ModelAndView result;
-		if (bindingResult.hasErrors())
+		if (bindingResult.hasErrors()) {
 			result = this.createEditModelAndView(educationData);
-		else
+			result.addObject("curriculaId", curriculaId);
+		} else
 			try {
 				this.educationDataService.save(educationData, curriculaId);
 
@@ -153,7 +154,8 @@ public class EducationDataController {
 		result = new ModelAndView("educationData/edit");
 		result.addObject("educationData", educationData);
 		result.addObject("message", message);
-		result.addObject("curriculaId", this.curriculaService.findCurriculaByEducationData(educationData.getId()).getId());
+		if (educationData.getId() != 0)
+			result.addObject("curriculaId", this.curriculaService.findCurriculaByEducationData(educationData.getId()).getId());
 
 		return result;
 

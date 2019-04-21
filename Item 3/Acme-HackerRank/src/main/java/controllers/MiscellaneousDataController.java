@@ -73,9 +73,10 @@ public class MiscellaneousDataController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@RequestParam final int curriculaId, @Valid final MiscellaneousData miscellaneousData, final BindingResult bindingResult) {
 		ModelAndView result;
-		if (bindingResult.hasErrors())
+		if (bindingResult.hasErrors()) {
 			result = this.createEditModelAndView(miscellaneousData);
-		else
+			result.addObject("curriculaId", curriculaId);
+		} else
 			try {
 				this.miscellaneousDataService.save(miscellaneousData, curriculaId);
 
@@ -144,7 +145,8 @@ public class MiscellaneousDataController {
 		result = new ModelAndView("miscellaneousData/edit");
 		result.addObject("miscellaneousData", miscellaneousData);
 		result.addObject("message", message);
-		result.addObject("curriculaId", this.curriculaService.findCurriculaByMiscellaneousData(miscellaneousData.getId()).getId());
+		if (miscellaneousData.getId() != 0)
+			result.addObject("curriculaId", this.curriculaService.findCurriculaByMiscellaneousData(miscellaneousData.getId()).getId());
 
 		return result;
 

@@ -74,9 +74,10 @@ public class PositionDataController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@RequestParam final int curriculaId, @Valid final PositionData positionData, final BindingResult bindingResult) {
 		ModelAndView result;
-		if (bindingResult.hasErrors())
+		if (bindingResult.hasErrors()) {
 			result = this.createEditModelAndView(positionData);
-		else
+			result.addObject("curriculaId", curriculaId);
+		} else
 			try {
 				this.positionDataService.save(positionData, curriculaId);
 
@@ -148,7 +149,8 @@ public class PositionDataController {
 		result = new ModelAndView("positionData/edit");
 		result.addObject("positionData", positionData);
 		result.addObject("message", message);
-		result.addObject("curriculaId", this.curriculaService.findCurriculaByPositionData(positionData.getId()).getId());
+		if (positionData.getId() != 0)
+			result.addObject("curriculaId", this.curriculaService.findCurriculaByPositionData(positionData.getId()).getId());
 
 		return result;
 
