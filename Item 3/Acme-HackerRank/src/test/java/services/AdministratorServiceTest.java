@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import security.Authority;
 import security.UserAccount;
 import utilities.AbstractTest;
 import domain.Administrator;
@@ -28,6 +29,9 @@ public class AdministratorServiceTest extends AbstractTest {
 	// Services
 	@Autowired
 	private AdministratorService	adminService;
+
+	@Autowired
+	private UserAccountService		userAccountService;
 
 
 	/* ========================= Test Login Administrator =========================== */
@@ -74,6 +78,8 @@ public class AdministratorServiceTest extends AbstractTest {
 		final Collection<String> surnames = new ArrayList<>();
 		surnames.add("Garcia");
 		final Collection<String> surnames1 = new ArrayList<>();
+		surnames1.add("Garcia");
+		surnames1.add("");
 		final Collection<String> surnames2 = new ArrayList<>();
 		surnames2.add("Lanzas");
 		final CreditCard c = super.defaultCreditCard();
@@ -83,39 +89,21 @@ public class AdministratorServiceTest extends AbstractTest {
 				//				B: Test Positivo: Creación correcta de un admin
 				//				C: % Recorre 54 de la 196 lineas posibles
 				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
-				"admin1", "admin3", "admin3", "Administrator1", surnames, "garcia@gmail.es", "+34647307406", "0.1", c, null
+				"admin1", "admin3", "admin3", "Administrator1", surnames, "garcia@us.es", "647307406", "0.1", c, null
 			}, {
 				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
 				//				B: Test Negacion: Creacion incorrecta de un admin. Para registrar un actor como administrador el actor logeado tiene que ser un adninistrador
 				//				C: % Recorre 28 de la 196 lineas posibles
 				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
-				"hacker1", "admin23", "admin23", "Administrator1", surnames, "garcia@gmail.es", "+34647307406", "0.1", c, IllegalArgumentException.class
+				"hacker1", "admin23", "admin23", "Administrator1", surnames, "garcia@us.es", "+34647307406", "0.1", c, IllegalArgumentException.class
 			}, {
 				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
 				//				B: Test Negativo: Creación incorrecta de un admin con name en blanco
 				//				C: % Recorre 54 de la 196 lineas posibles
 				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
-				"admin1", "admin33", "admin33", "", surnames, "lanzas@gmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
-
-			}, {
-				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
-				//				B: Test Negativo: Creación incorrecta de un admin. Vat fuera de rango
-				//				C: % Recorre 51 de la 196 lineas posibles
-				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
-				"admin1", "admin3", "admin3", "Administrator1", surnames, "garcia@gmail.com", "+34647307406", "3.1", c, ConstraintViolationException.class
-			}, {
-				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
-				//				B: Test Negativo: Creación incorrecta de un admin con surnames vacio (tiene que tener al menos uno)
-				//				C: % Recorre 54 de la 196 lineas posibles
-				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
-				"admin1", "admin13", "admin13", "Administrator1", surnames1, "lanzas1@gmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
-			}, {
-				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
-				//				B: Test Negativo: Creación incorrecta de un admin con email que no cumple patron
-				//				C: % Recorre 54 de la 196 lineas posibles
-				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
-				"admin1", "admin43", "admin43", "Administrator1", surnames2, "lanzasgmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
+				"admin1", "admin43", "admin43", "", surnames, "lanzas@gmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
 			}
+
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.templateCreateAndSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (Collection<String>) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6],
@@ -135,16 +123,85 @@ public class AdministratorServiceTest extends AbstractTest {
 		try {
 			super.authenticate(principal);
 			admin = this.adminService.create();
+			userAccount = new UserAccount();
+			userAccount.setUsername(username);
+			userAccount.setPassword(password);
+			final Collection<Authority> authorities = new ArrayList<>();
+			final Authority auth = new Authority();
+			auth.setAuthority(Authority.ADMIN);
+			authorities.add(auth);
+			userAccount.setAuthorities(authorities);
+			admin.setUserAccount(userAccount);
 			admin.setName(name);
 			admin.setSurname(surname);
 			admin.setEmail(email);
 			admin.setPhone(phone);
 			admin.setCreditCard(creditCard);
 			admin.setVat(new Double(vat));
-			userAccount = admin.getUserAccount();
-			userAccount.setUsername(username);
-			userAccount.setPassword(password);
-			admin.setUserAccount(userAccount);
+			admin = this.adminService.save(admin);
+			this.adminService.flush();
+			this.userAccountService.flush();
+			super.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+
+		}
+
+		this.checkExceptions(expected, caught);
+	}
+
+	/* ========================= Test Create and Save Administrator =========================== */
+
+	@Test
+	public void driverEditAndSaveAdministrator() {
+		final Collection<String> surnames = new ArrayList<>();
+		surnames.add("Garcia");
+		final Collection<String> surnames1 = new ArrayList<>();
+		surnames1.add("Garcia");
+		surnames1.add("");
+		final Collection<String> surnames2 = new ArrayList<>();
+		surnames2.add("Lanzas");
+		final CreditCard c = super.defaultCreditCard();
+		final Object testingData[][] = {
+			{
+				//				A: Acme HackerRank Req. 11.1. Update administrator profile
+				//				B: Test Positivo: Creación correcta de un admin
+				//				C: % Recorre 54 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "Administrator1", surnames, "garcia@us.es", "647307406", "0.1", c, null
+			}, {
+				//				A: Acme HackerRank Req. 11.1. Update administrator profile
+				//				B: Test Negativo: Creación incorrecta de un admin con name en blanco
+				//				C: % Recorre 54 de la 196 lineas posibles
+				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
+				"admin1", "", surnames, "lanzas@gmail.com", "+34647307406", "0.1", c, ConstraintViolationException.class
+			}
+
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateEditAndSave((String) testingData[i][0], (String) testingData[i][1], (Collection<String>) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (CreditCard) testingData[i][6],
+				(Class<?>) testingData[i][7]);
+	}
+	private void templateEditAndSave(final String principal, final String name, final Collection<String> surname, final String email, final String phone, final String vat, final CreditCard creditCard, final Class<?> expected) {
+
+		// para crear un administrador tienes que tener autoridad de administrador
+
+		Class<?> caught;
+		Administrator admin;
+		final UserAccount userAccount;
+
+		caught = null;
+
+		try {
+			super.authenticate(principal);
+			admin = this.adminService.findByPrincipal();
+			userAccount = new UserAccount();
+			admin.setName(name);
+			admin.setSurname(surname);
+			admin.setEmail(email);
+			admin.setPhone(phone);
+			admin.setCreditCard(creditCard);
+			admin.setVat(new Double(vat));
 			admin = this.adminService.save(admin);
 			this.adminService.flush();
 			super.unauthenticate();

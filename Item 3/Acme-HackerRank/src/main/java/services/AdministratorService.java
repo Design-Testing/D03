@@ -66,14 +66,12 @@ public class AdministratorService {
 			final Md5PasswordEncoder encoder = new Md5PasswordEncoder();
 			final String hash = encoder.encodePassword(ua.getPassword(), null);
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
-			ua.setPassword(hash);
-			a.setUserAccount(ua);
+			ua.setAuthorities(ua.getAuthorities());
+			ua.setUsername(ua.getUsername());
+			ua.setPassword(ua.getPassword());
+			final UserAccount uasaved = this.userAccountService.save(ua);
+			a.setUserAccount(uasaved);
 			result = this.administratorRepository.save(a);
-			UserAccount uaSaved = result.getUserAccount();
-			uaSaved.setAuthorities(ua.getAuthorities());
-			uaSaved.setUsername(ua.getUsername());
-			uaSaved.setPassword(ua.getPassword());
-			uaSaved = this.userAccountService.save(uaSaved);
 			this.folderService.setFoldersByDefault(result);
 		} else
 			result = (Administrator) this.actorService.save(a);

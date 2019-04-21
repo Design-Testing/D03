@@ -72,4 +72,8 @@ public class UserAccountService {
 
 		return ua;
 	}
+
+	public void flush() {
+		this.userAccountRepository.flush();
+	}
 }
