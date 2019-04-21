@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ConfigurationParametersService;
 import services.CurriculaService;
 import services.HackerService;
 import services.PersonalDataService;
@@ -24,22 +25,27 @@ import domain.PersonalData;
 public class PersonalDataController extends AbstractController {
 
 	@Autowired
-	private PersonalDataService	personalDataService;
+	private PersonalDataService				personalDataService;
 
 	@Autowired
-	private HackerService		hackerService;
+	private HackerService					hackerService;
 
 	@Autowired
-	private CurriculaService	curriculaService;
+	private CurriculaService				curriculaService;
+
+	@Autowired
+	private ConfigurationParametersService	configurationParametersService;
 
 
-	/*@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
-		ModelAndView result;
-		final PersonalData personalData = this.personalDataService.create();
-		result = this.createEditModelAndView(personalData);
-		return result;
-	}*/
+	/*
+	 * @RequestMapping(value = "/create", method = RequestMethod.GET)
+	 * public ModelAndView create() {
+	 * ModelAndView result;
+	 * final PersonalData personalData = this.personalDataService.create();
+	 * result = this.createEditModelAndView(personalData);
+	 * return result;
+	 * }
+	 */
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int personalDataId) {
@@ -50,12 +56,7 @@ public class PersonalDataController extends AbstractController {
 			personalData = this.personalDataService.findOne(personalDataId);
 			Assert.isTrue(this.hackerService.hasPersonalData(hacker.getId(), personalDataId), "This personal data is not of your property");
 
-			final Curricula curricula = this.curriculaService.findCurriculaByPersonalData(personalDataId);
-			result = new ModelAndView("personalData/edit");
-			result.addObject("personalData", personalData);
-			result.addObject("message", null);
-			result.addObject("curriculaId", curricula.getId());
-
+			result = this.createEditModelAndView(personalData);
 		} catch (final Exception e) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", e.getMessage());
@@ -77,6 +78,7 @@ public class PersonalDataController extends AbstractController {
 
 				result = new ModelAndView("curricula/display");
 				result.addObject("curricula", curricula);
+				result.addObject("curriculaId", curricula.getId());
 				result.addObject("messages", null);
 				result.addObject("buttons", false);
 
@@ -111,9 +113,7 @@ public class PersonalDataController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final PersonalData personalData) {
 		ModelAndView result;
-
 		result = this.createEditModelAndView(personalData, null);
-
 		return result;
 	}
 	// Edition ---------------------------------------------------------
@@ -124,7 +124,8 @@ public class PersonalDataController extends AbstractController {
 		result = new ModelAndView("personalData/edit");
 		result.addObject("personalData", personalData);
 		result.addObject("message", message);
-
+		result.addObject("curriculaId", this.curriculaService.findCurriculaByPersonalData(personalData.getId()).getId());
+		result.addObject("countryPhoneCode", this.configurationParametersService.find().getCountryPhoneCode());
 		return result;
 
 	}

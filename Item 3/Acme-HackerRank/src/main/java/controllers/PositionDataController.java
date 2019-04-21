@@ -83,6 +83,7 @@ public class PositionDataController {
 				final Curricula curricula = this.curriculaService.findOne(curriculaId);
 				result = new ModelAndView("curricula/display");
 				result.addObject("curricula", curricula);
+				result.addObject("curriculaId", curricula.getId());
 				result.addObject("message", null);
 				result.addObject("buttons", true);
 
@@ -122,6 +123,7 @@ public class PositionDataController {
 
 			res = new ModelAndView("positionData/display");
 			res.addObject("positionData", positionData);
+			res.addObject("curriculaId", this.curriculaService.findCurriculaByPositionData(positionData.getId()).getId());
 			res.addObject("buttons", false);
 
 		} else
@@ -146,6 +148,7 @@ public class PositionDataController {
 		result = new ModelAndView("positionData/edit");
 		result.addObject("positionData", positionData);
 		result.addObject("message", message);
+		result.addObject("curriculaId", this.curriculaService.findCurriculaByPositionData(positionData.getId()).getId());
 
 		return result;
 
