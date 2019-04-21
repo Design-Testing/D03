@@ -2,6 +2,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -99,6 +100,24 @@ public class HackerService {
 		Assert.isTrue(principal.getId() == hacker.getId(), "You only can edit your info");
 		Assert.isTrue(this.hackerRepository.exists(hacker.getId()));
 		this.hackerRepository.delete(hacker);
+	}
+
+	public void deletePersonalData() {
+		final Hacker principal = this.findByPrincipal();
+		this.finderService.clear(this.finderService.findHackerFinder());
+		final Collection<String> surnames = Arrays.asList("DELETED");
+		principal.setAddress(null);
+		principal.setEmail("DELETED@mail.de");
+		principal.setSurname(surnames);
+		//principal.setName("");
+		principal.setPhone(null);
+		principal.setPhoto(null);
+		principal.setSpammer(false);
+		principal.setVat(0.1);
+		final Authority ban = new Authority();
+		ban.setAuthority(Authority.BANNED);
+		principal.getUserAccount().getAuthorities().add(ban);
+		this.hackerRepository.save(principal);
 	}
 
 	/* ========================= OTHER METHODS =========================== */

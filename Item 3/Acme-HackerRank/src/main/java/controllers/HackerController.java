@@ -10,9 +10,6 @@
 
 package controllers;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 
@@ -28,10 +25,10 @@ import security.Authority;
 import security.UserAccount;
 import services.ActorService;
 import services.ConfigurationParametersService;
+import services.FinderService;
 import services.HackerService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
-import domain.Actor;
 import domain.Hacker;
 import forms.ActorForm;
 
@@ -50,6 +47,9 @@ public class HackerController extends AbstractController {
 
 	@Autowired
 	private UserAccountService				userAccountService;
+
+	@Autowired
+	private FinderService					finderService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
@@ -156,25 +156,11 @@ public class HackerController extends AbstractController {
 	// GDPR -----------------------------------------------------------
 	@RequestMapping(value = "/deletePersonalData")
 	public ModelAndView deletePersonalData() {
-		final Actor principal = this.actorService.findByPrincipal();
-		final Collection<String> surnames = Arrays.asList("DELETED");
-		principal.setAddress("");
-		principal.setEmail("DELETED@mail.de");
-		principal.setSurname(surnames);
-		//principal.setName("");
-		principal.setPhone("");
-		principal.setPhoto("");
-		principal.setSpammer(false);
-		principal.setVat(0.);
-		final Authority ban = new Authority();
-		ban.setAuthority(Authority.BANNED);
-		principal.getUserAccount().getAuthorities().add(ban);
-		this.actorService.save(principal);
+		this.hackerService.deletePersonalData();
 
 		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
 		return result;
 	}
-
 	// ANCILLARY METHODS  ---------------------------------------------------------------		
 
 	protected ModelAndView createEditModelAndView(final ActorForm actorForm) {

@@ -1,7 +1,6 @@
 
 package controllers;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -22,7 +21,6 @@ import services.CompanyService;
 import services.ConfigurationParametersService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
-import domain.Actor;
 import domain.Company;
 import forms.CompanyForm;
 
@@ -154,20 +152,7 @@ public class CompanyController extends AbstractController {
 	// GDPR -----------------------------------------------------------
 	@RequestMapping(value = "/deletePersonalData")
 	public ModelAndView deletePersonalData() {
-		final Actor principal = this.actorService.findByPrincipal();
-		final Collection<String> surnames = Arrays.asList("DELETED");
-		principal.setAddress("");
-		principal.setEmail("DELETED@mail.de");
-		principal.setSurname(surnames);
-		//principal.setName("");
-		principal.setPhone("");
-		principal.setPhoto("");
-		principal.setSpammer(false);
-		principal.setVat(0.);
-		final Authority ban = new Authority();
-		ban.setAuthority(Authority.BANNED);
-		principal.getUserAccount().getAuthorities().add(ban);
-		this.actorService.save(principal);
+		this.companyService.deletePersonalData();
 
 		final ModelAndView result = new ModelAndView("redirect:../j_spring_security_logout");
 		return result;

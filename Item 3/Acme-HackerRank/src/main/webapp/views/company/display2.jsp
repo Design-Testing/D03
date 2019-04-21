@@ -28,13 +28,21 @@ function generatePDF(){
 	doc.text('<spring:message code="display.document.title"/>', 20, 10)
 	doc.text('', 10, 20)
 	doc.text('<spring:message code="company.name"/> : <jstl:out value="${company.name}"/>', 10, 30)
+	doc.text('<spring:message code="company.commercialName"/> : <jstl:out value="${company.commercialName}"/>', 10, 40)
 	doc.text('<spring:message code="company.surname"/> : <jstl:out value="${company.surname}"/>', 10, 50)
 	doc.text('<spring:message code="company.photo"/> : <jstl:out value="${company.photo}"/>', 10, 60)
 	doc.text('<spring:message code="company.phone"/> : <jstl:out value="${company.phone}"/>', 10, 70)
 	doc.text('<spring:message code="company.email"/> : <jstl:out value="${company.email}"/>', 10, 80)
 	doc.text('<spring:message code="company.address"/> : <jstl:out value="${company.address}"/>', 10, 90)
-	doc.text('<spring:message code="company.commercialName"/> : <jstl:out value="${company.commercialName}"/>', 10, 80)
 	doc.text('<spring:message code="company.vat"/> : <jstl:out value="${company.vat}"/>', 10, 100)
+	doc.text('', 10, 100)
+	doc.text('<spring:message code="company.creditCard"/>', 15, 110)
+	doc.text('<spring:message code="company.creditCard.holderName"/> : <jstl:out value="${company.creditCard.holderName}"/>', 10, 120)
+	doc.text('<spring:message code="company.creditCard.number"/> : <jstl:out value="${company.creditCard.number}"/>', 10, 130)
+	doc.text('<spring:message code="company.creditCard.make"/> : <jstl:out value="${company.creditCard.make}"/>', 10, 140)
+	doc.text('<spring:message code="company.creditCard.expirationMonth"/> : <jstl:out value="${company.creditCard.expirationMonth}"/>', 10, 150)
+	doc.text('<spring:message code="company.creditCard.expirationYear"/> : <jstl:out value="${company.creditCard.expirationYear}"/>', 10, 160)
+	doc.text('<spring:message code="company.creditCard.cvv"/> : <jstl:out value="${company.creditCard.cvv}"/>', 10, 170)
 	doc.save('<spring:message code="display.document.fileName"/>.pdf')
 }
 function deletePersonalData(){
@@ -46,20 +54,37 @@ function deletePersonalData(){
 </script>
 
 
-<acme:display code="company.name" value="${company.name}"/>
-<spring:message code="company.photo"/>:<br>
-<img src="${company.photo}" alt="<spring:message code="hacker.alt.image"/>" width="20%" height="20%"/>
-<br>
+<acme:display code="company.name" value="${company.name}"/><br>
+
 <jstl:if test="${not empty company.surname}">
+<spring:message code="company.surname"/>
+<ul>
 <jstl:forEach items="${company.surname}" var="df">
-	<acme:display code="company.surname" value="${df}"/>
+	<li><jstl:out value="${df}"/></li>
 </jstl:forEach>
+</ul>
 </jstl:if>
-<acme:display code="company.email" value="${company.email}"/>
-<acme:display code="company.phone" value="${company.phone}"/>
-<acme:display code="company.commercialName" value="${company.commercialName}"/>
-<acme:display code="company.address" value="${company.address}"/>
-<acme:display code="company.vat" value="${company.vat}"/>
+<jstl:if test="${not empty company.photo}">
+<spring:message code="company.photo"/>:<br>
+<img src="${company.photo}" alt="<spring:message code="company.alt.image"/>" width="20%" height="20%"/>
+<br><br></jstl:if>
+<acme:display code="company.email" value="${company.email}"/><br>
+<jstl:if test="${not empty company.phone}">
+<acme:display code="company.phone" value="${company.phone}"/><br>
+</jstl:if>
+<acme:display code="company.commercialName" value="${company.commercialName}"/><br>
+<jstl:if test="${not empty company.address}">
+<acme:display code="company.address" value="${company.address}"/><br>
+</jstl:if>
+<acme:display code="company.vat" value="${company.vat}"/><br>
+
+<h3><spring:message code="company.creditCard"/></h3>
+<acme:display code="company.creditCard.holderName" value="${company.creditCard.holderName}"/>
+<acme:display code="company.creditCard.number" value="${company.creditCard.number}"/>
+<acme:display code="company.creditCard.make" value="${company.creditCard.make}"/>
+<acme:display code="company.creditCard.expirationMonth" value="${company.creditCard.expirationMonth}"/>
+<acme:display code="company.creditCard.expirationYear" value="${company.creditCard.expirationYear}"/>
+<acme:display code="company.creditCard.cvv" value="${company.creditCard.cvv}"/>
 
 <jstl:if test="${displayButtons}">
 <br>
