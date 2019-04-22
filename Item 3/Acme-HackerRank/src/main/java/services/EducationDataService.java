@@ -56,13 +56,13 @@ public class EducationDataService {
 		final Hacker me = this.hackerService.findByPrincipal();
 		Assert.notNull(me, "You must be logged in the system");
 		Assert.notNull(educationData);
-
+		System.out.println("me");
 		if (educationData.getEndDate() != null)
 			Assert.isTrue(educationData.getEndDate().after(educationData.getStartDate()), "End date must be after start date");
-
+		System.out.println("eeey");
 		if (educationData.getId() != 0)
 			Assert.isTrue(this.hackerService.hasEducationData(me.getId(), educationData.getId()), "This personal data is not of your property");
-
+		System.out.println("ppppp");
 		final EducationData res = this.educationDataRepository.save(educationData);
 
 		Assert.notNull(res);
@@ -74,6 +74,7 @@ public class EducationDataService {
 			curricula.setEducations(misc);
 			this.curriculaService.save(curricula);
 		}
+		System.out.println("rrrr");
 		return res;
 	}
 
@@ -100,7 +101,7 @@ public class EducationDataService {
 
 	}
 
-	final EducationData makeCopyAndSave(final EducationData ed) {
+	final EducationData makeCopyAndSave(final EducationData ed, final Curricula curricula) {
 		EducationData result = this.create();
 		result.setDegree(ed.getDegree());
 		result.setEndDate(ed.getEndDate());
@@ -108,7 +109,7 @@ public class EducationDataService {
 		result.setMark(ed.getMark());
 		result.setStartDate(ed.getStartDate());
 		Assert.notNull(result, "copy os education data is null");
-		result = this.educationDataRepository.save(result);
+		result = this.save(result, curricula.getId());
 		Assert.notNull(result, "retrieved copy od education data is null");
 		return result;
 

@@ -82,11 +82,14 @@ public class ApplicationHackerController extends AbstractController {
 
 		try {
 
-			//final Curricula curricula = this.curriculaService.findOne(curriculaId);
-			//final Curricula copy = this.curriculaService.makeCopyAndSave(curricula);
-			//System.out.println(copy);
+			System.out.println("cccc");
 
-			final Application application = this.applicationService.apply(positionId, curriculaId);
+			final Curricula curricula = this.curriculaService.findOne(curriculaId);
+			final Curricula copy = this.curriculaService.makeCopyAndSave(curricula);
+			System.out.println("ddd");
+			System.out.println(copy);
+
+			final Application application = this.applicationService.apply(positionId, copy.getId());
 			result = this.listPending();
 
 			result.addObject("application", application);
@@ -96,6 +99,7 @@ public class ApplicationHackerController extends AbstractController {
 		} catch (final Throwable oops) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", oops.getMessage());
+			System.out.println("ERROR" + oops.getMessage());
 		}
 
 		return result;
