@@ -22,13 +22,22 @@ import domain.PositionData;
 public class CurriculaService {
 
 	@Autowired
-	private CurriculaRepository	curriculaRepository;
+	private CurriculaRepository			curriculaRepository;
 
 	@Autowired
-	private HackerService		hackerService;
+	private HackerService				hackerService;
 
 	@Autowired
-	private PersonalDataService	personalDataService;
+	private PersonalDataService			personalDataService;
+
+	@Autowired
+	private EducationDataService		educationDataService;
+
+	@Autowired
+	private PositionDataService			positionDataService;
+
+	@Autowired
+	private MiscellaneousDataService	miscellaneousDataService;
 
 
 	public Curricula create() {
@@ -98,7 +107,7 @@ public class CurriculaService {
 		final Curricula res;
 		final Hacker hacker = this.hackerService.findByPrincipal();
 		if (curricula.getId() != 0)
-			Assert.isTrue(this.hackerService.findHackerByCurricula(curricula.getId()).equals(hacker));
+			Assert.isTrue(this.hackerService.findHackerByCurricula(curricula.getId()).equals(hacker), "logged actor doesnt match curricula's owner");
 		else
 			curricula.setHacker(hacker);
 		res = this.curriculaRepository.save(curricula);
@@ -154,4 +163,37 @@ public class CurriculaService {
 		return result;
 	}
 
+	public Curricula makeCopyAndSave(final Curricula curricula) {
+		Curricula result = this.create();
+		result.setHacker(curricula.getHacker());
+
+		final PersonalData pd = this.personalDataService.makeCopyAndSave(curricula.getPersonalRecord());
+		result.setPersonalRecord(pd);
+		final Collection<EducationData> eds = new ArrayList<EducationData>();
+		result.setEducations(eds);
+		final Collection<MiscellaneousData> mds = new ArrayList<MiscellaneousData>();
+		result.setMiscellaneous(mds);
+		final Collection<PositionData> pds = new ArrayList<PositionData>();
+		result.setPositions(pds);
+		result = this.save(result);
+
+		for (final EducationData ed : curricula.getEducations())
+			eds.add(this.educationDataService.makeCopyAndSave(ed, result));
+		result.setEducations(eds);
+
+		for (final MiscellaneousData md : curricula.getMiscellaneous())
+			mds.add(this.miscellaneousDataService.makeCopyAndSave(md, result));
+		result.setMiscellaneous(mds);
+
+		for (final PositionData pod : curricula.getPositions())
+			pds.add(this.positionDataService.makeCopyAndSave(pod, result));
+		result.setPositions(pds);
+
+		result.setHacker(null);
+		Assert.notNull(result, "copy of curricula is null");
+		result = this.curriculaRepository.save(result);
+		Assert.notNull(result, "retrieves copy curricula is null");
+
+		return result;
+	}
 }
