@@ -105,7 +105,6 @@ public class CurriculaController extends AbstractController {
 		final ModelAndView res;
 		final Hacker hacker = this.hackerService.findByPrincipal();
 		final Collection<Curricula> curricula = this.curriculaService.findCurriculaByHacker(hacker.getId());
-		System.out.println(curricula);
 		if (!(curricula == null)) {
 
 			res = new ModelAndView("curricula/displayAll");
