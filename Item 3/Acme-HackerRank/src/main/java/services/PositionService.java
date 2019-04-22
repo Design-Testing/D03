@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -28,22 +29,25 @@ import forms.PositionForm;
 public class PositionService {
 
 	@Autowired
-	private PositionRepository	positionRepository;
+	private PositionRepository				positionRepository;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private CompanyService		companyService;
+	private CompanyService					companyService;
 
 	@Autowired
-	private ProblemService		problemService;
+	private ProblemService					problemService;
 
 	@Autowired
-	private ApplicationService	applicationService;
+	private ApplicationService				applicationService;
 
 	@Autowired
-	private Validator			validator;
+	private ConfigurationParametersService	configParamService;
+
+	@Autowired
+	private Validator						validator;
 
 
 	public Position create() {
@@ -161,6 +165,15 @@ public class PositionService {
 		return res;
 	}
 
+	public List<Position> search(final String keyword) {
+		List<Position> result = new ArrayList<>(this.positionRepository.findByKeyword(keyword));
+		final int maxResults = this.configParamService.find().getMaxFinderResults();
+		if (result.size() > maxResults) {
+			Collections.shuffle(result);
+			result = result.subList(0, maxResults);
+		}
+		return result;
+	}
 	private String generateTicker(final String companyName) {
 		String res = "";
 		final Integer n1 = (int) Math.floor(Math.random() * 9 + 1);

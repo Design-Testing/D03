@@ -83,6 +83,9 @@
 		<security:intercept-url pattern="/hacker/display.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/finder/hacker/edit.do" access="hasRole('HACKER')"/>
 		
+		<!-- FINDER -->
+		<security:intercept-url pattern="/finder/search.do" access="permitAll"/>
+		<security:intercept-url pattern="/finder/searching.do" access="permitAll"/>
 		
 		<!-- MESSAGE -->
 		<security:intercept-url pattern="/message/create.do" access="hasAnyRole('ADMIN', 'HACKER', 'COMPANY', 'SUPER')" />
