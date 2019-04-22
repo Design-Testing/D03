@@ -31,6 +31,8 @@
 
 <acme:display code="application.status" value="${application.status}"/>
 
+
+
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
 		<spring:message code="application.moment" />: <fmt:formatDate
@@ -53,9 +55,15 @@
 	</jstl:otherwise>
 </jstl:choose>
 <br><br>
+
+<input type="button" name="dsiplay"
+                value="<spring:message code="application.curricula.display" />"
+                onclick="relativeRedir('curricula/display.do?curriculaId=${application.curricula.id}')" />
 <jstl:if test="${not empty rol}">
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
+
+<br><br>
 
 <security:authorize access="hasRole('HACKER')">
 

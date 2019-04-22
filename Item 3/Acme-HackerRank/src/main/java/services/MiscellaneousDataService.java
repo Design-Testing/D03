@@ -96,4 +96,18 @@ public class MiscellaneousDataService {
 
 	}
 
+	public MiscellaneousData makeCopyAndSave(final MiscellaneousData md, final Curricula curricula) {
+		MiscellaneousData result = this.create();
+		result.setFreeText(md.getFreeText());
+		final Collection<String> attachements = new ArrayList<String>();
+		if (!md.getAttachments().isEmpty() && md.getAttachments() != null)
+			for (final String s : md.getAttachments())
+				attachements.add(s);
+		result.setAttachments(attachements);
+		Assert.notNull(result, "copy of miscellaneous data is null");
+		result = this.save(result, curricula.getId());
+		Assert.notNull(result, "retrieved copy of miscellaneous data is null");
+		return result;
+	}
+
 }

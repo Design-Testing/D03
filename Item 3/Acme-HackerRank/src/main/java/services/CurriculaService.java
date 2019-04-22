@@ -22,13 +22,22 @@ import domain.PositionData;
 public class CurriculaService {
 
 	@Autowired
-	private CurriculaRepository	curriculaRepository;
+	private CurriculaRepository			curriculaRepository;
 
 	@Autowired
-	private HackerService		hackerService;
+	private HackerService				hackerService;
 
 	@Autowired
-	private PersonalDataService	personalDataService;
+	private PersonalDataService			personalDataService;
+
+	@Autowired
+	private EducationDataService		educationDataService;
+
+	@Autowired
+	private PositionDataService			positionDataService;
+
+	@Autowired
+	private MiscellaneousDataService	miscellaneousDataService;
 
 
 	public Curricula create() {
@@ -94,13 +103,24 @@ public class CurriculaService {
 	}
 
 	public Curricula save(final Curricula curricula) {
+		System.out.println(curricula);
 		Assert.notNull(curricula);
 		final Curricula res;
 		final Hacker hacker = this.hackerService.findByPrincipal();
-		if (curricula.getId() != 0)
-			Assert.isTrue(this.hackerService.findHackerByCurricula(curricula.getId()).equals(hacker));
-		else
+		System.out.println("hhhhhhhhh");
+		if (curricula.getId() != 0) {
+			System.out.println("rrrrrrrrrrrrrr");
+			System.out.println(this.hackerService.findHackerByCurricula(curricula.getId()));
+			System.out.println(hacker);
+			Assert.isTrue(this.hackerService.findHackerByCurricula(curricula.getId()).equals(hacker), "logged actor doesnt match curricula's owner");
+			System.out.println("wwwwwwwwwww");
+		} else {
+			System.out.println("rrrrrrrr");
+
 			curricula.setHacker(hacker);
+			System.out.println("kkkkkkkk");
+		}
+		System.out.println("aquiiiii");
 		res = this.curriculaRepository.save(curricula);
 		return res;
 	}
@@ -154,4 +174,44 @@ public class CurriculaService {
 		return result;
 	}
 
+	public Curricula makeCopyAndSave(final Curricula curricula) {
+		Curricula result = this.create();
+		result.setHacker(curricula.getHacker());
+
+		System.out.println("aaaa");
+		final PersonalData pd = this.personalDataService.makeCopyAndSave(curricula.getPersonalRecord());
+		result.setPersonalRecord(pd);
+		System.out.println("bbb");
+		final Collection<EducationData> eds = new ArrayList<EducationData>();
+		result.setEducations(eds);
+		final Collection<MiscellaneousData> mds = new ArrayList<MiscellaneousData>();
+		result.setMiscellaneous(mds);
+		final Collection<PositionData> pds = new ArrayList<PositionData>();
+		result.setPositions(pds);
+		result = this.save(result);
+
+		for (final EducationData ed : curricula.getEducations())
+			eds.add(this.educationDataService.makeCopyAndSave(ed, result));
+		result.setEducations(eds);
+		System.out.println("eeee");
+
+		for (final MiscellaneousData md : curricula.getMiscellaneous())
+			mds.add(this.miscellaneousDataService.makeCopyAndSave(md, result));
+		result.setMiscellaneous(mds);
+		System.out.println("ffff");
+
+		for (final PositionData pod : curricula.getPositions())
+			pds.add(this.positionDataService.makeCopyAndSave(pod, result));
+		result.setPositions(pds);
+
+		System.out.println("mmmmmmmm");
+
+		result.setHacker(null);
+		Assert.notNull(result, "copy of curricula is null");
+		System.out.println(this.hackerService.findHackerByCurricula(curricula.getId()));
+		result = this.curriculaRepository.save(result);
+		Assert.notNull(result, "retrieves copy curricula is null");
+
+		return result;
+	}
 }

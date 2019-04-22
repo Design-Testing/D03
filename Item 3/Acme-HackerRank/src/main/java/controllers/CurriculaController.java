@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import services.CurriculaService;
 import services.HackerService;
 import domain.Curricula;
@@ -75,11 +78,20 @@ public class CurriculaController extends AbstractController {
 
 			res = new ModelAndView("curricula/display");
 			res.addObject("curricula", curricula);
-			res.addObject("buttons", true);
+			res.addObject("buttons", false);
 			res.addObject("personalData", personalData);
 			res.addObject("positionDatas", positionDatas);
 			res.addObject("educationDatas", educationDatas);
 			res.addObject("miscellaneousRecords", miscellaneousRecords);
+
+			final UserAccount logged = LoginService.getPrincipal();
+
+			final Authority authHacker = new Authority();
+			authHacker.setAuthority(Authority.HACKER);
+			//final Authority authCompany = new Authority();
+			//authCompany.setAuthority(Authority.COMPANY);
+			if (logged.getAuthorities().contains(authHacker) && curricula.getHacker() != null)
+				res.addObject("buttons", true);
 		} else {
 			res = new ModelAndView("curricula/create");
 			res.addObject("curricula", curricula);

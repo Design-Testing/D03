@@ -14,6 +14,7 @@
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
 
+
 <jstl:set var="chooseList" value="/list" />
 	<jstl:if test="${not empty listPositions}">
 		<jstl:set var="chooseList" value="${rolURL}/${listPositions}" />
@@ -43,6 +44,14 @@
 	</display:column>
 		
 	<security:authorize access="hasRole('HACKER')">
+	<!--<display:column>
+
+     <select name="chosenCurricula" id="chosenCurricula">
+    	<jstl:forEach items="${curriculas}" var="c">
+    		<option value="${c.id}" label="${c.id}"><jstl:out value="${c.id}"/></option>
+    	</jstl:forEach>
+    </select>
+    </display:column>-->
 	<display:column>
 		<acme:button url="application/hacker/create.do?positionId=${row.id}" name="apply" code="position.application"/>
 	</display:column>

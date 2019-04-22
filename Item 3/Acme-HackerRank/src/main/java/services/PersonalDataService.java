@@ -29,7 +29,7 @@ public class PersonalDataService {
 		final PersonalData res = new PersonalData();
 		res.setFullName("");
 		res.setStatement("");
-		res.setPhone("+34654987654");
+		res.setPhone("+34654987654"); //TODO
 		res.setGithub("http://www.github.com");
 		res.setLinkedin("http://www.linkedin.com");
 		return res;
@@ -73,6 +73,19 @@ public class PersonalDataService {
 		final PersonalData saved = this.personalDataRepository.save(personalData);
 		Assert.notNull(this.findOne(saved.getId()));
 		return saved;
+	}
+
+	final PersonalData makeCopyAndSave(final PersonalData p) {
+		PersonalData result = this.create();
+		result.setFullName(p.getFullName());
+		result.setStatement(p.getStatement());
+		result.setPhone(p.getPhone());
+		result.setGithub(p.getGithub());
+		result.setLinkedin(p.getLinkedin());
+		Assert.notNull(result, "copy of personal data is null");
+		result = this.save(result);
+		Assert.notNull(result, "retrieved personal data is null");
+		return result;
 	}
 
 }

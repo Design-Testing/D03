@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ApplicationService;
+import services.CurriculaService;
 import services.HackerService;
 import services.PositionService;
 import controllers.AbstractController;
 import controllers.PositionController;
 import domain.Application;
+import domain.Curricula;
 import domain.Hacker;
 import domain.Position;
 import forms.ApplicationForm;
@@ -41,11 +43,13 @@ public class ApplicationHackerController extends AbstractController {
 	@Autowired
 	private PositionController	positionController;
 
+	@Autowired
+	private CurriculaService	curriculaService;
+
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
 
 
-	// CREATE --------------------------------------------------------
-
+	//go to view with the list of curriculas to select one and apply
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int positionId) {
 		ModelAndView result = new ModelAndView();
@@ -53,7 +57,39 @@ public class ApplicationHackerController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 
 		try {
-			final Application application = this.applicationService.apply(positionId);
+
+			final Collection<Curricula> curriculas = this.curriculaService.findCurriculaByHacker(hacker.getId());
+
+			result = new ModelAndView("position/apply");
+			result.addObject("curriculas", curriculas);
+			result.addObject("hacker", hacker);
+			result.addObject("positionId", positionId);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("administrator/error");
+			result.addObject("trace", oops.getMessage());
+			System.out.println(oops.getMessage());
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/apply", method = RequestMethod.GET)
+	public ModelAndView apply(@RequestParam final int positionId, @RequestParam final int curriculaId) {
+		ModelAndView result = new ModelAndView();
+		final Hacker hacker = this.hackerService.findByPrincipal();
+		final Position position = this.positionService.findOne(positionId);
+
+		try {
+
+			System.out.println("cccc");
+
+			final Curricula curricula = this.curriculaService.findOne(curriculaId);
+			final Curricula copy = this.curriculaService.makeCopyAndSave(curricula);
+			System.out.println("ddd");
+			System.out.println(copy);
+
+			final Application application = this.applicationService.apply(positionId, copy.getId());
 			result = this.listPending();
 
 			result.addObject("application", application);
@@ -63,6 +99,7 @@ public class ApplicationHackerController extends AbstractController {
 		} catch (final Throwable oops) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", oops.getMessage());
+			System.out.println("ERROR" + oops.getMessage());
 		}
 
 		return result;

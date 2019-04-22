@@ -36,4 +36,9 @@
 		<put-attribute name="body" value="/views/position/error.jsp" />
 	</definition>
 	
+	<definition name="position/apply" extends="master.page">	
+		<put-attribute name="title" value="Selecciona una curricula para solicitar una posición" />
+		<put-attribute name="body" value="/views/position/apply.jsp" />
+	</definition>
+	
 </tiles-definitions>
