@@ -73,15 +73,17 @@ public class MiscellaneousDataController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@RequestParam final int curriculaId, @Valid final MiscellaneousData miscellaneousData, final BindingResult bindingResult) {
 		ModelAndView result;
-		if (bindingResult.hasErrors())
+		if (bindingResult.hasErrors()) {
 			result = this.createEditModelAndView(miscellaneousData);
-		else
+			result.addObject("curriculaId", curriculaId);
+		} else
 			try {
 				this.miscellaneousDataService.save(miscellaneousData, curriculaId);
 
 				final Curricula curricula = this.curriculaService.findOne(curriculaId);
 				result = new ModelAndView("curricula/display");
 				result.addObject("curricula", curricula);
+				result.addObject("curriculaId", curricula.getId());
 				result.addObject("message", null);
 				result.addObject("buttons", true);
 
@@ -103,6 +105,7 @@ public class MiscellaneousDataController {
 
 			res = new ModelAndView("miscellaneousData/display");
 			res.addObject("miscellaneousData", miscellaneousData);
+			res.addObject("curriculaId", this.curriculaService.findCurriculaByMiscellaneousData(miscellaneousData.getId()).getId());
 			res.addObject("buttons", false);
 
 		} else
@@ -142,6 +145,8 @@ public class MiscellaneousDataController {
 		result = new ModelAndView("miscellaneousData/edit");
 		result.addObject("miscellaneousData", miscellaneousData);
 		result.addObject("message", message);
+		if (miscellaneousData.getId() != 0)
+			result.addObject("curriculaId", this.curriculaService.findCurriculaByMiscellaneousData(miscellaneousData.getId()).getId());
 
 		return result;
 

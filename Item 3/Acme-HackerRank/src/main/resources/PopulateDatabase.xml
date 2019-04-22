@@ -824,7 +824,7 @@
 		<property name="ticker" value="COMM-1236" />
 		<property name="profile" value="Profile for position 3" />
 		<property name="salary" value="1750.0" />
-		<property name="mode" value="FINAL" />
+		<property name="mode" value="DRAFT" />
 		<property name="skills">
 			<list>
 				<value>Skill1 for position 3</value>
@@ -893,7 +893,7 @@
 		<property name="ticker" value="COMM-1789" />
 		<property name="profile" value="Profile for position 6" />
 		<property name="salary" value="1750.0" />
-		<property name="mode" value="DRAFT" />
+		<property name="mode" value="FINAL" />
 		<property name="skills">
 			<list>
 				<value>Skill1 for position 6</value>

@@ -74,15 +74,17 @@ public class EducationDataController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@RequestParam final int curriculaId, @Valid final EducationData educationData, final BindingResult bindingResult) {
 		ModelAndView result;
-		if (bindingResult.hasErrors())
+		if (bindingResult.hasErrors()) {
 			result = this.createEditModelAndView(educationData);
-		else
+			result.addObject("curriculaId", curriculaId);
+		} else
 			try {
 				this.educationDataService.save(educationData, curriculaId);
 
 				final Curricula curricula = this.curriculaService.findOne(curriculaId);
 				result = new ModelAndView("curricula/display");
 				result.addObject("curricula", curricula);
+				result.addObject("curriculaId", curricula.getId());
 				result.addObject("message", null);
 				result.addObject("buttons", true);
 
@@ -112,6 +114,7 @@ public class EducationDataController {
 
 			res = new ModelAndView("educationData/display");
 			res.addObject("educationData", educationData);
+			res.addObject("curriculaId", this.curriculaService.findCurriculaByEducationData(educationData.getId()).getId());
 			res.addObject("buttons", false);
 
 		} else
@@ -151,6 +154,8 @@ public class EducationDataController {
 		result = new ModelAndView("educationData/edit");
 		result.addObject("educationData", educationData);
 		result.addObject("message", message);
+		if (educationData.getId() != 0)
+			result.addObject("curriculaId", this.curriculaService.findCurriculaByEducationData(educationData.getId()).getId());
 
 		return result;
 

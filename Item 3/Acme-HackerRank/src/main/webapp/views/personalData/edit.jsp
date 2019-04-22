@@ -8,6 +8,27 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+
+<script>
+	function phoneFun() {
+		var x = document.getElementById("phone");
+		var telefono = x.value;
+		var CCACPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\([1-9]{1}[0-9]{0,2}\\)){1}\\s*(\\d{4,}$)"); /* +CC (AC) PN */
+		var CCPN = new RegExp("(^\\+([1-9]{1}[0-9]{0,2})){1}\\s*(\\d{4,}$)"); /* +CC PN */
+		var PN = new RegExp("(^\\d{4,}$)"); /* PN */
+		if (('${phone}' != telefono) && !CCACPN.test(telefono) && !CCPN.test(telefono)) {
+			if (PN.test(telefono)) {
+				x.value = '${countryPhoneCode}' + " " + telefono;
+			} else {
+				var mensaje = confirm("<spring:message code="phone.error"/>");
+				if (!mensaje) {
+					x.value = '${phone}';
+				}
+			}
+		}
+	}
+</script>
+
 <form:form action="personalData/edit.do" modelAttribute="personalData">
 
 	<form:hidden path="id"/>
@@ -16,7 +37,13 @@
     <acme:textbox path="fullName" code="record.fullName"/>
     <acme:textbox path="statement" code="record.statement"/>
     <acme:textbox path="github" code="record.github"/>
-    <acme:textbox path="phone" code="record.phone"/>
+    <div>
+		<form:label path="phone">
+			<spring:message code="record.phone" />
+		</form:label>
+		<form:input path="phone" onblur="phoneFun()" />
+		<form:errors path="phone" cssClass="error" />
+	</div>
     <acme:textbox path="linkedin" code="record.linkedin"/>
 
     <br/>

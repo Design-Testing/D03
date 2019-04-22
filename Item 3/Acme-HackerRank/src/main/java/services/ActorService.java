@@ -244,9 +244,12 @@ public class ActorService {
 
 		if (a.getAddress() != null)
 			words.add(a.getAddress());
-		words.add(a.getEmail());
-		words.add(a.getName());
-		words.addAll(a.getSurname());
+		if (a.getEmail() != null)
+			words.add(a.getEmail());
+		if (a.getName() != null)
+			words.add(a.getName());
+		if (a.getSurname() != null)
+			words.addAll(a.getSurname());
 
 		if (this.configurationParametersService.checkForSpamWords(words))
 			a.setSpammer(true);

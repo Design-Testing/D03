@@ -2,6 +2,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.validation.ValidationException;
@@ -28,10 +29,13 @@ public class CompanyService {
 
 	@Autowired
 	private CompanyRepository	companyRepository;
+
 	@Autowired
 	private ActorService		actorService;
+
 	@Autowired
 	private UserAccountService	userAccountService;
+
 	@Autowired
 	private Validator			validator;
 
@@ -78,6 +82,24 @@ public class CompanyService {
 		Assert.isTrue(principal.getId() == company.getId(), "You only can edit your info");
 		Assert.isTrue(this.companyRepository.exists(company.getId()));
 		this.companyRepository.delete(company);
+	}
+
+	public void deletePersonalData() {
+		final Company principal = this.findByPrincipal();
+		final Collection<String> surnames = Arrays.asList("DELETED");
+		principal.setCommercialName("DELETED");
+		principal.setAddress(null);
+		principal.setEmail("DELETED@mail.de");
+		principal.setSurname(surnames);
+		//principal.setName("");
+		principal.setPhone(null);
+		principal.setPhoto(null);
+		principal.setSpammer(false);
+		principal.setVat(0.1);
+		final Authority ban = new Authority();
+		ban.setAuthority(Authority.BANNED);
+		principal.getUserAccount().getAuthorities().add(ban);
+		this.companyRepository.save(principal);
 	}
 
 	/* ========================= OTHER METHODS =========================== */

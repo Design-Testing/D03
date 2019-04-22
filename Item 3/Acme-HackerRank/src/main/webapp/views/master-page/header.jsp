@@ -108,10 +108,18 @@
 				</a>
 				<ul>
 					<li class="arrow"></li>
-					<security:authorize access="hasRole('COMPANY')">
-					<li><a href="company/edit.do"><spring:message code="master.page.company.edit" /></a></li>
-					<li><a href="company/display2.do"><spring:message code="master.page.company.display" /></a></li>
-					</security:authorize>
+						<security:authorize access="hasRole('COMPANY')">
+							<li><a href="company/edit.do"><spring:message code="master.page.company.edit" /></a></li>
+							<li><a href="company/display2.do"><spring:message code="master.page.company.display" /></a></li>
+						</security:authorize>
+						<security:authorize access="hasRole('ADMIN')">
+							<li><a href="administrator/edit.do"><spring:message code="master.page.administrator.edit" /></a></li>
+							<li><a href="administrator/display.do"><spring:message code="master.page.administrator.display" /></a></li>
+						</security:authorize>
+						<security:authorize access="hasRole('HACKER')">
+							<li><a href="hacker/edit.do"><spring:message code="master.page.hacker.edit" /></a></li>
+							<li><a href="hacker/display.do"><spring:message code="master.page.hacker.display" /></a></li>
+						</security:authorize>
 					<li><a href="folder/list.do"><spring:message code="master.page.folder.list" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
 				</ul>
