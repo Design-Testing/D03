@@ -111,4 +111,8 @@ public class EducationDataService {
 
 	}
 
+	public void flush() {
+		this.educationDataRepository.flush();
+	}
+
 }

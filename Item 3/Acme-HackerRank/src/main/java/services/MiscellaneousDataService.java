@@ -110,4 +110,9 @@ public class MiscellaneousDataService {
 		return result;
 	}
 
+	public void flush() {
+		this.miscellaneousDataRepository.flush();
+
+	}
+
 }

@@ -1,0 +1,154 @@
+
+package services;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import utilities.AbstractTest;
+import domain.Curricula;
+import domain.Hacker;
+import domain.PersonalData;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+	"classpath:spring/junit.xml"
+})
+@Transactional
+public class PersonalDataServiceTest extends AbstractTest {
+
+	// Services
+	@Autowired
+	private PersonalDataService	personalDataService;
+
+	@Autowired
+	private HackerService		hackerService;
+
+	@Autowired
+	private CurriculaService	curriculaService;
+
+
+	@Test
+	public void driverCreateSave() {
+		final Object testingData[][] = {
+			{
+				//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+				//			B: Test Positivo: Hacker edita PersonalData
+				//			C: 100% Recorre 68 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", "fullname", "statement", "github ", "phone", "linkedin", null
+			}
+		//, {
+		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+		//			B: Test Negativo: Hacker intenta editar Inception que no le pertenece
+		//			C: 89,70% Recorre 61 de las 68 lineas posibles
+		//			D: cobertura de datos=4/54
+		//"hacker1",  "fullname","statement", "github ", "phone","linkedin", null
+		//}
+		//, {
+		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+		//			B: Test Negativo: Un member intenta editar una PersonalData
+		//			C: 11,76% Recorre 8 de las 68 lineas posibles
+		//			D: cobertura de datos=4/54
+		//"hacker1",  "fullname","statement", "github ", "phone","linkedin", null
+		//}
+		//, {
+		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+		//			B: Test Negativo: Hacker edita PersonalData con title vacio
+		//			C: 98,52% Recorre 67 de las 68 lineas posibles
+		//			D: cobertura de datos=4/54
+		//"hacker1",  "fullname","statement", "github ", "phone","linkedin", null
+		//}
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
+	}
+
+	protected void templateCreateSave(final String user, final String fullName, final String statement, final String github, final String phone, final String linkedin, final Class<?> expected) {
+
+		Class<?> caught = null;
+
+		try {
+			this.authenticate(user);
+			final PersonalData incRec = this.personalDataService.create();
+			incRec.setFullName(fullName);
+			incRec.setStatement(statement);
+			incRec.setLinkedin(linkedin);
+			incRec.setGithub(github);
+			incRec.setPhone(phone);
+			final PersonalData incRecSaved = this.personalDataService.save(incRec);
+			Assert.isTrue(incRecSaved.getId() != 0);
+			this.personalDataService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		super.checkExceptions(expected, caught);
+	}
+
+	@Test
+	public void driverEdit() {
+		final Object testingData[][] = {
+			{
+				//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+				//			B: Test Positivo: Hacker edita PersonalData
+				//			C: 100% Recorre 68 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", "hacker1", "fullname", "statement", "github ", "phone", "linkedin", null
+			}
+		//, {
+		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+		//			B: Test Negativo: Hacker intenta editar Inception que no le pertenece
+		//			C: 89,70% Recorre 61 de las 68 lineas posibles
+		//			D: cobertura de datos=4/54
+		//"hacker1", "hacker1", "fullname","statement", "github ", "phone","linkedin", null
+		//}
+		//, {
+		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+		//			B: Test Negativo: Un member intenta editar una PersonalData
+		//			C: 11,76% Recorre 8 de las 68 lineas posibles
+		//			D: cobertura de datos=4/54
+		//"hacker1", "hacker1", "fullname","statement", "github ", "phone","linkedin", null
+		//}
+		//, {
+		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
+		//			B: Test Negativo: Hacker edita PersonalData con title vacio
+		//			C: 98,52% Recorre 67 de las 68 lineas posibles
+		//			D: cobertura de datos=4/54
+		//"hacker1", "hacker1", "fullname","statement", "github ", "phone","linkedin", null
+		//}
+		};
+		for (int i = 0; i < testingData.length; i++)
+			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6], (Class<?>) testingData[i][7]);
+	}
+
+	private void templateEdit(final String user, final String userProp, final String fullName, final String statement, final String github, final String phone, final String linkedin, final Class<?> expected) {
+		Class<?> caught = null;
+		try {
+			this.authenticate(user);
+			final Hacker owner = this.hackerService.findOne(this.getEntityId(userProp));
+			final PersonalData iR;
+			final Curricula curricula = this.curriculaService.findCurriculaByHacker(owner.getId()).iterator().next();
+			iR = curricula.getPersonalRecord();
+			iR.setFullName(fullName);
+			iR.setStatement(statement);
+			iR.setLinkedin(linkedin);
+			iR.setGithub(github);
+			iR.setPhone(phone);
+			curricula.setPersonalRecord(iR);
+			this.personalDataService.save(iR);
+			this.personalDataService.flush();
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		super.checkExceptions(expected, caught);
+
+	}
+}
