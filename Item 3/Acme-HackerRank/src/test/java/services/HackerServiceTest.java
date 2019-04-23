@@ -156,10 +156,10 @@ public class HackerServiceTest extends AbstractTest {
 				"hacker1", "hacker1", "", surnames, "garcia@gmail.es", "+34647307406", ConstraintViolationException.class
 			}, {
 				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
-				//				B: Test Positivo: Edición correcta de los datos de un hacker con apellidos vacio
+				//				B: Test Negativo: Edición incorrecta de los datos de un hacker con apellidos vacio
 				//				C: % Recorre 8 de la 23 lineas posibles
 				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				"hacker1", "hacker1", "Hacker1", surnames2, "garcia@gmail.es", "+34647307406", null
+				"hacker1", "hacker1", "Hacker1", surnames2, "garcia@gmail.es", "+34647307406", ConstraintViolationException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)
