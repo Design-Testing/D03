@@ -68,7 +68,7 @@ public class AdministratorService {
 			Assert.isTrue(this.userAccountRepository.findByUsername(ua.getUsername()) == null, "The username is register");
 			ua.setAuthorities(ua.getAuthorities());
 			ua.setUsername(ua.getUsername());
-			ua.setPassword(ua.getPassword());
+			ua.setPassword(hash);
 			final UserAccount uasaved = this.userAccountService.save(ua);
 			a.setUserAccount(uasaved);
 			result = this.administratorRepository.save(a);

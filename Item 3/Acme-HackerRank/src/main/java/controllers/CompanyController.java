@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
-import services.ActorService;
 import services.CompanyService;
 import services.ConfigurationParametersService;
 import services.UserAccountService;
@@ -30,12 +29,13 @@ public class CompanyController extends AbstractController {
 
 	@Autowired
 	private CompanyService					companyService;
-	@Autowired
-	private ActorService					actorService;
+
 	@Autowired
 	private RegisterService					registerService;
+
 	@Autowired
 	private UserAccountService				userAccountService;
+
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
 

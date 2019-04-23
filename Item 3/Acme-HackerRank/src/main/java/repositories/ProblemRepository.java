@@ -24,4 +24,7 @@ public interface ProblemRepository extends JpaRepository<Problem, Integer> {
 	@Query("select a.problem from Application a where a.position.id=?1 AND a.hacker.userAccount.id=?2")
 	Collection<Problem> findProblemsByPositionAndHacker(int positionId, int hackerUAId);
 
+	@Query("select p from Problem p where p.position.id=?1 AND p.mode='FINAL'")
+	Collection<Problem> findFinalProblemsByPosition(int positionId);
+
 }

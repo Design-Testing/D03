@@ -68,6 +68,7 @@ public class PositionCompanyController extends AbstractController {
 			result = new ModelAndView("position/display");
 			result.addObject("position", position);
 			result.addObject("company", company);
+			result.addObject("ownerId", position.getCompany().getId());
 			result.addObject("rol", "company");
 			result.addObject("lang", this.lang);
 			result.addObject("problems", problems);
@@ -104,39 +105,49 @@ public class PositionCompanyController extends AbstractController {
 		ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
-		if (position == null || !position.getMode().equals("DRAFT") || (this.problemService.findProblemsByPosition(positionId).size() < 2)) {
-			result = new ModelAndView("position/error");
-			result.addObject("ok", "Error al pasar a final mode la posicion.");
+		if (position == null) {
+			result = this.myPositions();
+			result.addObject("msg", "position.final.mode.error");
 		} else
 			try {
 				this.positionService.toFinalMode(positionId);
 				result = this.myPositions();
 			} catch (final Throwable oops) {
-				result = new ModelAndView("position/error");
-				result.addObject("ok", "Error al pasar a final mode la posicion.");
+				String errormsg = "position.final.mode.error";
+				result = this.myPositions();
+				if (this.problemService.findFinalProblemsByPosition(positionId).size() < 2)
+					errormsg = "position.mode.no.problems";
+				if (!position.getMode().equals("DRAFT"))
+					errormsg = "position.final.no.draft";
+				result.addObject("msg", errormsg);
 			}
 
 		return result;
 	}
-
 	// TO CANCELLED MODE --------------------------------------------------------
 
 	@RequestMapping(value = "/cancelledMode", method = RequestMethod.GET)
 	public ModelAndView cancelledMode(@RequestParam final int positionId) {
-		final ModelAndView result;
+		ModelAndView result;
 		final Position position = this.positionService.findOne(positionId);
 
-		if (position == null || !position.getMode().equals("FINAL")) {
+		if (position == null) {
 			result = new ModelAndView("position/error");
-			result.addObject("ok", "Error al pasar a cancelled mode la posicion.");
-		} else {
-			this.positionService.toCancelMode(positionId);
-			result = this.myPositions();
-		}
+			result.addObject("msg", "position.cancel.mode.error");
+		} else
+			try {
+				this.positionService.toCancelMode(positionId);
+				result = this.myPositions();
+			} catch (final Throwable oops) {
+				String errormsg = "position.cancel.mode.error";
+				if (!position.getMode().equals("FINAL"))
+					errormsg = "position.cancel.no.final";
+				result = this.myPositions();
+				result.addObject("msg", errormsg);
+			}
 
 		return result;
 	}
-
 	// EDIT --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)

@@ -123,6 +123,13 @@ public class ProblemService {
 		return res;
 	}
 
+	public Collection<Problem> findFinalProblemsByPosition(final int positionId) {
+		Collection<Problem> res = new ArrayList<>();
+		res = this.problemRepository.findFinalProblemsByPosition(positionId);
+		Assert.notNull(res);
+		return res;
+	}
+
 	public Collection<Problem> findProblemByCompany() {
 		final Company company = this.companyService.findByPrincipal();
 		Collection<Problem> res = new ArrayList<>();

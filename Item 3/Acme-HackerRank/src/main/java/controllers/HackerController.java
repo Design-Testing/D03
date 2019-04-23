@@ -23,9 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
-import services.ActorService;
 import services.ConfigurationParametersService;
-import services.FinderService;
 import services.HackerService;
 import services.UserAccountService;
 import services.auxiliary.RegisterService;
@@ -37,9 +35,6 @@ import forms.ActorForm;
 public class HackerController extends AbstractController {
 
 	@Autowired
-	private ActorService					actorService;
-
-	@Autowired
 	private HackerService					hackerService;
 
 	@Autowired
@@ -47,9 +42,6 @@ public class HackerController extends AbstractController {
 
 	@Autowired
 	private UserAccountService				userAccountService;
-
-	@Autowired
-	private FinderService					finderService;
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;

@@ -20,7 +20,6 @@ import services.CurriculaService;
 import services.HackerService;
 import services.PositionService;
 import controllers.AbstractController;
-import controllers.PositionController;
 import domain.Application;
 import domain.Curricula;
 import domain.Hacker;
@@ -41,9 +40,6 @@ public class ApplicationHackerController extends AbstractController {
 	private PositionService		positionService;
 
 	@Autowired
-	private PositionController	positionController;
-
-	@Autowired
 	private CurriculaService	curriculaService;
 
 	final String				lang	= LocaleContextHolder.getLocale().getLanguage();
@@ -54,7 +50,6 @@ public class ApplicationHackerController extends AbstractController {
 	public ModelAndView create(@RequestParam final int positionId) {
 		ModelAndView result = new ModelAndView();
 		final Hacker hacker = this.hackerService.findByPrincipal();
-		final Position position = this.positionService.findOne(positionId);
 
 		try {
 

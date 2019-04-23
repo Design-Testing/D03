@@ -19,9 +19,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-
-<h2 style="color: red;"><jstl:out value="${ok}"/></h2>
-
+<jstl:if test="${not empty ok}">
+	<h3 style="color: red;"><jstl:out value="${ok}"/></h3>
+</jstl:if>
+<jstl:if test="${not empty msg}">
+	<h3 style="color: red;"><spring:message code="${msg}"/></h3>
+</jstl:if>
 
 
 

@@ -53,9 +53,11 @@
 <br>
 <spring:message code="position.problem"/>
 
-<jstl:if test="${position.mode eq 'DRAFT'}">
+<security:authorize access="hasRole('COMPANY')">
+<jstl:if test="${position.mode eq 'DRAFT' and principal.id eq ownerId}">
 <acme:button url="problem/company/create.do?positionId=${position.id}" name="create" code="position.create" />
 </jstl:if>
+</security:authorize>
 
 <display:table pagesize="5" class="displaytag" keepStatus="true"
                name="problems" requestURI="problem/company/list.do" id="row">

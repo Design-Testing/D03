@@ -38,6 +38,9 @@
 <jstl:if test="${not empty postions}">
 <spring:message code="finder.results" />
 <br>
+<security:authorize access="hasRole('COMPANY')">
+<jstl:set var="rolURL" value="/company"/>
+</security:authorize>
 <display:table name="${postions}" id="row" pagesize="15" class="displaytag">
 	<display:column property="title" titleKey="position.title" />
 	
@@ -47,7 +50,6 @@
 	
 	<display:column titleKey="position.company">
 		<jstl:out value="${row.company.commercialName}" />
-		
 	</display:column>
 	
 	<display:column>
