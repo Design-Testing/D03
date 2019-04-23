@@ -106,7 +106,7 @@ public class CurriculaController extends AbstractController {
 					Assert.isTrue(this.hackerService.findHackerByCopyCurricula(curricula.getId()).equals(hacker));
 				}
 			} else if (logged.getAuthorities().contains(authCompany)) {
-				res.addObject("buttons", true);
+				res.addObject("buttons", false);
 				final Company company = this.companyService.findByPrincipal();
 				Assert.isTrue(this.curriculaService.findCurriculasByCompany(company.getId()).contains(curricula));
 			}
