@@ -196,4 +196,8 @@ public class CurriculaService {
 
 		return result;
 	}
+
+	public void flush() {
+		this.curriculaRepository.flush();
+	}
 }
