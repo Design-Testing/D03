@@ -44,6 +44,9 @@ public class PositionService {
 	private ApplicationService				applicationService;
 
 	@Autowired
+	private HackerService					hackerService;
+
+	@Autowired
 	private ConfigurationParametersService	configParamService;
 
 	@Autowired
@@ -81,6 +84,12 @@ public class PositionService {
 	public Collection<Position> findAllByCompany() {
 		final Company company = this.companyService.findByPrincipal();
 		final Collection<Position> result = this.positionRepository.findAllByCompany(company.getId());
+		Assert.notNull(result);
+		return result;
+	}
+
+	public Collection<Position> findAppliedByHacker() {
+		final Collection<Position> result = this.positionRepository.findAppliedByHacker(this.hackerService.findByPrincipal().getId());
 		Assert.notNull(result);
 		return result;
 	}

@@ -34,5 +34,15 @@
 <acme:display code="company.vat" value="${company.vat}"/>
 
 <br>
-<acme:button url="position/list.do" name="listPositions" code="back"/>
+<security:authorize access="hasRole('HACKER')">
+	<jstl:set var="hk" value="1"/>
+</security:authorize>
+<jstl:choose>
+	<jstl:when test="${hk eq 1}">
+		<acme:button url="position/hacker/list.do" name="back" code="back"/>
+	</jstl:when>
+	<jstl:otherwise>
+		<acme:button url="position/list.do" name="listPositions" code="back"/>
+	</jstl:otherwise>
+</jstl:choose>
 

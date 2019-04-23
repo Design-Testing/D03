@@ -45,29 +45,46 @@
 		
 	<security:authorize access="hasRole('HACKER')">
 	
-	<display:column>
-		<acme:button url="application/hacker/create.do?positionId=${row.id}" name="apply" code="position.application"/>
-	</display:column>
+	</security:authorize>
+	
+	<jstl:set var="ctrl" value="0"/>
+	<jstl:forEach var="t" items="${hackerPositions}">
+		<jstl:if test="${t eq row}">
+			<jstl:set var="ctrl" value="1"/>
+		</jstl:if>
+	</jstl:forEach>
+	
+	<security:authorize access="hasRole('HACKER')">
+			<display:column>
+				<jstl:choose>
+					<jstl:when test="${ctrl == 0}">
+						<acme:button url="application/hacker/create.do?positionId=${row.id}" name="apply" code="position.application"/>
+					</jstl:when>
+					<jstl:otherwise>
+						<spring:message code="position.applied" />
+					</jstl:otherwise>
+				</jstl:choose>
+			</display:column>
 	</security:authorize>
 		
 	<security:authorize access="hasRole('COMPANY')">
 	<display:column>
-		<jstl:if test="${row.mode eq 'DRAFT'}">
+		<jstl:if test="${row.mode eq 'DRAFT' and rol eq 'company'}">
 		<acme:button url="position/company/edit.do?positionId=${row.id}" name="edit" code="position.edit"/>
 		</jstl:if>
 	</display:column>
 	
 	<display:column>
-		<jstl:if test="${row.mode eq 'DRAFT'}">
+		<jstl:if test="${row.mode eq 'DRAFT' and rol eq 'company'}">
 		<acme:button url="position/company/delete.do?positionId=${row.id}" name="delete" code="position.delete"/>
 		</jstl:if>
 	</display:column>
 	
 	<display:column>
-	<jstl:if test="${row.mode eq 'DRAFT'}">
+	<jstl:if test="${row.mode eq 'DRAFT' and rol eq 'company'}">
 		<acme:button url="position/company/finalMode.do?positionId=${row.id}" name="edit" code="position.finalMode"/>
 	</jstl:if>
-	<jstl:if test="${row.mode eq 'FINAL'}">
+	<jstl:if test="${row.mode eq 'FINAL' and rol eq 'company'}">
 		<acme:button url="position/company/cancelledMode.do?positionId=${row.id}" name="edit" code="position.cancelledMode"/>
 	</jstl:if>
 	</display:column>
@@ -76,6 +93,11 @@
 
 	
 </display:table>
+	<jstl:forEach var="t" items="${hackerPositions}">
+			<jstl:out value="${t}"/>
+	</jstl:forEach>
+	
+
 
 <jstl:if test="${not empty msg}">
 	<h3 style="color: red;"><spring:message code="${msg}"/></h3>

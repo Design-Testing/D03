@@ -72,7 +72,7 @@
 
 	<security:authorize access="hasRole('COMPANY')">	
 	<display:column>
-	<jstl:if test="${row.mode eq 'DRAFT'}">
+	<jstl:if test="${row.mode eq 'DRAFT' and (company.id eq ownerId)}">
             <input type="button" name="edit"
                 value="<spring:message code="problem.edit" />"
                 onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}&positionId=${row.position.id}')" />
@@ -80,7 +80,7 @@
 	</display:column>
 	
 	<display:column>
-	<jstl:if test="${row.mode eq 'DRAFT'}">
+	<jstl:if test="${row.mode eq 'DRAFT' and (company.id eq ownerId)}">
 		<acme:button url="problem/company/finalMode.do?problemId=${row.id}" name="finalMode" code="problem.finalMode"/>
 	</jstl:if>
 	</display:column>
@@ -90,13 +90,18 @@
 	</display:column>
 	
 	</security:authorize>
-	
+	<security:authorize access="hasRole('HACKER')">
+		<jstl:set var="hk" value="1"/>
+	</security:authorize>
         
 </display:table>
 <br><br>
 <jstl:choose>
 	<jstl:when test="${rol eq 'company' }">
 		<acme:button url="position/company/myPositions.do" name="back" code="position.back"/>
+	</jstl:when>
+	<jstl:when test="${hk eq 1}">
+		<acme:button url="position/hacker/list.do" name="back" code="position.back"/>
 	</jstl:when>
 	<jstl:otherwise>
 		<acme:button url="position/list.do" name="back" code="position.back"/>
