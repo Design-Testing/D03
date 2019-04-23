@@ -181,7 +181,7 @@ public class FolderController extends AbstractController {
 
 			}
 		else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 	}
@@ -213,7 +213,7 @@ public class FolderController extends AbstractController {
 		folder = this.folderService.findOne(folderId);
 
 		if (folder == null)
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 		else {
 			result = this.messageController.list(folderId);
 			result.addObject("folder", folder);

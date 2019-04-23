@@ -50,12 +50,13 @@
 
 <acme:display code="position.company" value="${position.company.name}"/> 
 <acme:button url="company/display.do?companyId=${position.company.id}" name="displayCompany" code="position.display"/>
-<br>
+<br><br>
 <spring:message code="position.problem"/>
 
 <security:authorize access="hasRole('COMPANY')">
-<jstl:if test="${position.mode eq 'DRAFT' and principal.id eq ownerId}">
+<jstl:if test="${position.mode eq 'DRAFT' and (company.id eq ownerId)}">
 <acme:button url="problem/company/create.do?positionId=${position.id}" name="create" code="position.create" />
+<br>
 </jstl:if>
 </security:authorize>
 

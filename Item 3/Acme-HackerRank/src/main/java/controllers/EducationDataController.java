@@ -96,7 +96,7 @@ public class EducationDataController {
 					result.addObject("curriculaId", curriculaId);
 					result.addObject("message", "alert.dates");
 				} else
-					result = new ModelAndView("redirect:/misc/403.jsp");
+					result = new ModelAndView("redirect:misc/403");
 
 			}
 
@@ -118,7 +118,7 @@ public class EducationDataController {
 			res.addObject("buttons", false);
 
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 

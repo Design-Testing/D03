@@ -109,7 +109,7 @@ public class MiscellaneousDataController {
 			res.addObject("buttons", false);
 
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 

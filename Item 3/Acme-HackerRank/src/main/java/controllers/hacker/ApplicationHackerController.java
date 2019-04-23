@@ -239,7 +239,7 @@ public class ApplicationHackerController extends AbstractController {
 		if ((application.getStatus().equals("PENDING") && application.getHacker() == hacker) && application.getExplanation() == null && application.getLink() == null)
 			result = this.createEditModelAndView(application);
 		else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 	}

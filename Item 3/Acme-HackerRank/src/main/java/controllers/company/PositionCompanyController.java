@@ -64,7 +64,7 @@ public class PositionCompanyController extends AbstractController {
 		company = this.companyService.findByPrincipal();
 		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
 
-		if (position != null) {
+		if (position != null && (position.getCompany().getId() == company.getId() || !position.getMode().equals("DRAFT"))) {
 			result = new ModelAndView("position/display");
 			result.addObject("position", position);
 			result.addObject("company", company);
@@ -74,7 +74,7 @@ public class PositionCompanyController extends AbstractController {
 			result.addObject("problems", problems);
 
 		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 	}
@@ -162,7 +162,7 @@ public class PositionCompanyController extends AbstractController {
 		if ((position.getMode().equals("DRAFT") && position.getCompany().equals(company)))
 			result = this.createEditModelAndView(this.positionService.constructPruned(position));
 		else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 	}

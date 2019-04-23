@@ -104,7 +104,7 @@ public class PersonalDataController extends AbstractController {
 			res.addObject("curriculaId", curricula.getId());
 
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 

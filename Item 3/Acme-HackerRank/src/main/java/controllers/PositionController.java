@@ -39,14 +39,13 @@ public class PositionController extends AbstractController {
 		position = this.positionService.findOne(positionId);
 		final Collection<Problem> problems = this.problemService.findProblemsByPosition(positionId);
 
-		if (position != null) {
+		if (position != null && !position.getMode().equals("DRAFT")) {
 			result = new ModelAndView("position/display");
 			result.addObject("position", position);
 			result.addObject("lang", this.lang);
 			result.addObject("problems", problems);
-
 		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 	}

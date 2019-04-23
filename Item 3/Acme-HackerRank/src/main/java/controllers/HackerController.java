@@ -74,7 +74,7 @@ public class HackerController extends AbstractController {
 			result.addObject("hacker", hacker);
 			result.addObject("displayButtons", true);
 		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 
@@ -91,7 +91,7 @@ public class HackerController extends AbstractController {
 			result.addObject("hacker", hacker);
 			result.addObject("displayButtons", true);
 		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 

@@ -80,7 +80,7 @@ public class CompanyController extends AbstractController {
 			result.addObject("company", company);
 			result.addObject("displayButtons", false);
 		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 
@@ -95,7 +95,7 @@ public class CompanyController extends AbstractController {
 			result.addObject("company", company);
 			result.addObject("displayButtons", true);
 		} else
-			result = new ModelAndView("redirect:/misc/403.jsp");
+			result = new ModelAndView("redirect:misc/403");
 
 		return result;
 

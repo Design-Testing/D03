@@ -92,7 +92,7 @@ public class PositionDataController {
 				if (e.getMessage().equals("End date must be after start date"))
 					result = this.createEditModelAndView(positionData, "alert.dates");
 				else
-					result = new ModelAndView("redirect:/misc/403.jsp");
+					result = new ModelAndView("redirect:misc/403");
 			}
 
 		return result;
@@ -128,7 +128,7 @@ public class PositionDataController {
 			res.addObject("buttons", false);
 
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 

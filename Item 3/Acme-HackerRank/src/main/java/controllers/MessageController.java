@@ -81,7 +81,7 @@ public class MessageController extends AbstractController {
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 
@@ -211,7 +211,7 @@ public class MessageController extends AbstractController {
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 
@@ -240,7 +240,7 @@ public class MessageController extends AbstractController {
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 	}
@@ -286,7 +286,7 @@ public class MessageController extends AbstractController {
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 	}
@@ -321,7 +321,7 @@ public class MessageController extends AbstractController {
 
 			}
 		else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 	}
@@ -345,7 +345,7 @@ public class MessageController extends AbstractController {
 			final String banner = this.configurationParametersService.find().getBanner();
 			res.addObject("banner", banner);
 		} else
-			res = new ModelAndView("redirect:/misc/403.jsp");
+			res = new ModelAndView("redirect:misc/403");
 
 		return res;
 

@@ -24,6 +24,6 @@
 	</script>
 </jstl:if>
 
-<p><spring:message code="welcome.greeting.prefix" /> ${name}<spring:message code="welcome.greeting.suffix" /></p>
+<p><jstl:out value="${mensaje}"/></p>
 
 <p><spring:message code="welcome.greeting.current.time" /> ${moment}</p> 

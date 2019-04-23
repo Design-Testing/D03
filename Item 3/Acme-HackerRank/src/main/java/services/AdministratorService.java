@@ -3,6 +3,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -105,6 +106,24 @@ public class AdministratorService {
 
 	public Administrator findSystem() {
 		return this.administratorRepository.findSystem();
+	}
+
+	public void deletePersonalData() {
+		final Administrator principal = this.findByPrincipal();
+		final List<String> s = new ArrayList<>();
+		s.add("DELETED");
+		principal.setAddress(null);
+		principal.setEmail("DELETED@mail.de");
+		principal.setSurname(s);
+		//principal.setName("");
+		principal.setPhone(null);
+		principal.setPhoto(null);
+		principal.setSpammer(false);
+		principal.setVat(0.0);
+		final Authority ban = new Authority();
+		ban.setAuthority(Authority.BANNED);
+		principal.getUserAccount().getAuthorities().add(ban);
+		this.administratorRepository.save(principal);
 	}
 
 	public Administrator reconstruct(final ActorForm actorForm, final BindingResult binding) {

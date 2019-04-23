@@ -2,8 +2,8 @@
 package services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
@@ -105,15 +105,16 @@ public class HackerService {
 	public void deletePersonalData() {
 		final Hacker principal = this.findByPrincipal();
 		this.finderService.clear(this.finderService.findHackerFinder());
-		final Collection<String> surnames = Arrays.asList("DELETED");
+		final List<String> s = new ArrayList<>();
+		s.add("DELETED");
 		principal.setAddress(null);
 		principal.setEmail("DELETED@mail.de");
-		principal.setSurname(surnames);
+		principal.setSurname(s);
 		//principal.setName("");
 		principal.setPhone(null);
 		principal.setPhoto(null);
 		principal.setSpammer(false);
-		principal.setVat(0.1);
+		principal.setVat(0.0);
 		final Authority ban = new Authority();
 		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
