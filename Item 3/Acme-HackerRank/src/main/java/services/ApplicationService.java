@@ -230,9 +230,7 @@ public class ApplicationService {
 
 	public Application reconstruct(final ApplicationForm applicationForm, final BindingResult binding) {
 		Application result;
-
 		Assert.isTrue(applicationForm.getId() != 0);
-
 		result = this.findOne(applicationForm.getId());
 
 		result.setId(applicationForm.getId());
@@ -241,13 +239,11 @@ public class ApplicationService {
 		result.setLink(applicationForm.getLink());
 
 		this.validator.validate(result, binding);
-
 		if (binding.hasErrors())
 			throw new ValidationException();
 
 		return result;
 	}
-
 	public Problem problemAssign(final int positionId, final Hacker hacker) {
 
 		final List<Problem> free = (List<Problem>) this.problemsFree(positionId, hacker);

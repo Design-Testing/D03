@@ -63,7 +63,6 @@ public class ApplicationHackerController extends AbstractController {
 		} catch (final Throwable oops) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", oops.getMessage());
-			System.out.println(oops.getMessage());
 		}
 
 		return result;
@@ -77,12 +76,8 @@ public class ApplicationHackerController extends AbstractController {
 
 		try {
 
-			System.out.println("cccc");
-
 			final Curricula curricula = this.curriculaService.findOne(curriculaId);
 			final Curricula copy = this.curriculaService.makeCopyAndSave(curricula);
-			System.out.println("ddd");
-			System.out.println(copy);
 
 			final Application application = this.applicationService.apply(positionId, copy.getId());
 			result = this.listPending();
@@ -250,12 +245,13 @@ public class ApplicationHackerController extends AbstractController {
 	public ModelAndView save(@Valid final ApplicationForm applicationForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Application application = this.applicationService.reconstruct(applicationForm, binding);
-
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(application);
-		else
+		if (binding.hasErrors()) {
+			result = new ModelAndView("application/edit");
+			result.addObject("application", applicationForm);
+			result.addObject("errors", binding.getAllErrors());
+		} else
 			try {
+				final Application application = this.applicationService.reconstruct(applicationForm, binding);
 				this.applicationService.save(application, application.getPosition().getId());
 				result = this.listSubmitted();
 			} catch (final Throwable oops) {

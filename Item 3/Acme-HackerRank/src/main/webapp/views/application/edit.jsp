@@ -8,6 +8,11 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<jstl:if test="${not empty errors}">
+	<div class="errorDiv">
+	<spring:message code="hacker.edit.validation" /> 
+	</div>
+</jstl:if>
 
 <form:form action="application/hacker/edit.do" modelAttribute="application"  method="POST">
 	<form:hidden path="id"/>
