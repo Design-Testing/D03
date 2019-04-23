@@ -124,19 +124,19 @@
 		<security:intercept-url pattern="/personalData/create.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/personalData/edit.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/personalData/delete.do" access="hasRole('HACKER')" />
-		<security:intercept-url pattern="/personalData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/personalData/display.do" access="hasAnyRole('HACKER' , 'COMPANY')" />
 		<security:intercept-url pattern="/educationData/delete.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/educationData/create.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/educationData/edit.do" access="hasRole('HACKER')" />
-		<security:intercept-url pattern="/educationData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/educationData/display.do" access="hasAnyRole('HACKER' , 'COMPANY')" />
 		<security:intercept-url pattern="/miscellaneousData/create.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/miscellaneousData/edit.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/miscellaneousData/delete.do" access="hasRole('HACKER')" />
-		<security:intercept-url pattern="/miscellaneousData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/miscellaneousData/display.do" access="hasAnyRole('HACKER' , 'COMPANY')" />
 		<security:intercept-url pattern="/positionData/create.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/positionData/edit.do" access="hasRole('HACKER')" />
 		<security:intercept-url pattern="/positionData/delete.do" access="hasRole('HACKER')" />
-		<security:intercept-url pattern="/positionData/display.do" access="permitAll" />
+		<security:intercept-url pattern="/positionData/display.do" access="hasAnyRole('HACKER' , 'COMPANY')" />
 
 		<!-- IS AUTHENTICATED -->
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 

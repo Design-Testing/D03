@@ -51,4 +51,7 @@ public interface HackerRepository extends JpaRepository<Hacker, Integer> {
 	@Query("select case when (count(c) > 0) then true else false end from Curricula c  where c.personalRecord.id=?2 and c.hacker.id=?1")
 	Boolean hasPersonalData(int hackerId, int dataId);
 
+	@Query("select a.hacker from Application a where a.curricula.id=?1")
+	Hacker findHackerByCopyCurricula(int id);
+
 }

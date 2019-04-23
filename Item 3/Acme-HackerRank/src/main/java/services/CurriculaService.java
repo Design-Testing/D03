@@ -200,4 +200,10 @@ public class CurriculaService {
 	public void flush() {
 		this.curriculaRepository.flush();
 	}
+
+	public Collection<Curricula> findCurriculasByCompany(final int id) {
+		final Collection<Curricula> result = this.curriculaRepository.findCurriculasByCompany(id);
+		Assert.notNull(result, "set of curriculas found of a compy is null");
+		return result;
+	}
 }

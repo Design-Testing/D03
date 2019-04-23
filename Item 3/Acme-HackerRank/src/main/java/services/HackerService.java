@@ -279,4 +279,10 @@ public class HackerService {
 		return result;
 	}
 
+	public Hacker findHackerByCopyCurricula(final int id) {
+		final Hacker result = this.hackerRepository.findHackerByCopyCurricula(id);
+		Assert.notNull(result, "hacker found by copy of curricula is null");
+		return result;
+	}
+
 }

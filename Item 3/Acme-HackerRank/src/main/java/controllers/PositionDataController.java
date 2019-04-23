@@ -12,9 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
+import services.CompanyService;
 import services.CurriculaService;
 import services.HackerService;
 import services.PositionDataService;
+import domain.Company;
 import domain.Curricula;
 import domain.Hacker;
 import domain.PositionData;
@@ -31,6 +36,9 @@ public class PositionDataController {
 
 	@Autowired
 	private CurriculaService	curriculaService;
+
+	@Autowired
+	private CompanyService		companyService;
 
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -126,6 +134,25 @@ public class PositionDataController {
 			res.addObject("positionData", positionData);
 			res.addObject("curriculaId", this.curriculaService.findCurriculaByPositionData(positionData.getId()).getId());
 			res.addObject("buttons", false);
+
+			final Curricula curricula = this.curriculaService.findOne(this.curriculaService.findCurriculaByPositionData(positionData.getId()).getId());
+
+			final UserAccount logged = LoginService.getPrincipal();
+
+			final Authority authHacker = new Authority();
+			authHacker.setAuthority(Authority.HACKER);
+			final Authority authCompany = new Authority();
+			authCompany.setAuthority(Authority.COMPANY);
+			if (logged.getAuthorities().contains(authHacker)) {
+				final Hacker hacker = this.hackerService.findByPrincipal();
+				if (curricula.getHacker() != null)
+					Assert.isTrue(curricula.getHacker().equals(hacker));
+				else if (curricula.getHacker() == null)
+					Assert.isTrue(this.hackerService.findHackerByCopyCurricula(curricula.getId()).equals(hacker));
+			} else if (logged.getAuthorities().contains(authCompany)) {
+				final Company company = this.companyService.findByPrincipal();
+				Assert.isTrue(this.curriculaService.findCurriculasByCompany(company.getId()).contains(curricula));
+			}
 
 		} else
 			res = new ModelAndView("redirect:misc/403");
