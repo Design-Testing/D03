@@ -31,4 +31,9 @@
 		<put-attribute name="body" value="/views/application/edit.jsp" />
 	</definition>
 	
+	<definition name="application/error" extends="master.page">	
+		<put-attribute name="title" value="Application: Error" />
+		<put-attribute name="body" value="/views/application/error.jsp" />
+	</definition>
+	
 </tiles-definitions>

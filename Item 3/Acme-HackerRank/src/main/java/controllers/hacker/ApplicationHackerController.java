@@ -4,6 +4,7 @@ package controllers.hacker;
 import java.util.Collection;
 
 import javax.validation.Valid;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -249,15 +250,19 @@ public class ApplicationHackerController extends AbstractController {
 
 		if (binding.hasErrors()) {
 			result = new ModelAndView("application/edit");
-			result.addObject("application", applicationForm);
+			result.addObject("applicationForm", applicationForm);
 			result.addObject("errors", binding.getAllErrors());
 		} else
 			try {
 				final Application application = this.applicationService.reconstruct(applicationForm, binding);
 				this.applicationService.save(application, application.getPosition().getId());
 				result = this.listSubmitted();
+			} catch (final ValidationException oops) {
+				result = new ModelAndView("application/edit");
+				result.addObject("applicationForm", applicationForm);
 			} catch (final Throwable oops) {
-				result = new ModelAndView("application/error");
+				result = new ModelAndView("application/edit");
+				result.addObject("message", "application.error");
 			}
 
 		return result;
@@ -278,7 +283,7 @@ public class ApplicationHackerController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("application/edit");
-		result.addObject("application", this.constructPruned(application)); // this.constructPruned(parade));
+		result.addObject("applicationForm", this.constructPruned(application)); // this.constructPruned(parade));
 
 		result.addObject("message", messageCode);
 

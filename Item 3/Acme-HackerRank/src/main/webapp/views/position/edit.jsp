@@ -32,7 +32,8 @@
 	<acme:textarea code="position.technologies" path="technologies" />
 	<acme:numberbox code="position.salary" path="salary" min="0" />
 <br>
-	<acme:submit code="position.submit" name="save"/>
+	<input type="submit" name="save"
+		value="<spring:message code="position.submit" />" />
 	<acme:button url="position/company/myPositions.do" name="back" code="position.back"/>
 
 </form:form>

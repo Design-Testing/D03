@@ -5,6 +5,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
@@ -19,6 +20,7 @@ public class ApplicationForm extends DomainEntity {
 
 
 	@SafeHtml
+	@NotBlank
 	public String getExplanation() {
 		return this.explanation;
 	}
@@ -29,6 +31,7 @@ public class ApplicationForm extends DomainEntity {
 
 	@URL
 	@SafeHtml
+	@NotBlank
 	public String getLink() {
 		return this.link;
 	}

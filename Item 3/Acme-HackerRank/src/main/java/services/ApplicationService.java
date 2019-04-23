@@ -106,8 +106,8 @@ public class ApplicationService {
 			if (application.getId() != 0) {
 				Assert.isTrue(application.getStatus().equals("PENDING"), "No puede actualizar una solicitud que no est� en estado PENDING.");
 				Assert.isTrue(application.getHacker() == principal, "No puede actualizar una solicitud que no le pertenece.");
-				Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicaci�n de su soluci�n.");
-				Assert.isTrue(application.getLink() != "", "Debe adjuntar un link de su soluci�n.");
+				// Assert.isTrue(application.getExplanation() != "", "Debe adjuntar una explicaci�n de su soluci�n.");
+				// Assert.isTrue(application.getLink() != "", "Debe adjuntar un link de su soluci�n.");
 				application.setStatus("SUBMITTED");
 				final Date submitMoment = new Date(System.currentTimeMillis() - 1);
 				application.setSubmitMoment(submitMoment);

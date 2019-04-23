@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +16,6 @@ import services.CompanyService;
 import controllers.AbstractController;
 import domain.Application;
 import domain.Company;
-import forms.ApplicationForm;
 
 @Controller
 @RequestMapping("/application/company")
@@ -167,8 +165,8 @@ public class ApplicationCompanyController extends AbstractController {
 		final Application application = this.applicationService.findOne(applicationId);
 
 		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.accept.error");
-			result.addObject("ok", false);
+			result = new ModelAndView("application/error");
+			result.addObject("msg", "application.accept.error");
 		} else {
 			this.applicationService.acceptApplication(applicationId);
 			result = this.listAccepted();
@@ -184,8 +182,8 @@ public class ApplicationCompanyController extends AbstractController {
 		final Application application = this.applicationService.findOne(applicationId);
 
 		if (application == null || !application.getStatus().equals("SUBMITTED")) {
-			result = this.createEditModelAndView(application, "application.reject.error");
-			result.addObject("ok", false);
+			result = new ModelAndView("application/error");
+			result.addObject("msg", "application.reject.error");
 		} else {
 			this.applicationService.rejectApplication(applicationId);
 			result = this.listRejected();
@@ -194,35 +192,4 @@ public class ApplicationCompanyController extends AbstractController {
 		return result;
 	}
 
-	// ANCILLIARY METHODS --------------------------------------------------------
-
-	protected ModelAndView createEditModelAndView(final Application application) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(application, null);
-
-		return result;
-	}
-
-	protected ModelAndView createEditModelAndView(final Application application, final String messageCode) {
-		Assert.notNull(application);
-		final ModelAndView result;
-
-		result = new ModelAndView("application/edit");
-		result.addObject("application", this.constructPruned(application));
-		result.addObject("message", messageCode);
-
-		return result;
-	}
-
-	public ApplicationForm constructPruned(final Application application) {
-		final ApplicationForm pruned = new ApplicationForm();
-
-		pruned.setId(application.getId());
-		pruned.setVersion(application.getVersion());
-		pruned.setExplanation(application.getExplanation());
-		pruned.setLink(application.getLink());
-
-		return pruned;
-	}
 }
