@@ -40,39 +40,29 @@ public class MiscellaneousDataServiceTest extends AbstractTest {
 
 	@Test
 	public void driverCreateSave() {
-		final Collection<String> attachmentsVacio = new ArrayList<String>();
 		final Collection<String> attachments = new ArrayList<String>();
 		attachments.add("AttachmentTest1");
 		attachments.add("AttachmentTest2");
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
-				//			B: Test Positivo: Hacker crea MiscellaneousData con coleccion de attachments vacia
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea MiscellaneousData 
 				//			C: 100% Recorre 49 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "degree1", "institution1", attachments, null
-			}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Negativo: Un member intenta crear una MiscellaneousData
-		//			C: 32,65% Recorre 16 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution1",attachments, null
-		//},
-		//{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea MiscellaneousData con coleccion de attachments con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution1",attachments, null
-		//}
-		//,{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea MiscellaneousData con coleccion de attachments con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution1",attachments, null
-		//},
+				"hacker1", "freeText1", attachments, null
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Negativo: Un hacker intenta crear una MiscellaneousData con el texto vacío
+				//			C: 32,65% Recorre 16 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "", attachments, javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker intenta crear MiscellaneousData sin archivos adjuntos
+				//			C: 100% Recorre 49 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "freeText1", null, org.springframework.dao.DataIntegrityViolationException.class
+			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
@@ -84,12 +74,13 @@ public class MiscellaneousDataServiceTest extends AbstractTest {
 		Class<?> caught = null;
 
 		try {
+			this.authenticate(user);
 			Curricula curricula = this.curriculaService.create();
 			final PersonalData pd = curricula.getPersonalRecord();
 			this.personalDataService.save(pd);
 			curricula.setPersonalRecord(pd);
 			curricula = this.curriculaService.save(curricula);
-			this.authenticate(user);
+
 			final MiscellaneousData lRec = this.miscellaneousDataService.create();
 			lRec.setFreeText(freeText);
 			if (attachments != null)
@@ -100,6 +91,7 @@ public class MiscellaneousDataServiceTest extends AbstractTest {
 			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
+			System.out.println(oops.getMessage());
 		}
 
 		super.checkExceptions(expected, caught);
@@ -107,39 +99,23 @@ public class MiscellaneousDataServiceTest extends AbstractTest {
 
 	@Test
 	public void driverEdit() {
-		final Collection<String> attachmentsVacio = new ArrayList<String>();
 		final Collection<String> attachments = new ArrayList<String>();
 		attachments.add("AttachmentTest1");
 		attachments.add("AttachmentTest2");
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
-				//			B: Test Positivo: Hacker crea MiscellaneousData con coleccion de attachments vacia
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker edita MiscellaneousData 
 				//			C: 100% Recorre 49 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "degree1", "institution1", attachments, null
+				"hacker1", "freeText1", attachments, null
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Negativo: Un hacker intenta editar una MiscellaneousData con el texto vacío
+				//			C: 32,65% Recorre 16 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker1", "", attachments, javax.validation.ConstraintViolationException.class
 			}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Negativo: Un member intenta crear una MiscellaneousData
-		//			C: 32,65% Recorre 16 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution1",attachments, null
-		//},
-		//{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea MiscellaneousData con coleccion de attachments con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution1",attachments, null
-		//}
-		//,{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea MiscellaneousData con coleccion de attachments con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution1",attachments, null
-		//},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
@@ -173,14 +149,14 @@ public class MiscellaneousDataServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
 				//			B: Test Positivo: Hacker borra MiscellaneousData 
 				//			C: 100% Recorre 78 de las 78 lineas posibles
 				//			D: cobertura de datos=1/3
 				"hacker2", null
 			}, {
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
-				//			B: Test Negativo: Member intenta borrar MiscellaneousData 
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Negativo: Company intenta borrar MiscellaneousData 
 				//			C: 10,25% Recorre 8 de las 78 lineas posibles
 				//			D: cobertura de datos=1/3
 				"company1", IllegalArgumentException.class
