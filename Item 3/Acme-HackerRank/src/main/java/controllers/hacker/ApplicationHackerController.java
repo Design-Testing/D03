@@ -247,12 +247,13 @@ public class ApplicationHackerController extends AbstractController {
 	public ModelAndView save(@Valid final ApplicationForm applicationForm, final BindingResult binding) {
 		ModelAndView result;
 
-		final Application application = this.applicationService.reconstruct(applicationForm, binding);
-
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(application);
-		else
+		if (binding.hasErrors()) {
+			result = new ModelAndView("application/edit");
+			result.addObject("application", applicationForm);
+			result.addObject("errors", binding.getAllErrors());
+		} else
 			try {
+				final Application application = this.applicationService.reconstruct(applicationForm, binding);
 				this.applicationService.save(application, application.getPosition().getId());
 				result = this.listSubmitted();
 			} catch (final Throwable oops) {
