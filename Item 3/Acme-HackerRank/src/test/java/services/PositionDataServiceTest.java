@@ -1,7 +1,6 @@
 
 package services;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -42,65 +41,59 @@ public class PositionDataServiceTest extends AbstractTest {
 
 
 	@Test
-	public void driverCreateSave() throws ParseException {
-		//final Collection<String> lawsVacio = new ArrayList<String>();
-		//final Collection<String> laws = new ArrayList<String>();
-		//laws.add("LawTest1");
-		//laws.add("LawTest2");
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//String stringFechaConHora = "2014-09-15 15:03:23";
-		//Date fechaConHora = sdf.parse(stringFechaConHora);
+	public void driverCreateSave() {
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
-				//			B: Test Positivo: Hacker crea PositionData con coleccion de laws vacia
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea PositionData 
 				//			C: 100% Recorre 49 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "degree1", "institution1", sdf.parse("2014-09-15"), sdf.parse("2018-09-20"), null
-			}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Negativo: Un member intenta crear una PositionData
-		//			C: 32,65% Recorre 16 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker2", null, "institution1",  sdf.parse("2014-09-15 00:00:00"), sdf.parse("2018-09-20 00:00:00"), IllegalArgumentException.class
-		//},
-		//{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea PositionData con coleccion de laws con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "", sdf.parse("2014-09-15 00:00:00"), sdf.parse("2018-09-20 00:00:00"), IllegalArgumentException.class
-		//}
-		//,{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea PositionData con coleccion de laws con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution2",  sdf.parse("2014-09-15 00:00:00"), sdf.parse("2013-09-20 00:00:00"), IllegalArgumentException.class
-		//},
+				"hacker1", "title1", "description1", "2014-09-15", "2018-09-20", null
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Negativo: Un hacker intenta crear una PositionData con título nulo
+				//			C: 32,65% Recorre 16 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker2", null, "institution1", "2014-09-15", "2018-09-20", javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea PositionData con descripción en blanco
+				//			C: 100% Recorre 49 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker2", "title2", "", "2014-09-15", "2018-09-20", org.springframework.dao.DataIntegrityViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea PositionData con fecha de finalización anterior a fecha de comienzo
+				//			C: 100% Recorre 49 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker2", "title3", "institution3", "2014-09-15", "2013-09-20", IllegalArgumentException.class
+			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Date) testingData[i][3], (Date) testingData[i][4], (Class<?>) testingData[i][5]);
+			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
 	}
-
-	protected void templateCreateSave(final String user, final String title, final String description, final Date startDate, final Date endDate, final Class<?> expected) {
+	protected void templateCreateSave(final String user, final String title, final String description, final String startDate, final String endDate, final Class<?> expected) {
 
 		Class<?> caught = null;
 
 		try {
+			this.authenticate(user);
 			Curricula curricula = this.curriculaService.create();
-			final PersonalData pd = curricula.getPersonalRecord();
-			this.personalDataService.save(pd);
+			PersonalData pd = curricula.getPersonalRecord();
+			pd = this.personalDataService.save(pd);
 			curricula.setPersonalRecord(pd);
 			curricula = this.curriculaService.save(curricula);
-			this.authenticate(user);
 			final PositionData lRec = this.positionDataService.create();
 			lRec.setTitle(title);
 			lRec.setDescription(description);
-			lRec.setStartDate(startDate);
-			lRec.setEndDate(endDate);
+			Date start = null;
+			Date end = null;
+			if (endDate != null)
+				end = (new SimpleDateFormat("yyyy-MM-dd")).parse(endDate);
+			start = (new SimpleDateFormat("yyyy-MM-dd")).parse(startDate);
+			lRec.setStartDate(start);
+			lRec.setEndDate(end);
 			final PositionData lRecSaved = this.positionDataService.save(lRec, curricula.getId());
 			Assert.isTrue(lRecSaved.getId() != 0);
 			this.positionDataService.flush();
@@ -113,50 +106,40 @@ public class PositionDataServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void driverEdit() throws ParseException {
-		//final Collection<String> lawsVacio = new ArrayList<String>();
-		//final Collection<String> laws = new ArrayList<String>();
-		//laws.add("LawTest1");
-		//laws.add("LawTest2");
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		//String stringFechaConHora = "2014-09-15 15:03:23";
-		//Date fechaConHora = sdf.parse(stringFechaConHora);
+	public void driverEdit() {
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
-				//			B: Test Positivo: Hacker crea PositionData con coleccion de laws vacia
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea PositionData 
 				//			C: 100% Recorre 49 de las 49 lineas posibles
 				//			D: cobertura de datos=6/405
-				"hacker1", "degree1", "institution1", sdf.parse("2014-09-15"), sdf.parse("2018-09-20"), null
-			}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Negativo: Un member intenta crear una PositionData
-		//			C: 32,65% Recorre 16 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker2", null, "institution1",  sdf.parse("2014-09-15 00:00:00"), sdf.parse("2018-09-20 00:00:00"), IllegalArgumentException.class
-		//},
-		//{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea PositionData con coleccion de laws con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "", sdf.parse("2014-09-15 00:00:00"), sdf.parse("2018-09-20 00:00:00"), IllegalArgumentException.class
-		//}
-		//,{
-		//			A: Acme Parade Req. 3 -> Hackers can manage their history
-		//			B: Test Positivo: Hacker crea PositionData con coleccion de laws con datos
-		//			C: 100% Recorre 49 de las 49 lineas posibles
-		//			D: cobertura de datos=6/405
-		//"hacker1", "degree1", "institution2",  sdf.parse("2014-09-15 00:00:00"), sdf.parse("2013-09-20 00:00:00"), IllegalArgumentException.class
-		//},
+				"hacker1", "title1", "description1", "2014-09-15", "2018-09-20", null
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Negativo: Un hacker intenta crear una PositionData con título nulo
+				//			C: 32,65% Recorre 16 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker2", null, "institution1", "2014-09-15", "2018-09-20", javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea PositionData con descripción en blanco
+				//			C: 100% Recorre 49 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker2", "title2", "", "2014-09-15", "2018-09-20", javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Positivo: Hacker crea PositionData con fecha de finalización anterior a fecha de comienzo
+				//			C: 100% Recorre 49 de las 49 lineas posibles
+				//			D: cobertura de datos=6/405
+				"hacker2", "title3", "institution3", "2014-09-15", "2013-09-20", IllegalArgumentException.class
+			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Date) testingData[i][3], (Date) testingData[i][4], (Class<?>) testingData[i][5]);
+			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
 	}
 
-	private void templateEdit(final String user, final String title, final String description, final Date startDate, final Date endDate, final Class<?> expected) {
+	private void templateEdit(final String user, final String title, final String description, final String startDate, final String endDate, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
 			this.authenticate(user);
@@ -166,8 +149,13 @@ public class PositionDataServiceTest extends AbstractTest {
 			final PositionData lR = curricula.getPositions().iterator().next();
 			lR.setTitle(title);
 			lR.setDescription(description);
-			lR.setStartDate(startDate);
-			lR.setEndDate(endDate);
+			Date start = null;
+			Date end = null;
+			if (endDate != null)
+				end = (new SimpleDateFormat("yyyy-MM-dd")).parse(endDate);
+			start = (new SimpleDateFormat("yyyy-MM-dd")).parse(startDate);
+			lR.setStartDate(start);
+			lR.setEndDate(end);
 			this.positionDataService.save(lR, curricula.getId());
 			this.positionDataService.flush();
 			this.unauthenticate();
@@ -184,14 +172,14 @@ public class PositionDataServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
 				//			B: Test Positivo: Hacker borra PositionData 
 				//			C: 100% Recorre 78 de las 78 lineas posibles
 				//			D: cobertura de datos=1/3
 				"hacker2", null
 			}, {
-				//			A: Acme Parade Req. 3 -> Hackers can manage their history
-				//			B: Test Negativo: Member intenta borrar PositionData 
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their history
+				//			B: Test Negativo: Compañía intenta borrar PositionData 
 				//			C: 10,25% Recorre 8 de las 78 lineas posibles
 				//			D: cobertura de datos=1/3
 				"company1", IllegalArgumentException.class
