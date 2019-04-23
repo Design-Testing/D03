@@ -213,7 +213,7 @@ public class PositionCompanyController extends AbstractController {
 		final ModelAndView result;
 
 		result = new ModelAndView("position/edit");
-		result.addObject("position", position); //this.constructPruned(position)
+		result.addObject("positionForm", position); //this.constructPruned(position)
 		result.addObject("message", messageCode);
 
 		return result;

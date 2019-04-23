@@ -8,6 +8,7 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<!-- 
 <jstl:if test="${not empty errors}">
 	<div class="errorDiv">
 		<ul>
@@ -18,8 +19,9 @@
 		</ul>
 	</div>
 </jstl:if>
+ -->
 
-<form:form action="position/company/edit.do" modelAttribute="position" method="POST">
+<form:form action="position/company/edit.do" modelAttribute="positionForm" method="POST">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 
