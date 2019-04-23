@@ -36,38 +36,34 @@ public class PersonalDataServiceTest extends AbstractTest {
 	public void driverCreateSave() {
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-				//			B: Test Positivo: Hacker edita PersonalData
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Positivo: Hacker creaPersonalData
 				//			C: 100% Recorre 68 de las 68 lineas posibles
 				//			D: cobertura de datos=4/54
-				"hacker1", "fullname", "statement", "github ", "phone", "linkedin", null
+				"hacker1", "hacker 1 fullname", "statement test", "http://www.github.com/test", "+34 667345123", "http://www.linkedin.com/test", null
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Negativo: no introduce una url como github link
+				//			C: 89,70% Recorre 61 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", "hacker 1 fullname", "statement test", "github profile", "+34 667345123", "http://www.linkedin.com/test", javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Negativo: introduce un numero de telefono incorrecto
+				//			C: 11,76% Recorre 8 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", "hacker 1 fullname", "statement test", "http://www.github.com/test", "667345123", "http://www.linkedin.com/test", javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Negativo: no introduce nombre completo
+				//			C: 98,52% Recorre 67 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", null, "statement test", "http://www.github.com/test", "667345123", "http://www.linkedin.com/test", javax.validation.ConstraintViolationException.class
 			}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-		//			B: Test Negativo: Hacker intenta editar Inception que no le pertenece
-		//			C: 89,70% Recorre 61 de las 68 lineas posibles
-		//			D: cobertura de datos=4/54
-		//"hacker1",  "fullname","statement", "github ", "phone","linkedin", null
-		//}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-		//			B: Test Negativo: Un member intenta editar una PersonalData
-		//			C: 11,76% Recorre 8 de las 68 lineas posibles
-		//			D: cobertura de datos=4/54
-		//"hacker1",  "fullname","statement", "github ", "phone","linkedin", null
-		//}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-		//			B: Test Negativo: Hacker edita PersonalData con title vacio
-		//			C: 98,52% Recorre 67 de las 68 lineas posibles
-		//			D: cobertura de datos=4/54
-		//"hacker1",  "fullname","statement", "github ", "phone","linkedin", null
-		//}
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.templateCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
 	}
-
 	protected void templateCreateSave(final String user, final String fullName, final String statement, final String github, final String phone, final String linkedin, final Class<?> expected) {
 
 		Class<?> caught = null;
@@ -95,33 +91,30 @@ public class PersonalDataServiceTest extends AbstractTest {
 	public void driverEdit() {
 		final Object testingData[][] = {
 			{
-				//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-				//			B: Test Positivo: Hacker edita PersonalData
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Positivo: Hacker creaPersonalData
 				//			C: 100% Recorre 68 de las 68 lineas posibles
 				//			D: cobertura de datos=4/54
-				"hacker1", "hacker1", "fullname", "statement", "github ", "phone", "linkedin", null
+				"hacker1", "hacker1", "hacker 1 fullname", "statement test", "http://www.github.com/test", "+34 667345123", "http://www.linkedin.com/test", null
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Negativo: no introduce una url como github link
+				//			C: 89,70% Recorre 61 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", "hacker1", "hacker 1 fullname", "statement test", "github profile", "+34 667345123", "http://www.linkedin.com/test", javax.validation.ConstraintViolationException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Negativo: un hacker intenta editar personal data de otro
+				//			C: 11,76% Recorre 8 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker2", "hacker1", "hacker 1 fullname", "statement test", "http://www.github.com/test", "667345123", "http://www.linkedin.com/test", java.lang.IllegalArgumentException.class
+			}, {
+				//			A: Acme HackerRank Req. 17 -> Hackers can manage their curricula
+				//			B: Test Negativo: no introduce nombre completo
+				//			C: 98,52% Recorre 67 de las 68 lineas posibles
+				//			D: cobertura de datos=4/54
+				"hacker1", "hacker1", null, "statement test", "http://www.github.com/test", "667345123", "http://www.linkedin.com/test", javax.validation.ConstraintViolationException.class
 			}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-		//			B: Test Negativo: Hacker intenta editar Inception que no le pertenece
-		//			C: 89,70% Recorre 61 de las 68 lineas posibles
-		//			D: cobertura de datos=4/54
-		//"hacker1", "hacker1", "fullname","statement", "github ", "phone","linkedin", null
-		//}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-		//			B: Test Negativo: Un member intenta editar una PersonalData
-		//			C: 11,76% Recorre 8 de las 68 lineas posibles
-		//			D: cobertura de datos=4/54
-		//"hacker1", "hacker1", "fullname","statement", "github ", "phone","linkedin", null
-		//}
-		//, {
-		//			A: Acme Parade Req. 3 -> Hackers can manage their curricula
-		//			B: Test Negativo: Hacker edita PersonalData con title vacio
-		//			C: 98,52% Recorre 67 de las 68 lineas posibles
-		//			D: cobertura de datos=4/54
-		//"hacker1", "hacker1", "fullname","statement", "github ", "phone","linkedin", null
-		//}
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.templateEdit((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6], (Class<?>) testingData[i][7]);

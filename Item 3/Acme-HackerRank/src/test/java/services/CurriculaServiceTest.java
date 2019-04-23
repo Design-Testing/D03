@@ -29,7 +29,7 @@ public class CurriculaServiceTest extends AbstractTest {
 				"hacker1", false, null
 			},
 			//				A: Acme Parade Req. 3 -> Hackers can manage their curricula
-			//				B: Test Negativo: Un member intenta borrar una curricula
+			//				B: Test Negativo: una compañía intenta borrar una curricula
 			//				C: 10% Recorre 8 de las 80 lineas posibles
 			//				D: cobertura de datos=1/3
 			{
