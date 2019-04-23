@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import security.UserAccount;
-import services.ActorService;
 import services.AdministratorService;
 import services.ConfigurationParametersService;
 import services.UserAccountService;
@@ -30,9 +29,6 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private UserAccountService				accountService;
-
-	@Autowired
-	private ActorService					actorService;
 
 	@Autowired
 	private RegisterService					registerService;

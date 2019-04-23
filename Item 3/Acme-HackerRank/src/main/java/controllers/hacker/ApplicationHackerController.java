@@ -63,7 +63,6 @@ public class ApplicationHackerController extends AbstractController {
 		} catch (final Throwable oops) {
 			result = new ModelAndView("administrator/error");
 			result.addObject("trace", oops.getMessage());
-			System.out.println(oops.getMessage());
 		}
 
 		return result;
@@ -76,13 +75,8 @@ public class ApplicationHackerController extends AbstractController {
 		final Position position = this.positionService.findOne(positionId);
 
 		try {
-
-			System.out.println("cccc");
-
 			final Curricula curricula = this.curriculaService.findOne(curriculaId);
 			final Curricula copy = this.curriculaService.makeCopyAndSave(curricula);
-			System.out.println("ddd");
-			System.out.println(copy);
 
 			final Application application = this.applicationService.apply(positionId, copy.getId());
 			result = this.listPending();
@@ -109,10 +103,13 @@ public class ApplicationHackerController extends AbstractController {
 		application = this.applicationService.findOne(applicationId);
 		hacker = this.hackerService.findByPrincipal();
 
-		result = new ModelAndView("application/display");
-		result.addObject("hacker", hacker);
-		result.addObject("application", application);
-		result.addObject("rol", "hacker");
+		if (application != null && application.getHacker().equals(hacker)) {
+			result = new ModelAndView("application/display");
+			result.addObject("hacker", hacker);
+			result.addObject("application", application);
+			result.addObject("rol", "hacker");
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
