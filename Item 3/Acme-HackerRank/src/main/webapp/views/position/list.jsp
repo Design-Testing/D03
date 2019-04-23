@@ -93,11 +93,6 @@
 
 	
 </display:table>
-	<jstl:forEach var="t" items="${hackerPositions}">
-			<jstl:out value="${t}"/>
-	</jstl:forEach>
-	
-
 
 <jstl:if test="${not empty msg}">
 	<h3 style="color: red;"><spring:message code="${msg}"/></h3>

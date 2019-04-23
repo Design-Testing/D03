@@ -124,7 +124,7 @@ uso inadecuado de este Sitio Web. En particular, no se hace responsable
 en modo alguno de las caidas, interrupciones, falta o defecto de las 
 telecomunicaciones que pudieran ocurrir.</p>
 <h3>IV. POLITICA DE PRIVACIDAD Y PROTECCION DE DATOS</h3>
-Acme HackerRank se compromete a adoptar las medidas tiecnicas y organizativas 
+<p>Acme HackerRank se compromete a adoptar las medidas tiecnicas y organizativas 
 necesarias, segiºn el nivel de seguridad adecuado al riesgo de los datos 
 recogidos.
 Leyes que incorpora esta politica de privacida
@@ -456,7 +456,7 @@ No se permite tampoco ninguna manifestacion falsa, inexacta o incorrecta sobre e
 A excepcion del hipervinculo, el sitio web en el que se establezca 
 dicho hiperenlace no contendria ningiºn elemento, de este Sitio Web, 
 protegido como propiedad intelectual por el ordenamiento juridico 
-espanol, salvo autorizacion expresa de Acme HackerRank.</p>
+espanol, salvo autorizacion expresa de Acme HackerRank.
 El establecimiento del hipervinculo no implicaria la existencia de relaciones entre Acme HackerRank y el titular del sitio web desde el cual se realice, ni el conocimiento y aceptacion de Acme HackerRank de los contenidos, servicios y/o actividades ofrecidos en dicho sitio web, y viceversa.</p>
 <h3>VII. PROPIEDAD INTELECTUAL E INDUSTRIAL</h3>
 <p>Acme HackerRank
