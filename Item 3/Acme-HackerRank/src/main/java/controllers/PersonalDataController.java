@@ -12,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
+import services.CompanyService;
 import services.ConfigurationParametersService;
 import services.CurriculaService;
 import services.HackerService;
 import services.PersonalDataService;
+import domain.Company;
 import domain.Curricula;
 import domain.Hacker;
 import domain.PersonalData;
@@ -35,6 +40,9 @@ public class PersonalDataController extends AbstractController {
 
 	@Autowired
 	private ConfigurationParametersService	configurationParametersService;
+
+	@Autowired
+	private CompanyService					companyService;
 
 
 	/*
@@ -102,6 +110,23 @@ public class PersonalDataController extends AbstractController {
 			res.addObject("personalData", personalData);
 			res.addObject("buttons", false);
 			res.addObject("curriculaId", curricula.getId());
+
+			final UserAccount logged = LoginService.getPrincipal();
+
+			final Authority authHacker = new Authority();
+			authHacker.setAuthority(Authority.HACKER);
+			final Authority authCompany = new Authority();
+			authCompany.setAuthority(Authority.COMPANY);
+			if (logged.getAuthorities().contains(authHacker)) {
+				final Hacker hacker = this.hackerService.findByPrincipal();
+				if (curricula.getHacker() != null)
+					Assert.isTrue(curricula.getHacker().equals(hacker));
+				else if (curricula.getHacker() == null)
+					Assert.isTrue(this.hackerService.findHackerByCopyCurricula(curricula.getId()).equals(hacker));
+			} else if (logged.getAuthorities().contains(authCompany)) {
+				final Company company = this.companyService.findByPrincipal();
+				Assert.isTrue(this.curriculaService.findCurriculasByCompany(company.getId()).contains(curricula));
+			}
 
 		} else
 			res = new ModelAndView("redirect:misc/403");

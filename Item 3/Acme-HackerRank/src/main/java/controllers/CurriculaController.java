@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
+import services.CompanyService;
 import services.CurriculaService;
 import services.HackerService;
+import domain.Company;
 import domain.Curricula;
 import domain.EducationData;
 import domain.Hacker;
@@ -34,6 +37,9 @@ public class CurriculaController extends AbstractController {
 
 	@Autowired
 	private HackerService		hackerService;
+
+	@Autowired
+	private CompanyService		companyService;
 
 
 	/*
@@ -88,10 +94,22 @@ public class CurriculaController extends AbstractController {
 
 			final Authority authHacker = new Authority();
 			authHacker.setAuthority(Authority.HACKER);
-			//final Authority authCompany = new Authority();
-			//authCompany.setAuthority(Authority.COMPANY);
-			if (logged.getAuthorities().contains(authHacker) && curricula.getHacker() != null)
-				res.addObject("buttons", true);
+			final Authority authCompany = new Authority();
+			authCompany.setAuthority(Authority.COMPANY);
+			if (logged.getAuthorities().contains(authHacker)) {
+				final Hacker hacker = this.hackerService.findByPrincipal();
+				if (curricula.getHacker() != null) {
+					Assert.isTrue(curricula.getHacker().equals(hacker));
+					res.addObject("buttons", true);
+				} else if (curricula.getHacker() == null) {
+					res.addObject("buttons", true);
+					Assert.isTrue(this.hackerService.findHackerByCopyCurricula(curricula.getId()).equals(hacker));
+				}
+			} else if (logged.getAuthorities().contains(authCompany)) {
+				res.addObject("buttons", false);
+				final Company company = this.companyService.findByPrincipal();
+				Assert.isTrue(this.curriculaService.findCurriculasByCompany(company.getId()).contains(curricula));
+			}
 		} else {
 			res = new ModelAndView("curricula/create");
 			res.addObject("curricula", curricula);

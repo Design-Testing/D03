@@ -31,4 +31,7 @@ public interface CurriculaRepository extends JpaRepository<Curricula, Integer> {
 	@Query("select c from Curricula c join c.miscellaneous e where e.id=?1")
 	Curricula findCurriculaByMiscellaneousData(int id);
 
+	@Query("select a.curricula from Application a join a.position p where p.company.id=?1")
+	Collection<Curricula> findCurriculasByCompany(int id);
+
 }
