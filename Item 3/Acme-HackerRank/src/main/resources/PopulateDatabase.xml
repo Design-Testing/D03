@@ -707,9 +707,9 @@
 		<property name="sysName" value="Acme Hacker Rank" />
 		<property name="banner" value="https://i.imgur.com/7b8lu4b.png" />
 		<property name="welcomeMessageEn"
-			value="Welcome to Acme hacker Rank! We’re IT hacker’s favourite job marketplace!" />
+			value="Welcome to Acme hacker Rank! We're IT hacker's favourite job marketplace!" />
 		<property name="welcomeMessageEsp"
-			value="“¡Bien-venidos a Acme Hacker Rank! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!" />
+			value="¡Bienvenidos a Acme Hacker Rank! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!" />
 		<property name="countryPhoneCode" value="+34" />
 		<property name="spamWords">
 			<list>
