@@ -88,7 +88,7 @@ local.properties
 
 # Package Files #
 *.jar
-*.war
+# *.war para que artefactos de despliegue se puedan subir
 *.ear
 *.zip
 *.tar.gz
