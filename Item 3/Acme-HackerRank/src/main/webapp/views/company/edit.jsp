@@ -37,7 +37,7 @@
 	</script>
 </jstl:if>
 
-	<jstl:if test="${not empty errors}">
+<!-- <jstl:if test="${not empty errors}">
 		<div class="errorDiv">
 			<ul>
 				<jstl:forEach items="${errors}" var="error">
@@ -46,7 +46,7 @@
 			</ul>
 		</div>
 	</jstl:if>
-
+ -->
 
 
 <form:form modelAttribute="companyForm" action="company/edit.do" method="POST">

@@ -10,19 +10,6 @@
 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<!-- 
-<jstl:if test="${not empty errors}">
-	<div class="errorDiv">
-		<ul>
-			<jstl:forEach items="${errors}" var="error">
-				<li><spring:message code="position.${error.field}" />
-					- <jstl:out value="${error.defaultMessage}" /></li>
-			</jstl:forEach>
-		</ul>
-	</div>
-</jstl:if>
- -->
-
 <form:form action="application/hacker/edit.do" modelAttribute="applicationForm" method="POST">
 	<form:hidden path="id" />
 	<form:hidden path="version" />

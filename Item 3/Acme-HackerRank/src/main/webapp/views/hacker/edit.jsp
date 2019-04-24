@@ -42,6 +42,7 @@
 	</script>
 </jstl:if>
 
+<!-- 
 <jstl:if test="${not empty errors}">
 	<div class="errorDiv">
 		<ul>
@@ -52,7 +53,7 @@
 		</ul>
 	</div>
 </jstl:if>
-
+ -->
 
 
 <form:form modelAttribute="actorForm" action="hacker/edit.do"
