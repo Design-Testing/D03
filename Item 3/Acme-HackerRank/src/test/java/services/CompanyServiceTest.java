@@ -40,9 +40,9 @@ public class CompanyServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				//				A: Acme HackerRank Login Use Case
+				//				A: Acme Hacker Rank Login Use Case
 				//				B: Test Positivo: Un company puede loguearse correctamente
-				//				C: % Recorre 8 de la 23 lineas posibles
+				//				C: % Recorre 10 de la 28 lineas posibles
 				//				D: % cobertura de datos= 2/2
 				"company1", null
 			}, {
@@ -75,8 +75,8 @@ public class CompanyServiceTest extends AbstractTest {
 
 	//				A: Acme Hacker Rank Req. 7.1 Register to de system as a company
 	//				B: Test Negativo: Creación incorrecta de un company, con vat incorrecto (mayor que 1)
-	//				C: % Recorre 8 de la 23 lineas posibles
-	//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+	//				C: % Recorre 61 de la 188 lineas posibles
+	//				D: cobertura de datos=Combinaciones con sentido/numero atributos=67.50%
 	@Test()
 	public void createAndSavePositive() {
 		final Collection<String> surnames = new ArrayList<>();
@@ -110,8 +110,8 @@ public class CompanyServiceTest extends AbstractTest {
 
 	//				A: Acme Hacker Rank Req. 7.1 Register to de system as a company
 	//				B: Test Negativo: Creación incorrecta de un company, commercialName incorrecto.
-	//				C: % Recorre 8 de la 23 lineas posibles
-	//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+	//				C: % Recorre 61 de la 188 lineas posibles
+	//				D: cobertura de datos=Combinaciones con sentido/numero atributos=67.50%
 	@Test(expected = ConstraintViolationException.class)
 	public void createAndSaveNegative() {
 		final Collection<String> surnames = new ArrayList<>();
@@ -147,8 +147,8 @@ public class CompanyServiceTest extends AbstractTest {
 
 	//				A: Acme Hacker Rank Req. 8.2 Edit his or her personal data.
 	//				B: Test Positivo: Edición correcta de los datos de un company.
-	//				C: % Recorre 8 de la 23 lineas posibles
-	//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+	//				C: % Recorre 61 de la 188 lineas posibles
+	//				D: cobertura de datos=Combinaciones con sentido/numero atributos=67.50%
 	@Test()
 	public void EditPositive() {
 		final Collection<String> surnames = new ArrayList<>();
@@ -173,8 +173,8 @@ public class CompanyServiceTest extends AbstractTest {
 
 	//				A: Acme Hacker Rank Req. 8.2 Edit his or her personal data.
 	//				B: Test Negativo: Edición incorrecta de los datos de un company (commercialName incorrecto).
-	//				C: % Recorre 8 de la 23 lineas posibles
-	//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+	//				C: % Recorre 61 de la 188 lineas posibles
+	//				D: cobertura de datos=Combinaciones con sentido/numero atributos=67.50%
 	@Test(expected = ConstraintViolationException.class)
 	public void EditNegative() {
 		final Collection<String> surnames = new ArrayList<>();

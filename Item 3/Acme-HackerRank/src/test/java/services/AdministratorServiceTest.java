@@ -42,11 +42,14 @@ public class AdministratorServiceTest extends AbstractTest {
 			{
 				//				A: Acme HackerRank Login Use Case
 				//				B: Test Positivo: Un administrador puede loguearse correctamente
-				//				C: % Recorre 8 de la 23 lineas posibles
+				//				C: % Recorre 23 de la 23 lineas posibles
 				//				D: % cobertura de datos= 2/2
 				"admin1", null
 			}, {
-				//Login usuario no registrado
+				//				A: Acme HackerRank Login User Non registered
+				//				B: Test Positivo: Un usuario no registrado no puede logearse
+				//				C: % Recorre 8 de la 23 lineas posibles
+				//				D: % cobertura de datos= 2/2
 				"AdministratorNoRegistrado", IllegalArgumentException.class
 			}
 		};
@@ -87,7 +90,7 @@ public class AdministratorServiceTest extends AbstractTest {
 			{
 				//				A: Acme HackerRank Req. 11.1. Create user accounts for new administrators
 				//				B: Test Positivo: Creación correcta de un admin
-				//				C: % Recorre 54 de la 196 lineas posibles
+				//				C: % Recorre 196 de la 196 lineas posibles
 				//				D: % cobertura de datos=8/32 (casos cubiertos / combinaciones posibles de atributos entre ellos)
 				"admin1", "admin3", "admin3", "Administrator1", surnames, "garcia@us.es", "647307406", "0.1", c, null
 			}, {
