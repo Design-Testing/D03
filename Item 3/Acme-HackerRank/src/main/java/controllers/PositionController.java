@@ -66,4 +66,22 @@ public class PositionController extends AbstractController {
 
 		return result;
 	}
+
+	// COMPANY POSITION LIST --------------------------------------------------------
+
+	@RequestMapping(value = "/companyList", method = RequestMethod.GET)
+	public ModelAndView companyPositions(@RequestParam final int companyId) {
+		final ModelAndView result;
+		final Collection<Position> positions;
+
+		positions = this.positionService.findAllByCompany(companyId);
+
+		result = new ModelAndView("position/list");
+		result.addObject("positions", positions);
+		result.addObject("listPositions", "companyList");
+		result.addObject("lang", this.lang);
+		result.addObject("requetURI", "position/companyList.do");
+
+		return result;
+	}
 }

@@ -37,17 +37,18 @@
 	</script>
 </jstl:if>
 
-<!-- <jstl:if test="${not empty errors}">
+	<jstl:if test="${not empty errors}">
 		<div class="errorDiv">
 			<ul>
 				<jstl:forEach items="${errors}" var="error">
-					<li><spring:message code="company.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+					<jstl:if test="${error.field eq 'termsAndCondicions'}">
+						<li><spring:message code="company.edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+					</jstl:if>
 				</jstl:forEach>
 			</ul>
 		</div>
 	</jstl:if>
- -->
-
+	<br>
 
 <form:form modelAttribute="companyForm" action="company/edit.do" method="POST">
 	<form:hidden path="id"/>

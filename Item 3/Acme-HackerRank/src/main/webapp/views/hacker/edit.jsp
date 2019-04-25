@@ -42,18 +42,19 @@
 	</script>
 </jstl:if>
 
-<!-- 
 <jstl:if test="${not empty errors}">
 	<div class="errorDiv">
 		<ul>
 			<jstl:forEach items="${errors}" var="error">
-				<li><spring:message code="hacker.edit.${error.field}" /> - <jstl:out
-						value="${error.defaultMessage}" /></li>
+				<jstl:if test="${error.field eq 'termsAndCondicions'}">
+					<li><spring:message code="hacker.edit.${error.field}" /> - <jstl:out
+							value="${error.defaultMessage}" /></li>
+				</jstl:if>
 			</jstl:forEach>
 		</ul>
 	</div>
 </jstl:if>
- -->
+<br>
 
 
 <form:form modelAttribute="actorForm" action="hacker/edit.do"

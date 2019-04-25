@@ -6,6 +6,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
@@ -21,7 +22,7 @@ public class CreditCard {
 	private String	number;
 	private Integer	expirationMonth;
 	private Integer	expirationYear;
-	private Integer	cvv;
+	private String	cvv;
 
 
 	@NotBlank
@@ -75,12 +76,12 @@ public class CreditCard {
 	}
 
 	@NotNull
-	@Range(min = 100, max = 999)
-	public Integer getCvv() {
+	@Pattern(regexp = "^([0-9]){3}$")
+	public String getCvv() {
 		return this.cvv;
 	}
 
-	public void setCvv(final Integer cvv) {
+	public void setCvv(final String cvv) {
 		this.cvv = cvv;
 	}
 

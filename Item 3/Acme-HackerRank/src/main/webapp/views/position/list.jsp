@@ -42,11 +42,9 @@
 	</jstl:otherwise>
 	</jstl:choose>
 	</display:column>
-		
+	
 	<security:authorize access="hasRole('HACKER')">
-	
-	</security:authorize>
-	
+	<jstl:if test="${rol eq 'hacker'}">
 	<jstl:set var="ctrl" value="0"/>
 	<jstl:forEach var="t" items="${hackerPositions}">
 		<jstl:if test="${t eq row}">
@@ -54,7 +52,6 @@
 		</jstl:if>
 	</jstl:forEach>
 	
-	<security:authorize access="hasRole('HACKER')">
 			<display:column>
 				<jstl:choose>
 					<jstl:when test="${ctrl == 0}">
@@ -65,6 +62,7 @@
 					</jstl:otherwise>
 				</jstl:choose>
 			</display:column>
+	</jstl:if>
 	</security:authorize>
 		
 	<security:authorize access="hasRole('COMPANY')">
@@ -96,4 +94,8 @@
 
 <jstl:if test="${not empty msg}">
 	<h3 style="color: red;"><spring:message code="${msg}"/></h3>
+</jstl:if>
+
+<jstl:if test="${empty positions}">
+	<spring:message code="no.positions"/>
 </jstl:if>
