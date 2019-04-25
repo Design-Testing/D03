@@ -1,6 +1,19 @@
-﻿start transaction;
-
-use `bjdtatkry6dlobx3l6ph`;
+﻿start transaction;
+
+drop database if exists `Acme-HackerRank`;
+create database `Acme-HackerRank`;
+
+use `Acme-HackerRank`;
+
+drop user 'acme-user'@'%';
+
+drop user 'acme-manager'@'%';
+
+create user 'acme-user'@'%' identified by password '*4F10007AADA9EE3DBB2CC36575DFC6F4FDE27577';
+create user 'acme-manager'@'%' identified by password '*FDB8CD304EB2317D10C95D797A4BD7492560F55F';
+
+grant select, insert, update, delete on `Acme-HackerRank`.* to 'acme-user'@'%';
+grant select, insert, update, delete, create, drop, references, index, alter, create temporary tables, lock tables, create view, create routine, alter routine, execute, trigger, show view on `Acme-HackerRank`.* to 'acme-manager'@'%';
 
 -- MySQL dump 10.13  Distrib 5.5.29, for Win64 (x86)
 --
@@ -30,7 +43,7 @@ CREATE TABLE `actor` (
   `id` int(11) NOT NULL,
   `version` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `cvv` int(11) DEFAULT NULL,
+  `cvv` varchar(255) DEFAULT NULL,
   `expiration_month` int(11) DEFAULT NULL,
   `expiration_year` int(11) DEFAULT NULL,
   `holder_name` varchar(255) DEFAULT NULL,
@@ -70,7 +83,7 @@ CREATE TABLE `actor_form` (
   `id` int(11) NOT NULL,
   `version` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `cvv` int(11) DEFAULT NULL,
+  `cvv` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `expiration_month` int(11) DEFAULT NULL,
   `expiration_year` int(11) DEFAULT NULL,
@@ -154,7 +167,7 @@ CREATE TABLE `administrator` (
   `id` int(11) NOT NULL,
   `version` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `cvv` int(11) DEFAULT NULL,
+  `cvv` varchar(255) DEFAULT NULL,
   `expiration_month` int(11) DEFAULT NULL,
   `expiration_year` int(11) DEFAULT NULL,
   `holder_name` varchar(255) DEFAULT NULL,
@@ -180,7 +193,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
-INSERT INTO `administrator` VALUES (651,0,'',163,6,19,'Customer 1','VISA','4716477920082572','correo@gmail.com','AcmeParade','+34647307406','',NULL,0.21,650),(657,0,'Reina Mercedes',728,10,20,'Customer 2','MASTER','5498128346540526','conwdasto@jmsx.es','Admin1','+34647607406','http://tinyurl.com/picture.png',NULL,0.21,644),(658,0,'Reina Mercedes',533,6,19,'Sponsor 1','AMEX','375278545368168','lusi@gamil.es','Admin2','+34647307406','http://tinyurl.com/picture.png',NULL,0.21,645);
+INSERT INTO `administrator` VALUES (651,0,'','163',6,19,'Customer 1','VISA','4716477920082572','correo@gmail.com','AcmeParade','+34647307406','',NULL,0.21,650),(657,0,'Reina Mercedes','728',10,20,'Customer 2','MASTER','5498128346540526','conwdasto@jmsx.es','Admin1','+34647607406','http://tinyurl.com/picture.png',NULL,0.21,644),(658,0,'Reina Mercedes','533',6,19,'Sponsor 1','AMEX','375278545368168','lusi@gamil.es','Admin2','+34647307406','http://tinyurl.com/picture.png',NULL,0.21,645);
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +274,7 @@ CREATE TABLE `company` (
   `id` int(11) NOT NULL,
   `version` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `cvv` int(11) DEFAULT NULL,
+  `cvv` varchar(255) DEFAULT NULL,
   `expiration_month` int(11) DEFAULT NULL,
   `expiration_year` int(11) DEFAULT NULL,
   `holder_name` varchar(255) DEFAULT NULL,
@@ -288,7 +301,7 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES (661,0,'Reina Mercedes',837,11,22,'Company 1','VISA','4231348143458624','company1@gmail.es','Company1','+34647307480','http://tinyurl.com/picture.png',NULL,0.21,648,'commercialName1'),(662,0,'Reina Mercedes',988,11,20,'Company 2','VISA','4294148159742547','company2@gmail.es','Company2','+34647307484','http://tinyurl.com/picture.png',NULL,0.21,649,'commercialName2');
+INSERT INTO `company` VALUES (661,0,'Reina Mercedes','837',11,22,'Company 1','VISA','4231348143458624','company1@gmail.es','Company1','+34647307480','http://tinyurl.com/picture.png',NULL,0.21,648,'commercialName1'),(662,0,'Reina Mercedes','988',11,20,'Company 2','VISA','4294148159742547','company2@gmail.es','Company2','+34647307484','http://tinyurl.com/picture.png',NULL,0.21,649,'commercialName2');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +316,7 @@ CREATE TABLE `company_form` (
   `id` int(11) NOT NULL,
   `version` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `cvv` int(11) DEFAULT NULL,
+  `cvv` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `expiration_month` int(11) DEFAULT NULL,
   `expiration_year` int(11) DEFAULT NULL,
@@ -727,7 +740,7 @@ CREATE TABLE `hacker` (
   `id` int(11) NOT NULL,
   `version` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `cvv` int(11) DEFAULT NULL,
+  `cvv` varchar(255) DEFAULT NULL,
   `expiration_month` int(11) DEFAULT NULL,
   `expiration_year` int(11) DEFAULT NULL,
   `holder_name` varchar(255) DEFAULT NULL,
@@ -756,7 +769,7 @@ CREATE TABLE `hacker` (
 
 LOCK TABLES `hacker` WRITE;
 /*!40000 ALTER TABLE `hacker` DISABLE KEYS */;
-INSERT INTO `hacker` VALUES (659,1,'Reina Mercedes',266,10,19,'Sponsor 2','VISA','4532787155338743','garcia@gmail.es','Hacker1','+34647307406','http://tinyurl.com/picture.png',NULL,0.21,646,677),(660,1,'Reina Mercedes',885,2,19,'Sponsor 3','VISA','4716699361876929','lanzas@gmail.es','Hacker2','+34647307406','http://tinyurl.com/picture.png',NULL,0.21,647,678);
+INSERT INTO `hacker` VALUES (659,1,'Reina Mercedes','266',10,19,'Sponsor 2','VISA','4532787155338743','garcia@gmail.es','Hacker1','+34647307406','http://tinyurl.com/picture.png',NULL,0.21,646,677),(660,1,'Reina Mercedes','885',2,19,'Sponsor 3','VISA','4716699361876929','lanzas@gmail.es','Hacker2','+34647307406','http://tinyurl.com/picture.png',NULL,0.21,647,678);
 /*!40000 ALTER TABLE `hacker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1247,4 +1260,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-24  8:54:30
+-- Dump completed on 2019-04-25 13:59:34
