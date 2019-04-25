@@ -64,6 +64,7 @@
 		
 		<!-- POSITION -->
  		<security:intercept-url pattern="/position/list.do" access="permitAll" />
+ 		<security:intercept-url pattern="/position/companyList.do" access="permitAll" />
  		<security:intercept-url pattern="/position/hacker/list.do" access="hasRole('HACKER')"/>
 		<security:intercept-url pattern="/position/display.do" access="permitAll" />
  		<security:intercept-url pattern="/position/company/**" access="hasRole('COMPANY')" /> 

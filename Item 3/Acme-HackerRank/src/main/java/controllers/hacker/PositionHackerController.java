@@ -37,6 +37,7 @@ public class PositionHackerController extends AbstractController {
 		result.addObject("positions", positions);
 		result.addObject("listPositions", "list");
 		result.addObject("lang", this.lang);
+		result.addObject("rol", "hacker");
 		result.addObject("requetURI", "position/list.do");
 		result.addObject("hackerPositions", this.positionService.findAppliedByHacker());
 		return result;

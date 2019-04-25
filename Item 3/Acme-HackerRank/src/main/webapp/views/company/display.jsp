@@ -45,4 +45,4 @@
 		<acme:button url="position/list.do" name="listPositions" code="back"/>
 	</jstl:otherwise>
 </jstl:choose>
-
+<input type="button" name="companyList" value="<spring:message code="companyList" /> ${company.commercialName}" onclick="javascript: relativeRedir('position/companyList.do?companyId=${company.id}');" />

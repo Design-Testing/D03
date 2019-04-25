@@ -88,6 +88,13 @@ public class PositionService {
 		return result;
 	}
 
+	public Collection<Position> findAllByCompany(final int companyId) {
+		Assert.isTrue(companyId != 0);
+		final Collection<Position> result = this.positionRepository.findAllByCompany(companyId);
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Collection<Position> findAppliedByHacker() {
 		final Collection<Position> result = this.positionRepository.findAppliedByHacker(this.hackerService.findByPrincipal().getId());
 		Assert.notNull(result);
