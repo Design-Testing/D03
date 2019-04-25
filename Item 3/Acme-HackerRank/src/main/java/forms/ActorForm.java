@@ -40,7 +40,7 @@ public class ActorForm extends DomainEntity {
 	private String				number;
 	private Integer				expirationMonth;
 	private Integer				expirationYear;
-	private Integer				cvv;
+	private String				cvv;
 
 	private Boolean				termsAndCondicions;
 
@@ -222,12 +222,12 @@ public class ActorForm extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 100, max = 999)
-	public Integer getCvv() {
+	@Pattern(regexp = "^([0-9]){3}$")
+	public String getCvv() {
 		return this.cvv;
 	}
 
-	public void setCvv(final Integer cvv) {
+	public void setCvv(final String cvv) {
 		this.cvv = cvv;
 	}
 

@@ -39,6 +39,18 @@
 	</script>
 </jstl:if>
 
+	<jstl:if test="${not empty errors}">
+		<div class="errorDiv">
+			<ul>
+				<jstl:forEach items="${errors}" var="error">
+					<jstl:if test="${error.field eq 'termsAndCondicions'}">
+						<li><spring:message code="edit.${error.field}"/> - <jstl:out value="${error.defaultMessage}" /></li>
+					</jstl:if>
+				</jstl:forEach>
+			</ul>
+		</div>
+	</jstl:if>
+	<br>
 <h2>
 	<spring:message code="administrator.edit.msg" />
 </h2>
