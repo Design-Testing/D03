@@ -95,7 +95,7 @@ public class ProblemCompanyController extends AbstractController {
 	public ModelAndView list(@RequestParam final int positionId) {
 		final ModelAndView res;
 		final Company company = this.companyService.findByPrincipal();
-		final Collection<Problem> problems = this.problemService.findProblemByCompany();
+		final Collection<Problem> problems = this.problemService.findFinalProblemsByPosition(positionId);
 
 		res = new ModelAndView("problem/list");
 		res.addObject("company", company);
@@ -164,17 +164,15 @@ public class ProblemCompanyController extends AbstractController {
 	//DELETE
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int problemId, final HttpServletRequest request) {
+	public ModelAndView delete(@RequestParam final int problemId) {
 		ModelAndView result;
-		String paramPositionId;
-
-		paramPositionId = request.getParameter("positionId");
-		final Integer positionId = paramPositionId.isEmpty() ? null : Integer.parseInt(paramPositionId);
 
 		final Problem problem = this.problemService.findOne(problemId);
+
 		this.problemService.delete(problem);
-		result = this.positionCompanyController.display(positionId);
+		result = this.positionCompanyController.display(problem.getPosition().getId());
 		result.addObject("problem", problem);
+
 		return result;
 	}
 

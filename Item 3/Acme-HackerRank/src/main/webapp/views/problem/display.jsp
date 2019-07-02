@@ -11,6 +11,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+
 <acme:display code="problem.company" value="${problem.company}" />
 <acme:display code="problem.title" value="${problem.title}" />
 <acme:display code="problem.statement" value="${problem.statement}" />

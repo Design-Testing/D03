@@ -798,7 +798,7 @@
 	<bean id="position2" class="domain.Position">
 		<property name="title" value="Position 2" />
 		<property name="description" value="Description position 2" />
-		<property name="deadline" value="2019/05/24 00:00" />
+		<property name="deadline" value="2020/05/24 00:00" />
 		<property name="ticker" value="COMM-1235" />
 		<property name="profile" value="Profile for position 2" />
 		<property name="salary" value="1700.0" />
