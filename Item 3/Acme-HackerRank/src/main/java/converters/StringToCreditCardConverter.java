@@ -31,7 +31,7 @@ public class StringToCreditCardConverter implements Converter<String, CreditCard
 				result.setNumber(URLDecoder.decode(parts[2], "UTF-8"));
 				result.setExpirationMonth(Integer.valueOf(URLDecoder.decode(parts[3], "UTF-8")));
 				result.setExpirationYear(Integer.valueOf(URLDecoder.decode(parts[4], "UTF-8")));
-				result.setCvv(Integer.valueOf(URLDecoder.decode(parts[5], "UTF-8")));
+				result.setCvv(URLDecoder.decode(parts[5], "UTF-8"));
 			} catch (final Throwable oops) {
 				throw new RuntimeException(oops);
 			}

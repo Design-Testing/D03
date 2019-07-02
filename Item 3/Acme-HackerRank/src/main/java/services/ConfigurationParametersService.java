@@ -124,7 +124,6 @@ public class ConfigurationParametersService {
 		final Administrator a = this.administratorService.findByPrincipal();
 		final Boolean isAdmin = this.actorService.checkAuthority(a, Authority.ADMIN);
 		Assert.isTrue(isAdmin);
-		System.out.println(a.getUserAccount().getAuthorities());
 
 		//		if (c.getId() == 0) {
 		//			c.setBanner("https://tinyurl.com/acme-madruga");
@@ -189,7 +188,6 @@ public class ConfigurationParametersService {
 
 		final ConfigurationParameters result = this.configurationParametersRepository.save(c);
 		Assert.notNull(result);
-		System.out.println(result.getId());
 		return result;
 
 	}

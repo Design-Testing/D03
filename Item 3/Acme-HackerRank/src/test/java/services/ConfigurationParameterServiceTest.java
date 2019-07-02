@@ -45,43 +45,84 @@ public class ConfigurationParameterServiceTest extends AbstractTest {
 		words.add("noExisteEstaPalabra");
 		final Object testingData[][] = {
 			{
-				//MaxFinderResults con valor min.
+				//				A: Acme HackerRank Número máximo de resultados para el finder con valor mínimo
+				//				B: Test Positivo: 1 está dentro del rango permitido, es el valor minimo
+				//				C: % Recorre 21 de las 21 lineas posibles
+				//				D: % cobertura de datos= 92%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 1, 10, posWords, negWords, spamWords, null
 			}, {
-				//MaxFinderResults con valor min - 1, ConstraintViolationException.
+				//				A: Acme HackerRank Número máximo de resultados para el finder con una unidad por debajo del mínimo
+				//				B: Test Negativo: El rango de máximo numero de resultados por parte del finder no puede ser menor a uno: ConstraintViolationException.
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura de datos= 92%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 10, 9, null, negWords, spamWords, ConstraintViolationException.class
 			}, {
-				//MaxFinderResults con valor min + 1.
+				//				A: Acme HackerRank Número máximo de resultados para el finder con una unidad por encima del mínimo
+				//				B: Test Positivo: El minimo mas uno sigue estando dentro del rango admitido para dicho valor
+				//				C: % Recorre 21 de las 21 lineas posibles
+				//				D: % cobertura de datos= 92%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 10, 11, posWords, null, spamWords, null
 			}, {
-				//MaxFinderResults con valor max + 1, ConstraintViolationException.
+				//				A: Acme HackerRank Número máximo de resultados para el finder con una unidad por encima del maximo
+				//				B: Test Negativo: El valor esta fuera del rango permitido: ConstraintViolationException. 
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura d92%atos= 92%
 				"admin2", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 10, 101, posWords, negWords, words, ConstraintViolationException.class
 			}, {
+				//				A: Acme HackerRank Número máximo de resultados para el finder con el maximo valor del rango permitido
+				//				B: Test Positivo: El valor esta dentro del rango permitido
+				//				C: % Recorre 21 de las 21 lineas posibles
+				//				D: % cobertura de datos= 92%
 				//MaxFinderResults con valor max.
 				"admin2", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 10, 100, posWords, negWords, spamWords, null
 			}, {
+				//				A: Acme HackerRank Número máximo de resultados para el finder con una unidad por debajo del maximo
+				//				B: Test Positivo: El valor esta dentro del rango permitido
+				//				C: % Recorre 21 de las 21 lineas posibles
+				//				D: % cobertura de datos= 92%
 				//MaxFinderResults con valor max - 1.
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 10, 99, posWords, negWords, spamWords, null
 			}, {
-				//FinderTime con valor min.
+				//				A: Acme HackerRank Tiempo como maximo que el finder estara guardado y disponible para su dueño, con su valor minimo
+				//				B: Test Positivo: Valor minimo permitido de dicho tiempo entra dentro del rango de valores permitidos logicamente
+				//				C: % Recorre 21 de las 21 lineas posibles
+				//				D: % cobertura de datos= 84%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 1, 99, posWords, negWords, spamWords, null
 			}, {
-				//FinderTime con valor min - 1, ConstraintViolationException.
+				//				A: Acme HackerRank Tiempo como maximo que el finder estara guardado y disponible para su dueño, con su valor minimo menos una unidad
+				//				B: Test Negativo: Valor minimo permitido de dicho tiempo menos uno no entra dentro del rango de valores permitidos: ConstraintViolationException.
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura de datos= 84%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 0, 99, posWords, negWords, spamWords, ConstraintViolationException.class
 			}, {
-				//FinderTime con valor max.
+				//				A: Acme HackerRank Tiempo como maximo que el finder estara guardado y disponible para su dueño, con su valor maximo
+				//				B: Test Positivo: Valor maximo permitido de dicho tiempo entra dentro del rango de valores permitidos logicamente
+				//				C: % Recorre 21 de las 21 lineas posibles
+				//				D: % cobertura de datos= 84%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 24, 99, posWords, negWords, spamWords, null
 			}, {
-				//FinderTime con valor max + 1, ConstraintViolationException.
+				//				A: Acme HackerRank Tiempo como maximo que el finder estara guardado y disponible para su dueño, con su valor maximo mas una unidad
+				//				B: Test Negativo: Valor maximo permitido de dicho tiempo mas uno no entra dentro del rango de valores permitidos: ConstraintViolationException.
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura de datos= 84%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+34", 25, 99, posWords, negWords, spamWords, ConstraintViolationException.class
 			}, {
-				//WelcomeMessageEsp vacío, ConstraintViolationException.
+				//				A: Acme HackerRank Mensaje de bienvenida en español vacio
+				//				B: Test Negativo: El mensaje de bienvenida en español no puede ser nulo ni estar en blanco: ConstraintViolationException.
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura de datos= 58%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "", "welcomeMessageEn", "+34", 10, 99, posWords, negWords, spamWords, ConstraintViolationException.class
 			}, {
-				//WelcomeMessageEn vacío, ConstraintViolationException.
+				//				A: Acme HackerRank Mensaje de bienvenida en inglés vacio
+				//				B: Test Negativo: El mensaje de bienvenida en inglés no puede ser nulo ni estar en blanco: ConstraintViolationException.
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura de datos= 58%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "", "+34", 10, 99, posWords, negWords, spamWords, ConstraintViolationException.class
 			}, {
-				//CountryPhoneCode con valor diferente al Pattern, ConstraintViolationException.
+				//				A: Acme HackerRank Prefijo correspondiente a la zona geografica del telefono con valor diferente a su patron
+				//				B: Test Negativo: CountryPhoneCode con valor diferente al Pattern, ConstraintViolationException.
+				//				C: % Recorre 19 de las 21 lineas posibles
+				//				D: % cobertura de datos= 43%
 				"admin1", "Acme Hacker Rank", "https://i.imgur.com/7b8lu4b.png", "welcomeMessageEsp", "welcomeMessageEn", "+345", 10, 99, posWords, negWords, spamWords, ConstraintViolationException.class
 			}
 		};
@@ -98,7 +139,8 @@ public class ConfigurationParameterServiceTest extends AbstractTest {
 
 		try {
 			super.authenticate(adminUsername);
-			cParameters = this.configurationParametersService.findOne(44);
+			final int configparamsId = super.getEntityId("configurationParameters");
+			cParameters = this.configurationParametersService.findOne(configparamsId);
 			//			cParameters = this.configurationParametersService.create();
 			cParameters.setSysName(sysName);
 			cParameters.setBanner(banner);
@@ -125,8 +167,16 @@ public class ConfigurationParameterServiceTest extends AbstractTest {
 	public void driverAddWord() {
 		final Object testingData[][] = {
 			{
+				//				A: Acme HackerRank Login User Non registered
+				//				B: Test Positivo: Un usuario no registrado no puede logearse
+				//				C: % Recorre 19 de la 19 lineas posibles
+				//				D: % cobertura de datos= 2/2
 				"admin1", "hola", null
 			}, {
+				//				A: Acme HackerRank Login User Non registered
+				//				B: Test Positivo: Un usuario no registrado no puede logearse
+				//				C: % Recorre 7 de la 19 lineas posibles
+				//				D: % cobertura de datos= 2/2
 				"admin1", null, IllegalArgumentException.class
 			}
 		};
@@ -157,10 +207,22 @@ public class ConfigurationParameterServiceTest extends AbstractTest {
 	public void driverDeleteWord() {
 		final Object testingData[][] = {
 			{
+				//				A: Acme HackerRank Borrar palabra de la lista de palabras positivas
+				//				B: Test Positivo: La palabra "good" existe y puede borrarse correctamente
+				//				C: % Recorre 28 de la 28 lineas posibles
+				//				D: % cobertura de datos= 93%
 				"admin1", "good", null
 			}, {
+				//				A: Acme HackerRank Borrar palabra de la lista de palabras positivas
+				//				B: Test Negativo: No puede borrarse un null
+				//				C: % Recorre 26 de la 28 lineas posibles
+				//				D: % cobertura de datos= 93%
 				"admin1", null, IllegalArgumentException.class
 			}, {
+				//				A: Acme HackerRank Borrar palabra de la lista de palabras positivas
+				//				B: Test Negativo: Borrar una palabra que no existe en la lista de las palabras negativas
+				//				C: % Recorre 27 de la 28 lineas posibles
+				//				D: % cobertura de datos= 93%
 				"admin1", "hola", IllegalArgumentException.class
 			}
 		};
@@ -186,42 +248,5 @@ public class ConfigurationParameterServiceTest extends AbstractTest {
 
 		this.checkExceptions(expected, caught);
 	}
-
-	//	@Test
-	//	public void driverCheckSpamWord() {
-	//		final Collection<String> spamWord = new ArrayList<>();
-	//		spamWord.add("viagra");
-	//		final Collection<String> spamWord2 = new ArrayList<>();
-	//		spamWord2.add("hola");
-	//		final Object testingData[][] = {
-	//			{
-	//				"admin1", spamWord, null
-	//			}, {
-	//				//TODO:Debe fallar con null, y no falla.
-	//				"admin1", spamWord2, null
-	//			}
-	//		};
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateCheckSpamWord((String) testingData[i][0], (Collection<String>) testingData[i][1], (Class<?>) testingData[i][2]);
-	//
-	//	}
-	//	private void templateCheckSpamWord(final String adminUsername, final Collection<String> words, final Class<?> expected) {
-	//		Class<?> caught;
-	//		final ConfigurationParameters cParameters;
-	//
-	//		caught = null;
-	//
-	//		try {
-	//			super.authenticate(adminUsername);
-	//			cParameters = this.configurationParametersService.findOne(44);
-	//			//			cParameters = this.configurationParametersService.create();
-	//			this.configurationParametersService.checkForSpamWords(words);
-	//			this.configurationParametersService.flush();
-	//		} catch (final Throwable oops) {
-	//			caught = oops.getClass();
-	//		}
-	//
-	//		this.checkExceptions(expected, caught);
-	//	}
 
 }

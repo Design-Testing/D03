@@ -30,7 +30,7 @@
 		<property name="password" value="T9uxmSFaSk6kmk6VcwlH" />
 		<property name="minPoolSize" value="1" />
 		<property name="maxPoolSize" value="5" />
-	</bean>  -->
+	</bean> -->
 	 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />

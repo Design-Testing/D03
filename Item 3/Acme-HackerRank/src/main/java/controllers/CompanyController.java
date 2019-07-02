@@ -85,7 +85,6 @@ public class CompanyController extends AbstractController {
 		return result;
 
 	}
-
 	@RequestMapping(value = "/display2", method = RequestMethod.GET)
 	public ModelAndView display2() {
 		final ModelAndView result;

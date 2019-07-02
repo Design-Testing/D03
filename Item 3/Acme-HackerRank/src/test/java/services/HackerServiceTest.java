@@ -35,13 +35,16 @@ public class HackerServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				//				A: Acme Parade Req. X Titulo Use Case
-				//				B: Test Positivo: Un chapter puede loguearse correctamente
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				A: Acme HackerRank Login Use Case
+				//				B: Test Positivo: Un hacker puede loguearse correctamente
+				//				C: % Recorre 22 de la 22 lineas posibles
+				//				D: cobertura de datos = 2/2
 				"hacker1", null
 			}, {
-				//Login usuario no registrado
+				//				A: Acme HackerRank Login usuario no registrado
+				//				B: Test Negativo: Un usuario no registrado no puede logearse
+				//				C: % Recorre 8 de la 22 lineas posibles
+				//				D: cobertura de datos = 2/2
 				"HackerNoRegistrado", IllegalArgumentException.class
 			}
 		};
@@ -76,17 +79,16 @@ public class HackerServiceTest extends AbstractTest {
 		surnames2.add("Lanzas");
 		final Object testingData[][] = {
 			{
-				//				A: Acme Parade Req. 7.1 Register to de system as a chapter
+				//				A: Acme HackerRank Register to de system as a company
 				//				B: Test Positivo: Creación correcta de un hacker
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				C: % Recorre 181 de la 181 lineas posibles
+				//				D: cobertura de datos = 12/29
 				"hacker1", "hacker1", "Hacker1", surnames, "garcia@gmail.es", "+34647307406", null
 			}, {
-				//				A: Acme Parade Req. 7.1 Register to de system as a chapter
+				//				A: Acme HackerRank Register to de system as a company
 				//				B: Test Negativo: Creación incorrecta de un hacker con telefono inválido
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
-				//TODO:Debe dar error en la creación por el teléfono.
+				//				C: % Recorre 114 de la 181 lineas posibles
+				//				D: cobertura de datos = 12/29
 				"hacker2", "hacker2", "Hacker1", surnames2, "lanzas@gmail.com", "mi telefono", null
 			}
 		};
@@ -131,34 +133,34 @@ public class HackerServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				// 				A: Acme HackerRank Edit his o her personal data
 				//				B: Test Positivo: Edición correcta de los datos de un hacker
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				C: % Recorre 181 de las 181 lineas posibles
+				//				D: cobertura de datos = 19/32
 				"hacker1", "hacker1", "Hacker1", surnames, "garcia@gmail.es", "+34647307406", null
 			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				// 				A: Acme HackerRank Edit his o her personal data
 				//				B: Test Positivo: Edición correcta de los datos de un hacker con phone vacio
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				C: % Recorre 181 de las 181 lineas posibles
+				//				D: cobertura de datos = 19/32
 				"hacker1", "hacker1", "Hacker1", surnames, "garcia@gmail.es", "", null
 			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				// 				A: Acme HackerRank Edit his o her personal data
 				//				B: Test Negativo: Edición incorrecta de los datos de un hacker con mail inválido
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				C: % Recorre 114 de las 181 lineas posibles
+				//				D: cobertura de datos = 19/32
 				"hacker1", "hacker1", "Hacker1", surnames, "no tengo email", "+34647307406", ConstraintViolationException.class
 			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				// 				A: Acme HackerRank Edit his o her personal data
 				//				B: Test Negativo: Edición incorrecta de los datos de un hacker con name vacio
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				C: % Recorre 114 de las 181 lineas posibles
+				//				D: cobertura de datos = 19/32
 				"hacker1", "hacker1", "", surnames, "garcia@gmail.es", "+34647307406", ConstraintViolationException.class
 			}, {
-				// 				A: Acme Madruga Req. 9.2 Edit his o her personal data
+				// 				A: Acme HackerRank Edit his o her personal data
 				//				B: Test Negativo: Edición incorrecta de los datos de un hacker con apellidos vacio
-				//				C: % Recorre 8 de la 23 lineas posibles
-				//				D: cobertura de datos=Combinaciones con sentido/numero atributos
+				//				C: % Recorre 114 de las 181 lineas posibles
+				//				D: cobertura de datos = 19/32
 				"hacker1", "hacker1", "Hacker1", surnames2, "garcia@gmail.es", "+34647307406", ConstraintViolationException.class
 			}
 		};
