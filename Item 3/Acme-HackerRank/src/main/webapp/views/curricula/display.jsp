@@ -31,7 +31,7 @@
     <display:column property="phone" title="${phone}" sortable="true"/>
     <spring:message var="linkedin" code="record.linkedin"/>
     <display:column property="linkedin" title="${linkedin}" sortable="true"/>
-   	<jstl:if test="${buttons}">
+   	<jstl:if test="${buttons and not empty curricula.hacker}">
 	<display:column>
                 <input type="button" name="edit"
                     value="<spring:message code="record.edit" />"
@@ -67,7 +67,7 @@
     <display:column property="startDate" title="${startDate}" sortable="true"/>
     <spring:message var="endDate" code="record.endDate"/>
     <display:column property="endDate" title="${endDate}" sortable="true"/>
-    <jstl:if test="${buttons}">
+    <jstl:if test="${buttons and not empty curricula.hacker}">
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="record.edit" />"
@@ -87,7 +87,7 @@
         
 	</display:table>
 	<br />
-	<jstl:if test="${buttons}">
+	<jstl:if test="${buttons and not empty curricula.hacker}">
 	<input type="button" name="create"
     value="<spring:message code="record.create.educationData" />"
     onclick="relativeRedir('educationData/create.do?curriculaId=${curricula.id}')" />
@@ -113,7 +113,7 @@
     <display:column property="startDate" title="${startDate}" sortable="true"/>
     <spring:message var="endDate" code="record.endDate"/>
     <display:column property="endDate" title="${endDate}" sortable="true"/>
-   	<jstl:if test="${buttons}">
+   	<jstl:if test="${buttons and not empty curricula.hacker}">
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="record.edit" />"
@@ -134,7 +134,7 @@
         
 	</display:table>
 	<br />
-	<jstl:if test="${buttons}">
+	<jstl:if test="${buttons and not empty curricula.hacker}">
 	 <input type="button" name="create"
     value="<spring:message code="record.create.positionData" />"
     onclick="relativeRedir('positionData/create.do?curriculaId=${curricula.id}')" />
@@ -157,7 +157,7 @@
     <spring:message var="attachments" code="record.attachments"/>
     <display:column property="attachments" title="${attachments}" sortable="attachments"/>
 	
-	<jstl:if test="${buttons}">
+	<jstl:if test="${buttons and not empty curricula.hacker}">
 	<display:column>
             <input type="button" name="edit"
                 value="<spring:message code="record.edit" />"
@@ -177,7 +177,7 @@
         
 	</display:table>
 	<br />
-	<jstl:if test="${buttons}">
+	<jstl:if test="${buttons and not empty curricula.hacker}">
 	<input type="button" name="create"
     value="<spring:message code="record.create.miscellaneousData" />"
     onclick="relativeRedir('miscellaneousData/create.do?curriculaId=${curricula.id}')" />
@@ -187,7 +187,7 @@
 	
 	<br>
 	<br>
-	<jstl:if test="${buttons}">
+	<jstl:if test="${buttons and not empty curricula.hacker}">
 	<input type="button" name="delete"
                 value="<spring:message code="record.delete.curricula" />"
                 onclick="relativeRedir('curricula/delete.do?curriculaId=${curricula.id}')" />
