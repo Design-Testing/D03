@@ -96,7 +96,7 @@ public class ProblemServiceTest extends AbstractTest {
 			problem.setStatement(statement);
 			problem.setHint(hint);
 			final Integer posId = this.getEntityId(position);
-			final Problem saved = this.problemService.save(problem, posId);
+			final Problem saved = this.problemService.save(problem);
 			Assert.isTrue(saved.getId() != 0);
 			this.problemService.flush();
 			this.unauthenticate();
@@ -175,7 +175,7 @@ public class ProblemServiceTest extends AbstractTest {
 			problem.setStatement(statement);
 			problem.setHint(hint);
 			final Integer posId = this.getEntityId(position);
-			final Problem saved = this.problemService.save(problem, posId);
+			final Problem saved = this.problemService.save(problem);
 			Assert.isTrue(saved.getId() != 0);
 			this.problemService.flush();
 			this.unauthenticate();

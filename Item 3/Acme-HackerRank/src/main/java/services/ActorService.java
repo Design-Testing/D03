@@ -47,6 +47,19 @@ public class ActorService {
 		return result;
 	}
 
+	public Collection<Actor> findAllNotBanned() {
+		final Collection<Actor> result = new ArrayList<Actor>();
+		final Collection<Actor> all = this.findAll();
+		Assert.notNull(all);
+		final Authority authBanned = new Authority();
+		authBanned.setAuthority("BANNED");
+		for (final Actor a : all)
+			if (!a.getUserAccount().getAuthorities().contains(authBanned))
+				result.add(a);
+		Assert.notNull(result);
+		return result;
+	}
+
 	public Actor findOne(final int id) {
 		Assert.isTrue(id != 0);
 		final Actor result = this.actorRepository.findOne(id);
