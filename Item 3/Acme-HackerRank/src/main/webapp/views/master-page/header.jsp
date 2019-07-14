@@ -34,9 +34,6 @@
 				</ul>
 			</li>
 			
-			<li><a href="finder/searching.do"><spring:message code="master.page.finder.hacker.edit" /></a></li>
-			<li><a class="fNiv" href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
-			<li><a href="position/list.do"><spring:message code="master.page.position.list" /></a></li>
 			<li><a href="dashboard/administrator/statistics.do"><spring:message	code="master.page.dashboard" /></a></li>
 			<li><a href="administrator/create.do"><spring:message	code="master.page.create.administrator" /></a></li>
 				
@@ -58,9 +55,7 @@
 				</ul>
 			</li>
 			
-			<li><a href="finder/searching.do"><spring:message code="master.page.finder.hacker.edit" /></a></li>
-			<li><a href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
-			<li><a href="position/list.do"><spring:message code="master.page.position.public.list" /></a></li>
+			<li><a href="problem/company/list.do"><spring:message code="master.page.company.problem" /></a></li>
 			
 			<!-- POSITION -->
 			<li><a class="fNiv"><spring:message	code="master.page.position" /></a>
@@ -88,7 +83,6 @@
 				</ul>
 			</li>
 			<li><a href="finder/hacker/edit.do"><spring:message code="master.page.finder.hacker.edit" /></a></li>
-			<li><a class="fNiv" href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
 			<li><a href="position/hacker/list.do"><spring:message code="master.page.position.list" /></a></li>
 			<li><a href="curricula/displayAll.do"><spring:message code="master.page.curricula" /></a></li>
 			
@@ -100,12 +94,13 @@
 				
 		
 		<security:authorize access="isAnonymous()">
-			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
+		
+			<li><a href="finder/searching.do"><spring:message code="master.page.public.finder.edit" /></a></li>
 			<li><a class="fNiv" href="company/list.do"><spring:message code="master.page.company.list" /></a></li>
-			<li><a href="finder/searching.do"><spring:message code="master.page.finder.hacker.edit" /></a></li>
-			<li><a href="position/list.do"><spring:message code="master.page.position.list" /></a></li>
+			<li><a href="position/list.do"><spring:message code="master.page.public.position.list" /></a></li>
 			<li><a class="fNiv" href="company/create.do"><spring:message code="master.page.company.register" /></a></li>
 			<li><a class="fNiv" href="hacker/create.do"><spring:message code="master.page.hacker.register" /></a></li>
+			<li><a class="fNiv" href="security/login.do"><spring:message code="master.page.login" /></a></li>
 			
 		</security:authorize>
 		
