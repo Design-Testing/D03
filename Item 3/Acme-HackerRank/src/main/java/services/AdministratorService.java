@@ -123,6 +123,7 @@ public class AdministratorService {
 		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.administratorRepository.save(principal);
+		this.folderService.deleteActorFolders(principal);
 	}
 
 	public Administrator reconstruct(final ActorForm actorForm, final BindingResult binding) {

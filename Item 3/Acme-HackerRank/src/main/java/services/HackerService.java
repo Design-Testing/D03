@@ -49,6 +49,9 @@ public class HackerService {
 	private CurriculaRepository	curriculaRepository;
 
 	@Autowired
+	private FolderService		folderService;
+
+	@Autowired
 	private Validator			validator;
 
 
@@ -118,6 +121,7 @@ public class HackerService {
 		ban.setAuthority(Authority.BANNED);
 		principal.getUserAccount().getAuthorities().add(ban);
 		this.hackerRepository.save(principal);
+		this.folderService.deleteActorFolders(principal);
 	}
 
 	/* ========================= OTHER METHODS =========================== */
