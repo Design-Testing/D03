@@ -85,6 +85,11 @@ img.resize {
 		<acme:button url="problem/company/display.do?problemId=${row.id}" name="display" code="problem.display"/>
 	</jstl:if>
 	</display:column>
+	<display:column>
+	<jstl:if test="${company.id eq position.company.id and position.mode eq 'DRAFT'}">
+		<acme:button url="problem/company/unasign.do?positionId=${position.id }&problemId=${row.id}" name="display" code="problem.unasign"/>
+	</jstl:if>
+	</display:column>
 	
 	</security:authorize>
 	

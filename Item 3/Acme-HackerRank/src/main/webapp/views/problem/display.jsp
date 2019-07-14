@@ -30,7 +30,7 @@
 
 <jstl:choose>
 <jstl:when test="${empty applications and problem.position.mode ne 'FINAL'}">
-	<acme:button url="problem/company/delete.do?problemId=${problem.id}" name="delete" code="problem.delete"/>	
+	<acme:button url="problem/company/delete.do?problemId=${problem.id}" name="delete" code="problem.bd.delete"/>	
 </jstl:when>
 <jstl:otherwise>
 	<h4 style="color: red"><spring:message code="problem.not.delete"/></h4>

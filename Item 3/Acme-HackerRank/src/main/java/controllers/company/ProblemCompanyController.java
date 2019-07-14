@@ -75,6 +75,24 @@ public class ProblemCompanyController extends AbstractController {
 		return result;
 	}
 
+	//Unasign
+
+	@RequestMapping(value = "/unasign", method = RequestMethod.GET)
+	public ModelAndView unasign(@RequestParam final int positionId, @RequestParam final int problemId) {
+		ModelAndView result;
+		final Problem problem = this.problemService.findOne(problemId);
+		final Position position = this.positionService.findOne(positionId);
+		if (position.getMode().equals("DRAFT")) {
+			this.problemService.unasign(problem, positionId);
+			result = this.positionCompanyController.display(positionId);
+		} else {
+			result = new ModelAndView("problem/error");
+			result.addObject("ok", "Cannot create asign problem to a position whose mode is not DRAFT.");
+		}
+
+		return result;
+	}
+
 	//Display
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)

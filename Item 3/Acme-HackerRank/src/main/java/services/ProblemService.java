@@ -93,11 +93,31 @@ public class ProblemService {
 		Assert.isTrue(problem.getMode().equals("FINAL"));
 		Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
 		final Position position = this.positionService.findOne(positionId);
+		Assert.isTrue(position.getMode().equals("DRAFT"));
 		final Collection<Position> positions = this.positionService.findAllByCompany();
 		Assert.isTrue(positions.contains(position));
 		problem.setPosition(position);
 		problem.setCompany(company);
 		this.problemRepository.save(problem);
+	}
+
+	public void unasign(final Problem problem, final int positionId) {
+		Assert.notNull(problem);
+		Assert.isTrue(positionId != 0);
+		Assert.isTrue(problem.getPosition() != null, "The problem is not assigned to any position");
+		final Company company = this.companyService.findByPrincipal();
+		this.actorService.checkAuthority(company, Authority.COMPANY);
+		Assert.isTrue(problem.getId() != 0);
+		Assert.isTrue(problem.getMode().equals("FINAL"));
+		Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
+		final Position position = this.positionService.findOne(positionId);
+		Assert.isTrue(position.getMode().equals("DRAFT"));
+		final Collection<Position> positions = this.positionService.findAllByCompany();
+		Assert.isTrue(positions.contains(position));
+		problem.setPosition(null);
+		problem.setCompany(company);
+		this.problemRepository.save(problem);
+
 	}
 
 	public void delete(final Problem problem) {
@@ -181,4 +201,5 @@ public class ProblemService {
 		Assert.notNull(res);
 		return res;
 	}
+
 }

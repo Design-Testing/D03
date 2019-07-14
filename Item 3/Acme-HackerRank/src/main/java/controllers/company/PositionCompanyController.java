@@ -72,7 +72,6 @@ public class PositionCompanyController extends AbstractController {
 			result.addObject("rol", "company");
 			result.addObject("lang", this.lang);
 			result.addObject("problems", problems);
-
 		} else
 			result = new ModelAndView("redirect:misc/403");
 

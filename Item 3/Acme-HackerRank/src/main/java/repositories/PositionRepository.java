@@ -25,7 +25,7 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 	@Query("select p from Position p where p.mode='FINAL' AND p.company.id=?1")
 	Collection<Position> findAllFinalModeByCompany(int id);
 
-	@Query("select p from Position p where (p.mode='FINAL' OR p.mode='CANCELLED') AND p.company.id=?1")
+	@Query("select p from Position p where p.company.id=?1")
 	Collection<Position> findAllByCompany(int companyId);
 
 	/** The average, minimum, maximum and standard deviation of the salary offered */
