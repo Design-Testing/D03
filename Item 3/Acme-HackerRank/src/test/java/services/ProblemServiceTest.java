@@ -76,7 +76,7 @@ public class ProblemServiceTest extends AbstractTest {
 				//B: Test Negativo: Error company crear problem en position que no le pertenece
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", "Title", "Statement for problem", "hint for problem", "position2", IllegalArgumentException.class
+				"company1", "Title", "Statement for problem", "hint for problem", "position2", ConstraintViolationException.class
 			},
 		};
 
@@ -115,43 +115,43 @@ public class ProblemServiceTest extends AbstractTest {
 				//B: Test Positivo: --
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", "Title", "Statement for problem", "hint for problem", "problem1", "position1", null
+				"company2", "Title", "Statement for problem", "hint for problem", "problem3", "position2", null
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Hacker intenta editar problem
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"hacker1", "Title", "Statement for problem", "hint for problem", "problem1", "position1", IllegalArgumentException.class
+				"hacker1", "Title", "Statement for problem", "hint for problem", "problem3", "position2", IllegalArgumentException.class
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Usuario null intenta editar problem
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				null, "Title", "Statement for problem", "hint for problem", "problem1", "position1", IllegalArgumentException.class
+				null, "Title", "Statement for problem", "hint for problem", "problem3", "position2", IllegalArgumentException.class
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Error con title campo vacío
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", "", "Statement for problem", "hint for problem", "problem1", "position1", ConstraintViolationException.class
+				"company2", "", "Statement for problem", "hint for problem", "problem3", "position2", ConstraintViolationException.class
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Error con title null
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", null, "Statement for problem", "hint for problem", "problem1", "position1", ConstraintViolationException.class
+				"company2", null, "Statement for problem", "hint for problem", "problem3", "position2", ConstraintViolationException.class
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Error con statement campo vacío
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", "Title", "", "hint for problem", "problem1", "position1", ConstraintViolationException.class
+				"company2", "Title", "", "hint for problem", "problem3", "position2", ConstraintViolationException.class
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Error con statement null
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", "Title", null, "hint for problem", "problem1", "position1", ConstraintViolationException.class
+				"company2", "Title", null, "hint for problem", "problem3", "position2", ConstraintViolationException.class
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Error company intenta editar problem que no le pertenece
@@ -196,26 +196,25 @@ public class ProblemServiceTest extends AbstractTest {
 				//B: Test Positivo: --
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", null
+				"company2", "problem3", null
 			}, {
 				//A: Acme HackerRank Req. 9.2 -> Companys can manage their problems.
 				//B: Test Negativo: Error company intenta borrar problem que no le pertenece
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"hacker1", IllegalArgumentException.class
+				"hacker1", "problem3", IllegalArgumentException.class
 			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateDelete((String) testingData[i][0], (Class<?>) testingData[i][1]);
+			this.templateDelete((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
-	private void templateDelete(final String actor, final Class<?> expected) {
+	private void templateDelete(final String actor, final String stringProblem, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
 			this.authenticate(actor);
-			final Integer id = this.getEntityId("problem1");
-			final Problem problem = this.problemService.findOne(id);
+			final Problem problem = this.problemService.findOne(this.getEntityId(stringProblem));
 			this.problemService.delete(problem);
 			this.problemService.flush();
 			this.unauthenticate();
