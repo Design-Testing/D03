@@ -27,7 +27,9 @@
 
 	<display:column property="hacker" titleKey="application.hacker" />
 		
-	<display:column property="status" titleKey="application.status" />
+	<display:column titleKey="application.status">
+		<acme:statusChoose status="${row.status}"/>
+	</display:column>
 	
 	<display:column property="problem.title" titleKey="application.problem" />
 	
@@ -53,7 +55,13 @@
 					<acme:button url="application/hacker/edit.do?applicationId=${row.id}"
 						name="submit" code="application.submit" />
 				</jstl:if>
-			</display:column>
+	</display:column>
+	<display:column>
+				<jstl:if test="${row.status eq 'PENDING'}">
+					<acme:button url="problem/hacker/display.do?problemId=${row.problem.id}"
+						name="submit" code="application.see.problem" />
+				</jstl:if>
+	</display:column>
 	</security:authorize>
 	
 	<security:authorize access="hasRole('COMPANY')">	

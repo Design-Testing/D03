@@ -60,28 +60,44 @@ public class ProblemService {
 		return result;
 	}
 
-	public Problem save(final Problem problem, final int positionId) {
+	public Problem save(final Problem problem) {
 		Assert.notNull(problem);
-		Assert.isTrue(positionId != 0);
 		final Problem res;
 		final Company company = this.companyService.findByPrincipal();
 		this.actorService.checkAuthority(company, Authority.COMPANY);
 		if (problem.getId() == 0) {
-			final Position position = this.positionService.findOne(positionId);
-			final Collection<Position> positions = this.positionService.findAllByCompany();
-			Assert.isTrue(positions.contains(position));
-			problem.setPosition(position);
+			Assert.isTrue(problem.getPosition() == null);
 			problem.setCompany(company);
 			problem.setMode("DRAFT");
 		} else {
-			final Position position = this.positionService.findOne(positionId);
-			Assert.isTrue(problem.getMode().equals("DRAFT"), "No puedes modificar un problem que estï¿½ en FINAL MODE");
-			Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
-			Assert.isTrue(problem.getPosition().equals(position), "Ese problema no pertenece a esa posición.");
+			final Problem retrieved = this.findOne(problem.getId());
+			if (problem.getPosition() != null) {
+				final Position position = problem.getPosition();
+				Assert.isTrue(retrieved.getPosition().equals(position), "position can not change");
+			}
+			Assert.isTrue(problem.getMode().equals("DRAFT"), "Not possible to modify a problem in final mode");
+			Assert.isTrue(problem.getCompany().equals(company), "You can not modify a problem taht is not yours");
 
 		}
 		res = this.problemRepository.save(problem);
 		return res;
+	}
+
+	public void asign(final Problem problem, final int positionId) {
+		Assert.notNull(problem);
+		Assert.isTrue(positionId != 0);
+		Assert.isTrue(problem.getPosition() == null, "The problem has already been asigned to a position");
+		final Company company = this.companyService.findByPrincipal();
+		this.actorService.checkAuthority(company, Authority.COMPANY);
+		Assert.isTrue(problem.getId() != 0);
+		Assert.isTrue(problem.getMode().equals("FINAL"));
+		Assert.isTrue(problem.getCompany().equals(company), "No puede modificar un problem que no le pertenezca");
+		final Position position = this.positionService.findOne(positionId);
+		final Collection<Position> positions = this.positionService.findAllByCompany();
+		Assert.isTrue(positions.contains(position));
+		problem.setPosition(position);
+		problem.setCompany(company);
+		this.problemRepository.save(problem);
 	}
 
 	public void delete(final Problem problem) {
@@ -94,7 +110,8 @@ public class ProblemService {
 		Assert.isTrue(this.problemRepository.exists(problem.getId()));
 		final Collection<Application> applications = this.applicationService.findAllByProblem(retrieved.getId());
 		Assert.isTrue(applications.isEmpty(), "No puedes borrar este problema, ya que tiene solicitudes asociadas.");
-		Assert.isTrue(retrieved.getMode().equals("DRAFT"), "No puedes borrar un problema que ya está en modo FINAL.");
+		if (problem.getPosition() != null)
+			Assert.isTrue(!problem.getPosition().getMode().equals("FINAL"), "Not possible to delete a problem associated to a position in final mode");
 		this.problemRepository.delete(retrieved.getId());
 
 	}
@@ -153,4 +170,15 @@ public class ProblemService {
 		this.problemRepository.flush();
 	}
 
+	public Collection<Problem> findFinalNotAsignedProblemsByCompany() {
+		Collection<Problem> res = new ArrayList<>();
+		res = this.problemRepository.findFinalNotAsignedProblemsByCompany(this.companyService.findByPrincipal().getUserAccount().getId());
+		return res;
+	}
+
+	public Collection<Problem> findAllByHacker(final int hackerId) {
+		final Collection<Problem> res = this.problemRepository.findAllByHacker(hackerId);
+		Assert.notNull(res);
+		return res;
+	}
 }

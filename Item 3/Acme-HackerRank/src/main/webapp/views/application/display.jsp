@@ -25,13 +25,13 @@
 
 <acme:display code="application.problem" value="${application.problem.title}"/>
 
-<acme:display code="application.explanation" value="${application.explanation}"/>
+<jstl:if test="${not empty application.explanation and not empty application.link}">
+	<acme:display code="application.explanation" value="${application.explanation}"/>
+	<acme:display code="application.link" value="${application.link}"/>
+</jstl:if>
 
-<acme:display code="application.link" value="${application.link}"/>
-
-<acme:display code="application.status" value="${application.status}"/>
-
-
+<spring:message code="application.status" />: <acme:statusChoose status="${application.status}"/>
+<br>
 
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
@@ -44,6 +44,7 @@
 	</jstl:otherwise>
 </jstl:choose>
 <br>
+<jstl:if test="${not empty application.submitMoment}">
 <jstl:choose>
 	<jstl:when test="${lang eq 'en' }">
 		<spring:message code="application.submitMoment" />: <fmt:formatDate
@@ -54,14 +55,28 @@
 			value="${application.submitMoment}" type="both" pattern="dd/MM/yyyy HH:mm" />
 	</jstl:otherwise>
 </jstl:choose>
-<br><br>
-
+<br>
+</jstl:if>
+<br>
 <input type="button" name="dsiplay"
                 value="<spring:message code="application.curricula.display" />"
                 onclick="relativeRedir('curricula/display.do?curriculaId=${application.curricula.id}')" />
 <jstl:if test="${not empty rol}">
 	<jstl:set var="rolURL" value="/${rol}" />
 </jstl:if>
+
+<br><br>
+
+
+<security:authorize access="hasRole('COMPANY')">
+	<acme:button url="/position/company/display.do?positionId=${application.position.id }" name="back"
+	code="application.show.position" />
+</security:authorize>
+
+<security:authorize access="hasRole('HACKER')">
+	<acme:button url="/position/hacker/display.do?applicationId=${application.position.id }" name="back"
+	code="application.show.position" />
+</security:authorize>
 
 <br><br>
 
@@ -98,6 +113,3 @@
 	code="application.list.button" />
 </jstl:if>
 </security:authorize>
-
-
-

@@ -48,18 +48,28 @@ public class ProblemCompanyController extends AbstractController {
 	//Create
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int positionId) {
+	public ModelAndView create() {
 		ModelAndView result;
 		Problem problem;
+		problem = this.problemService.create();
+		result = new ModelAndView("problem/edit");
+		result.addObject("problem", problem);
+		return result;
+	}
+
+	//Asign
+
+	@RequestMapping(value = "/asign", method = RequestMethod.GET)
+	public ModelAndView asign(@RequestParam final int positionId, @RequestParam final int problemId) {
+		ModelAndView result;
+		final Problem problem = this.problemService.findOne(problemId);
 		final Position position = this.positionService.findOne(positionId);
 		if (position.getMode().equals("DRAFT")) {
-			problem = this.problemService.create();
-			result = this.createEditModelAndView(problem, positionId);
-			result.addObject("problem", problem);
-			result.addObject("positionId", positionId);
+			this.problemService.asign(problem, positionId);
+			result = this.positionCompanyController.display(positionId);
 		} else {
 			result = new ModelAndView("problem/error");
-			result.addObject("ok", "Cannot create a new problem in position whose mode is not DRAFT.");
+			result.addObject("ok", "Cannot create asign problem to a position whose mode is not DRAFT.");
 		}
 
 		return result;
@@ -75,38 +85,54 @@ public class ProblemCompanyController extends AbstractController {
 		final Problem problem = this.problemService.findOne(problemId);
 		final Collection<Application> applications = this.applicationService.findAllByProblem(problemId);
 
-		if (problem != null) {
-
+		final Company principal = this.companyService.findByPrincipal();
+		if (problem != null && (problem.getCompany().getId() == principal.getId())) {
 			res = new ModelAndView("problem/display");
 			res.addObject("problem", problem);
 			res.addObject("applications", applications);
 			res.addObject("position", problem.getPosition());
-
 		} else
 			res = new ModelAndView("redirect:/misc/403.jsp");
 
 		return res;
 
 	}
-
 	//List
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam final int positionId) {
+	public ModelAndView list() {
 		final ModelAndView res;
 		final Company company = this.companyService.findByPrincipal();
-		final Collection<Problem> problems = this.problemService.findFinalProblemsByPosition(positionId);
+		final Collection<Problem> problems = this.problemService.findProblemByCompany();
 
 		res = new ModelAndView("problem/list");
 		res.addObject("company", company);
 		res.addObject("problems", problems);
+		res.addObject("requestURI", "/problem/company/list");
 
 		return res;
 	}
-	// EDIT 
 
+	//List final
+
+	@RequestMapping(value = "/listFinal", method = RequestMethod.GET)
+	public ModelAndView listFinal(@RequestParam final int positionId) {
+		final ModelAndView res;
+		final Company company = this.companyService.findByPrincipal();
+		final Collection<Problem> problems = this.problemService.findFinalNotAsignedProblemsByCompany();
+
+		res = new ModelAndView("problem/listFinal");
+		res.addObject("company", company);
+		res.addObject("problems", problems);
+		res.addObject("positionId", positionId);
+		res.addObject("requestURI", "/problem/company/listFinal");
+
+		return res;
+	}
+
+	// EDIT 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int problemId, @RequestParam final int positionId) {
+	public ModelAndView edit(@RequestParam final int problemId) {
 		ModelAndView result;
 		Problem problem;
 
@@ -114,32 +140,31 @@ public class ProblemCompanyController extends AbstractController {
 
 		final Company company = this.companyService.findByPrincipal();
 
-		if ((problem.getMode().equals("DRAFT") && problem.getCompany().equals(company)))
-			result = this.createEditModelAndView(problem, positionId);
-		else
+		if ((problem.getMode().equals("DRAFT") && problem.getCompany().equals(company))) {
+			result = new ModelAndView("problem/edit");
+			result.addObject("problem", problem);
+		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}
-
 	// SAVE --------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Problem problem, final BindingResult binding, final HttpServletRequest request) {
 		ModelAndView result;
-		String paramPositionId;
 
-		paramPositionId = request.getParameter("positionId");
-		final Integer positionId = paramPositionId.isEmpty() ? null : Integer.parseInt(paramPositionId);
-
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(problem, positionId);
-		else
+		if (binding.hasErrors()) {
+			result = new ModelAndView("problem/edit");
+			result.addObject("problem", problem);
+		} else
 			try {
-				this.problemService.save(problem, positionId);
-				result = this.positionCompanyController.display(positionId);
+				this.problemService.save(problem);
+				result = this.list();
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(problem, "problem.commit.error", positionId);
+				result = new ModelAndView("problem/edit");
+				result.addObject("problem", problem);
+				result.addObject("message", "problem.commit.error");
 			}
 
 		return result;
@@ -155,7 +180,7 @@ public class ProblemCompanyController extends AbstractController {
 		Assert.isTrue(problems.contains(problem));
 		if (problem.getMode().equals("DRAFT")) {
 			this.problemService.toFinalMode(problemId);
-			result = this.positionCompanyController.display(problem.getPosition().getId());
+			result = this.list();
 		} else
 			result = new ModelAndView("redirect:/misc/403.jsp");
 		return result;
@@ -164,15 +189,18 @@ public class ProblemCompanyController extends AbstractController {
 	//DELETE
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int problemId) {
+	public ModelAndView delete(@RequestParam final int problemId, final HttpServletRequest request) {
 		ModelAndView result;
 
-		final Problem problem = this.problemService.findOne(problemId);
-
-		this.problemService.delete(problem);
-		result = this.positionCompanyController.display(problem.getPosition().getId());
-		result.addObject("problem", problem);
-
+		final Collection<Application> applications = this.applicationService.findAllByProblem(problemId);
+		if (applications.isEmpty()) {
+			final Problem problem = this.problemService.findOne(problemId);
+			this.problemService.delete(problem);
+			result = this.list();
+		} else {
+			result = new ModelAndView("problem/error");
+			result.addObject("ok", "not.empty.applications");
+		}
 		return result;
 	}
 

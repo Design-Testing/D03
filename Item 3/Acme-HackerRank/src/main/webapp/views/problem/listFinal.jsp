@@ -1,3 +1,4 @@
+    
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
@@ -10,6 +11,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<h4><spring:message code="problem.clarify.message" /></h4>
 
 <security:authorize access="hasRole('COMPANY')">
     
@@ -23,36 +25,17 @@
     <display:column property="company" titleKey="problem.company"/>
     
 	<display:column>
-	<jstl:if test="${row.mode eq 'DRAFT'}">
-            <input type="button" name="edit"
-                value="<spring:message code="problem.edit" />"
-                onclick="relativeRedir('problem/company/edit.do?problemId=${row.id}&positionId=${row.position.id}')" />
-	</jstl:if>
+            <input type="button" name="asign"
+                value="<spring:message code="problem.asign" />"
+                onclick="relativeRedir('problem/company/asign.do?positionId=${positionId}&problemId=${row.id}')" />
 	</display:column>
-	<display:column>
-		<jstl:if test="${not empty row.position}">
-			<acme:link url="position/company/display.do?positionId=${row.position.id}" code="problem.asigned.position"/>
-		</jstl:if>
-		<jstl:if test="${empty row.position}">
-			<spring:message code="problem.not.asigned" />
-		</jstl:if>
-	</display:column>
+	
 	
 	<display:column>
 			<input type="button" name="display"
                 value="<spring:message code="problem.display" />"
                 onclick="relativeRedir('problem/company/display.do?problemId=${row.id}')" />
 	</display:column>
-	
-	<display:column>
-	<jstl:if test="${row.mode eq 'DRAFT' }">
-		<acme:button url="problem/company/finalMode.do?problemId=${row.id}" name="finalMode" code="problem.finalMode"/>
-	</jstl:if>
-	</display:column>
         
 	</display:table>
-	
-	 <input type="button" name="edit"
-                value="<spring:message code="problem.create" />"
-                onclick="relativeRedir('problem/company/create.do')" />
 </security:authorize>

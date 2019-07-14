@@ -75,7 +75,6 @@ public class HackerService {
 			hacker.setFinder(finder);
 			this.actorService.setAuthorityUserAccount(Authority.HACKER, hacker);
 			result = this.hackerRepository.save(hacker);
-			//			this.folderService.setFoldersByDefault(result);
 
 			final Curricula curricula = this.curriculaService.createForNewHacker();
 			curricula.setHacker(result);

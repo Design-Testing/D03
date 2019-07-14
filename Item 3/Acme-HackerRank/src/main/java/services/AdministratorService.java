@@ -73,7 +73,6 @@ public class AdministratorService {
 			final UserAccount uasaved = this.userAccountService.save(ua);
 			a.setUserAccount(uasaved);
 			result = this.administratorRepository.save(a);
-			this.folderService.setFoldersByDefault(result);
 		} else
 			result = (Administrator) this.actorService.save(a);
 

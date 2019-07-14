@@ -41,10 +41,13 @@ public class ApplicationCompanyController extends AbstractController {
 		application = this.applicationService.findOne(applicationId);
 		company = this.companyService.findByPrincipal();
 
-		result = new ModelAndView("application/display");
-		result.addObject("company", company);
-		result.addObject("application", application);
-		result.addObject("rol", "company");
+		if (application != null && application.getPosition().getCompany().equals(company)) {
+			result = new ModelAndView("application/display");
+			result.addObject("company", company);
+			result.addObject("application", application);
+			result.addObject("rol", "company");
+		} else
+			result = new ModelAndView("redirect:/misc/403.jsp");
 
 		return result;
 	}

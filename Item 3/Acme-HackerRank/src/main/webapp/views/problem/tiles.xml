@@ -25,6 +25,11 @@
 		<put-attribute name="body" value="/views/problem/list.jsp" />
 	</definition>
 	
+	<definition name="problem/listFinal" extends="master.page">	
+		<put-attribute name="title" value="Choose a problem" />
+		<put-attribute name="body" value="/views/problem/listFinal.jsp" />
+	</definition>
+	
 	<definition name="problem/error" extends="master.page">	
 		<put-attribute name="title" value="Problem: Error" />
 		<put-attribute name="body" value="/views/problem/error.jsp" />

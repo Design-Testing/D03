@@ -32,7 +32,7 @@
 	<input type="submit" name="save"
 		value="<spring:message code="problem.save" />" />
 
-	<acme:button url="position/company/display.do?positionId=${positionId}" name="cancel"
+	<acme:button url="problem/company/list.do" name="cancel"
 		code="problem.cancel" />
 
 </form:form>
