@@ -12,6 +12,7 @@ import security.UserAccount;
 import security.UserAccountRepository;
 import services.AdministratorService;
 import services.CompanyService;
+import services.FolderService;
 import services.HackerService;
 import services.UserAccountService;
 import domain.Actor;
@@ -41,6 +42,9 @@ public class RegisterService {
 	@Autowired
 	private CompanyService			companyService;
 
+	@Autowired
+	private FolderService			folderService;
+
 
 	public Administrator saveAdmin(final Administrator admin, final BindingResult binding) {
 		Administrator result;
@@ -58,6 +62,7 @@ public class RegisterService {
 			uaSaved.setPassword(ua.getPassword());
 			uaSaved = this.userAccountService.save(uaSaved);
 			result.setUserAccount(uaSaved);
+			this.folderService.setFoldersByDefault(result);
 		} else {
 			final Administrator old = this.administratorService.findOne(admin.getId());
 
@@ -88,6 +93,7 @@ public class RegisterService {
 			uaSaved.setPassword(ua.getPassword());
 			uaSaved = this.userAccountService.save(uaSaved);
 			result.setUserAccount(uaSaved);
+			this.folderService.setFoldersByDefault(result);
 		} else {
 			final Hacker old = this.hackerService.findOne(hacker.getId());
 
@@ -118,6 +124,7 @@ public class RegisterService {
 			uaSaved.setPassword(ua.getPassword());
 			uaSaved = this.userAccountService.save(uaSaved);
 			result.setUserAccount(uaSaved);
+			this.folderService.setFoldersByDefault(result);
 		} else {
 			final Company old = this.companyService.findOne(company.getId());
 
