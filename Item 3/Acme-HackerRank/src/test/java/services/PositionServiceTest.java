@@ -230,7 +230,7 @@ public class PositionServiceTest extends AbstractTest {
 			this.authenticate(user);
 			final Position pos;
 			if (!prop) {
-				final Integer id = this.getEntityId("position6");
+				final Integer id = this.getEntityId("position3");
 				pos = this.positionService.findOne(id);
 			} else {
 				final Integer id = this.getEntityId("position2");
@@ -262,21 +262,21 @@ public class PositionServiceTest extends AbstractTest {
 			{
 
 				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
-				//B: Test Positivo: Position a FINAL mode
-				//C: 10,25% Recorre 8 de las 78 lineas posibles
-				//D: cobertura de datos=1/3
-				"company1", 1, null
-			}, {
-
-				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
-				//B: Test Positivo: Position a CANCELLED mode
+				//B: Test Positivo: Position FINAL a CANCELLED mode
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
 				"company1", 2, null
 			}, {
 
 				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
-				//B: Test Negativo: Se intenta pasar position de CANCELLED a DRAFT mode
+				//B: Test Positivo: Position FINAL a CANCELLED mode
+				//C: 10,25% Recorre 8 de las 78 lineas posibles
+				//D: cobertura de datos=1/3
+				"company1", 2, null
+			}, {
+
+				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
+				//B: Test Negativo: Se intenta pasar position de DRAFT a CANCELLED mode
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
 				"company2", 3, IllegalArgumentException.class
@@ -300,7 +300,7 @@ public class PositionServiceTest extends AbstractTest {
 		try {
 			this.authenticate(user);
 			if (option == 1) {
-				final Integer id = this.getEntityId("position6");
+				final Integer id = this.getEntityId("position4");
 				this.positionService.toFinalMode(id);
 			} else if (option == 2) {
 				final Integer id = this.getEntityId("position1");
@@ -309,7 +309,7 @@ public class PositionServiceTest extends AbstractTest {
 				final Integer id = this.getEntityId("position2");
 				this.positionService.toCancelMode(id);
 			} else if (option == 4) {
-				final Integer id = this.getEntityId("position5");
+				final Integer id = this.getEntityId("position3");
 				this.positionService.toFinalMode(id);
 			}
 			this.positionService.flush();
@@ -331,26 +331,25 @@ public class PositionServiceTest extends AbstractTest {
 				//B: Test Positivo: --
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", null
+				"company2", "position2", null
 			}, {
 				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
 				//B: Test Negativo: Hacker intenta borrar position
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"hacker1", IllegalArgumentException.class
+				"position1", "position1", IllegalArgumentException.class
 			},
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.templateDelete((String) testingData[i][0], (Class<?>) testingData[i][1]);
+			this.templateDelete((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
-	private void templateDelete(final String actor, final Class<?> expected) {
+	private void templateDelete(final String actor, final String stringPosition, final Class<?> expected) {
 		Class<?> caught = null;
 		try {
 			this.authenticate(actor);
-			final Integer id = this.getEntityId("position6");
-			final Position pos = this.positionService.findOne(id);
+			final Position pos = this.positionService.findOne(this.getEntityId(stringPosition));
 			this.positionService.delete(pos);
 			this.positionService.flush();
 			this.unauthenticate();
