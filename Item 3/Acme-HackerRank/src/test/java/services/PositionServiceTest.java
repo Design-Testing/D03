@@ -265,14 +265,7 @@ public class PositionServiceTest extends AbstractTest {
 				//B: Test Positivo: Position FINAL a CANCELLED mode
 				//C: 10,25% Recorre 8 de las 78 lineas posibles
 				//D: cobertura de datos=1/3
-				"company1", 2, null
-			}, {
-
-				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
-				//B: Test Positivo: Position FINAL a CANCELLED mode
-				//C: 10,25% Recorre 8 de las 78 lineas posibles
-				//D: cobertura de datos=1/3
-				"company1", 2, null
+				"company1", 1, null
 			}, {
 
 				//A: Acme HackerRank Req. 9.1 -> Companys can manage their positions.
@@ -301,9 +294,6 @@ public class PositionServiceTest extends AbstractTest {
 			this.authenticate(user);
 			if (option == 1) {
 				final Integer id = this.getEntityId("position4");
-				this.positionService.toFinalMode(id);
-			} else if (option == 2) {
-				final Integer id = this.getEntityId("position1");
 				this.positionService.toCancelMode(id);
 			} else if (option == 3) {
 				final Integer id = this.getEntityId("position2");
